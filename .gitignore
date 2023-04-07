@@ -1,0 +1,6 @@
+vedsite/demo/static/*.csv
+vedsite/demo/static/*.json
+get-pip.py
+vedomosti
+vedsite/notes.txt
+*.tar.gz
