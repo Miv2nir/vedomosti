@@ -1,0 +1,20 @@
+<h1>Hello, Please Register</h1>
+{%if user_found%}
+<p style="color:red;"> Sorry, that username already exists.</p>
+{%endif%}
+{%if password_mismatch%}
+<p style="color:red;"> Sorry, passwords did not match.</p>
+{%endif%}
+{%if incomplete_form%}
+<p style="color:red;"> Sorry, you should fill in all the credential fields.</p>
+{%endif%}
+<form action="/register/" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <button type="submit" value="OK">Submit</button>
+</form>
+<h3>Already an existing user?</h3>
+<form action="/login/" method="post">
+    {% csrf_token %}
+    <button type="submit" value="OK">Log In</button>
+</form>

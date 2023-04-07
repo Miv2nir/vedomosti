@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django import forms
 from django.contrib.auth import authenticate
+from django.contrib.auth.models import User
 import django_cryptography.fields as crypt
 import requests
 import json
@@ -14,7 +15,7 @@ import os
 from django.contrib.auth import authenticate, login, logout
 
 from .models import Teacher
-from .forms import AuthForm, LogOutForm, CredentialsForm
+from .forms import AuthForm, RegisterForm, LogOutForm, CredentialsForm
 import result_updater.checking_system.ya_contest as ya_contest
 
 
@@ -23,6 +24,37 @@ def index(request):
     output = ', '.join([q.question_text for q in latest_question_list])
     return HttpResponse(output)
 # Create your views here.
+
+
+def register_user(request):  # going to roughly repeat the login_user view as to the process is largely similar
+    if request.method == 'POST':
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            user_login = form.cleaned_data['login']
+            try:  # check for existing users
+                user = User.objects.get(username=user_login)
+                return render(request, 'demo/register.html', {'form': form, 'user_found': True})
+            except:
+                pass  # no existing user found, proceed
+            user_password = form.cleaned_data['password']
+            if user_password != form.cleaned_data['password_verify']:  # passwords did not match
+                return render(request, 'demo/register.html', {'form': form, 'password_mismatch': True})
+            user_email = form.cleaned_data['email']
+
+            if (not user_login) or (not user_email) or (not user_password):  # in the case of whether some credentials have been skipped
+                return render(request, 'demo/register.html', {'form': form, 'incomplete_form': True})
+
+            user = User.objects.create_user(user_login, user_email, user_password)
+            user.save()  # created the user
+            if user is not None:  # login the newly created user
+                print('New User Logging in '+user_login)  # for the tests
+                login(request, user)
+            return HttpResponseRedirect('/')
+    else:  # prompt the form
+        form = RegisterForm()
+        if request.user.is_authenticated:  # if logged in, redirect to the main page
+            return HttpResponseRedirect('/')
+    return render(request, 'demo/register.html', {'form': form})
 
 
 def login_user(request):

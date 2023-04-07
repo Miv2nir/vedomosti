@@ -6,6 +6,13 @@ class AuthForm(forms.Form):
     password = forms.CharField(label='password', max_length=100, widget=forms.PasswordInput)
 
 
+class RegisterForm(forms.Form):
+    email = forms.CharField(label='email', max_length=100, widget=forms.EmailInput)
+    login = forms.CharField(label='login', max_length=100)
+    password = forms.CharField(label='password', max_length=100, widget=forms.PasswordInput)
+    password_verify = forms.CharField(label='password_verify', max_length=100, widget=forms.PasswordInput)
+
+
 class LogOutForm(forms.Form):
     logout = forms.CharField()
 
