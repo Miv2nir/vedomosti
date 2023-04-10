@@ -1,3 +1,6 @@
+{% load static tailwind_tags %}
+<head>
+    {% tailwind_css %}
 <h1>Welcome, {{username}}</h1>
 <p style=""> Click on credentials button to access the Yandex.Contest data retrieval page.</p>
 <form action="/credentials/" method="post">
@@ -8,3 +11,4 @@
     {% csrf_token %}
     <button type="submit" value="OK">Log Out</button>
 </form>
+</head>
