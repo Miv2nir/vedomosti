@@ -1,3 +1,7 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+
 <h1>Hello, Please login</h1>
 {%if failed_login%}
 <p style="color:red;"> Sorry, login or password did not match.</p>
@@ -12,3 +16,4 @@
     {% csrf_token %}
     <button type="submit" value="OK">Register</button>
 </form>
+</body>

@@ -1,3 +1,7 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+
 <h1>Hello, Please Register</h1>
 {%if user_found%}
 <p style="color:red;"> Sorry, that username already exists.</p>
@@ -18,3 +22,5 @@
     {% csrf_token %}
     <button type="submit" value="OK">Log In</button>
 </form>
+
+</body>
