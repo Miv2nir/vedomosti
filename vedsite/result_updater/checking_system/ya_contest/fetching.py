@@ -50,7 +50,7 @@ class YaContestUpdFetcher(CourseUpdateFetcher):
             print(uri)
             print(r.text)
             # raise Exception("Failed to open!")
-            input("Failed to fetch contest {}. Continue?".format(task_id))
+            # input("Failed to fetch contest {}. Continue?".format(task_id))
 
         # input("c?")
         open(self._name_template.format(task_id),
