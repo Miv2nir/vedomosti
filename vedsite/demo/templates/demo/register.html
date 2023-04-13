@@ -1,26 +1,45 @@
+{% load static tailwind_tags %}
 <!DOCTYPE html>
 <html lang="en">
-<body>
-
-<h1>Hello, Please Register</h1>
+    <head>
+    {% tailwind_css %}
+    <link rel="stylesheet" href="{% static 'css/output.css' %}">
+</head>
+<body class="font-sans mx-0 my-0">
+    <div class="relative min-h-screen flex bg-white">
+        <!--sidebar-->
+        <div class="text-white items-center top-0 bg-slate-200 w-72 space-y-6">
+            {% load static %}
+            <img class="w-64 h-64 m-[16px] " src="{% static 'hse_logo.svg' %}" alt="HSE Logo">
+            <nav class="text-center font-extrabold space-y-6 text-inherit">
+            </nav>
+        </div>
+            <!--content, forms, etc-->
+    <div class="flex-1 text-center justify-center">
+<h1 class="font-sans text-5xl underline font-bold">Hello, Please Register</h1>
 {%if user_found%}
-<p style="color:red;"> Sorry, that username already exists.</p>
+<p class="text-2xl text-red-500"> Sorry, that username already exists.</p>
 {%endif%}
 {%if password_mismatch%}
-<p style="color:red;"> Sorry, passwords did not match.</p>
+<p class="text-2xl text-red-500"> Sorry, passwords did not match.</p>
 {%endif%}
 {%if incomplete_form%}
-<p style="color:red;"> Sorry, you should fill in all the credential fields.</p>
+<p class="text-2xl text-red-500"> Sorry, you should fill in all the credential fields.</p>
 {%endif%}
-<form action="/register/" method="post">
+<form class=" content-center" action="/register/" method="post">
     {% csrf_token %}
-    {{ form }}
-    <button type="submit" value="OK">Submit</button>
+    <div class="text-right w-7/12">
+        {{ form.as_p }}
+        </div>
+    <button class="text-center scale-125 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" type="submit" value="OK">Submit</button>
 </form>
-<h3>Already an existing user?</h3>
+<h3 class="font-sans text-3xl underline font-bold"> Already an existing user?</h3>
 <form action="/login/" method="post">
     {% csrf_token %}
-    <button type="submit" value="OK">Log In</button>
+    <button class="text-center scale-125 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full" type="submit" value="OK">Log In</button>
 </form>
+</div>
+</div>
+</div>
 
 </body>
