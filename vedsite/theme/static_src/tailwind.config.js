@@ -6,6 +6,9 @@
  */
 
 module.exports = {
+    corePlugins: {
+        preflight: false,
+    },
     content: [
         /**
          * HTML. Paths to Django template files that will contain Tailwind CSS classes.
@@ -18,7 +21,7 @@ module.exports = {
          * Main templates directory of the project (BASE_DIR/templates).
          * Adjust the following line to match your project structure.
          */
-        '../../templates/**/*.html',
+        '../templates/**/*.html',
 
         /*
          * Templates in other django apps (BASE_DIR/<any_app_name>/templates).
@@ -42,8 +45,22 @@ module.exports = {
         // '../../**/*.py'
     ],
     theme: {
-        extend: {},
+        extend: {
+            fontSize: {
+                'xs': '.75rem',
+                'sm': '.875rem',
+                'base': '1rem',
+                'lg': '1.125rem',
+                'xl': '1.25rem',
+                '2xl': '1.5rem',
+                '3xl': '1.875rem',
+                '4xl': '2.25rem',
+                '5xl': '3rem',
+                '6xl': '4rem',
+            },
+        },
     },
+
     plugins: [
         /**
          * '@tailwindcss/forms' is the forms plugin that provides a minimal styling
