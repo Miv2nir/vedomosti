@@ -9,18 +9,18 @@
 <body class="font-sans mx-0 my-0">
     <div class="relative min-h-screen flex bg-white">
         <!--sidebar-->
-        <div class="text-white items-center top-0 bg-slate-200 w-72 space-y-6">
+        <div class="text-white items-center top-0 bg-slate-200 w-72 space-y-6 border-solid border-r-4 border-l-0 border- border-black">
             {% load static %}
             <img class="w-64 h-64 m-[16px] " src="{% static 'hse_logo.svg' %}" alt="HSE Logo">
             <nav class="text-center font-extrabold space-y-6 text-inherit">
-                <a href="/" class="font-mono text-2xl no-underline block py-2 px-4  text-black bg-white border-solid border-y-4 border-x-0">Home</a>
-                <a href="/credentials/" class="font-mono text-2xl no-underline block py-2 px-4 text-black bg-white border-solid border-y-0 hover:border-y-4 border-x-0 transition-all ease-in-out">Credentials</a>
+                <a href="/" class="font-mono text-2xl no-underline block py-2 px-4 text-black bg-white border-solid  border-y-4 border-x-0">Home</a>
+                <a href="/credentials/" class="font-mono text-2xl no-underline block py-2 px-4 hover:py-[5px] text-black bg-white border-solid border-y-0 hover:border-y-4 border-x-0 transition-all ease-in-out">Credentials</a>
             </nav>
         </div>
     <!--content, forms, etc-->
     <div class="flex-1 text-center justify-center">
         <h1 class="font-sans text-5xl underline font-bold">
-            Welcome, {{username}}
+            Welcome, {{username}}!
         </h1>
         <p class="text-2xl"> Click on credentials button to access the Yandex.Contest data retrieval page.</p>
         <div class="flex space-x-5 justify-center">
