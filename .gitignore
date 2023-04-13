@@ -1,5 +1,4 @@
-vedsite/demo/static/*.csv
-vedsite/demo/static/*.json
+vedsite/demo/static/generated/*
 get-pip.py
 vedomosti
 vedsite/notes.txt
