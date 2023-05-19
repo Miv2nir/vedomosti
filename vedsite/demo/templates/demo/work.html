@@ -1,0 +1,38 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% tailwind_css %}
+    <link rel="stylesheet" href="{% static 'css/output.css' %}">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+
+<body class="font-sans mx-0 my-0">
+    <div class="relative min-h-screen flex bg-white">
+        <!--sidebar-->
+        <div class="text-white items-center top-0 bg-slate-200 w-72 space-y-6">
+            {% load static %}
+            <img class="w-64 h-64 m-[16px] " src="{% static 'hse_logo.svg' %}" alt="HSE Logo">
+            <nav class="text-center font-extrabold space-y-6 text-inherit">
+                <a href="/" class="font-mono text-2xl no-underline block py-2.5 px-4 hover:py-[7px] text-black bg-white border-solid border-y-0 hover:border-y-4 border-x-0 transition-all ease-in-out">Home</a>
+                <a href="/" class="font-mono text-2xl no-underline block py-2 px-4 text-black bg-white border-solid  border-y-4 border-x-0">Dashboard</a>
+                <a href="/credentials/" class="font-mono text-2xl no-underline block py-2.5 px-4 hover:py-[7px] text-black bg-white border-solid border-y-0 hover:border-y-4 border-x-0 transition-all ease-in-out">Credentials</a>
+            </nav>
+        </div>
+    <!--content, forms, etc-->
+    <div class="flex-1 text-center justify-center">
+        <h1 class="font-sans text-5xl underline font-bold">
+            Welcome, {{username}}!
+        </h1>
+        <p class="text-2xl"> Select the discipline you'd like to work on today.</p>
+            <div class="relative flex space-x-10 pb-5 pt-3 px-5 bg-white">
+                <button class="square rounded-2xl text-3xl text-white">Я</button>
+                  <button class="square rounded-2xl text-3xl text-white">ебал</button>
+                  <button class="square rounded-2xl text-3xl text-white">э</button>
+              </div>
+              
+    </div>
+</div>
+
+</body>
+</html>

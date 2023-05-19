@@ -93,6 +93,12 @@ def main_page(request):
     form_logout = LogOutForm()
     return render(request, 'demo/main.html', {'username': request.user, 'form_logout': form_logout})
 
+
+def work(request):
+    if not request.user.is_authenticated:  # user not yet logged in
+        return HttpResponseRedirect('/login/')
+    form_logout = LogOutForm()
+    return render(request, 'demo/work.html', {'username': request.user})
 # something for the following function down below
 
 
