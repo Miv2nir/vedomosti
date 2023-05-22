@@ -18,6 +18,13 @@ class Student(models.Model):
     tasks = models.JSONField(blank=True)
 
 
+class Discipline(models.Model):
+    d_id = models.UUIDField()
+    d_name = models.CharField(max_length=200)
+    d_owner = models.CharField(max_length=200)
+    d_children = models.CharField(max_length=200)
+
+
 '''
 class Question(models.Model):
     question_text = models.CharField(max_length=200)

@@ -99,9 +99,9 @@ def work(request):
         return HttpResponseRedirect('/login/')
     form_logout = LogOutForm()
     return render(request, 'demo/work.html', {'username': request.user})
+
+
 # something for the following function down below
-
-
 def _digest(j,  contest_id, teacher_name=''):
     jout = {'contest_ID': contest_id,
             'contest_students': {}}

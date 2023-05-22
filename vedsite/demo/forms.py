@@ -21,3 +21,5 @@ class CredentialsForm(forms.Form):
     ya_login = forms.CharField(label='Yandex.Contest Login', max_length=100)
     ya_password = forms.CharField(label='Yandex.Contest Password', max_length=100, widget=forms.PasswordInput)
     ya_id = forms.IntegerField(label='Yandex.Contest Contest ID')
+
+# class DisciplineForm(forms.Form):
