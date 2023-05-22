@@ -14,7 +14,7 @@ import os
 
 from django.contrib.auth import authenticate, login, logout
 
-from .models import Teacher
+from .models import Teacher, Discipline
 from .forms import AuthForm, RegisterForm, LogOutForm, CredentialsForm
 import result_updater.checking_system.ya_contest as ya_contest
 
@@ -97,11 +97,19 @@ def main_page(request):
 def work(request):
     if not request.user.is_authenticated:  # user not yet logged in
         return HttpResponseRedirect('/login/')
-    form_logout = LogOutForm()
-    return render(request, 'demo/work.html', {'username': request.user})
+    # look up named entries for a logged in user
+    lookup = Discipline.objects.filter(d_owner=request.user)
 
+    return render(request, 'demo/work.html', {'username': request.user, 'lookup': lookup})
+
+
+def discipline(request, d_id):
+    d = Discipline.objects.filter(d_id=d_id)[0]
+    return HttpResponse("this is "+d.d_name+".\n These are its children: "+d.d_children)
 
 # something for the following function down below
+
+
 def _digest(j,  contest_id, teacher_name=''):
     jout = {'contest_ID': contest_id,
             'contest_students': {}}

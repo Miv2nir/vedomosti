@@ -24,6 +24,13 @@ class Discipline(models.Model):
     d_owner = models.CharField(max_length=200)
     d_children = models.CharField(max_length=200)
 
+    def __str__(self):
+        return "Discipline " + self.d_name
+
+    class Meta:
+        verbose_name = "Discipline"
+        verbose_name_plural = "Disciplines"
+
 
 '''
 class Question(models.Model):

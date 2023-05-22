@@ -15,8 +15,11 @@ urlpatterns = [
             'show_indexes': True,  # must be True to render file list
         },
     ),
+
     path('', views.main_page, name='main'),
     path('work/', views.work, name='work'),
+    # dashboard!
+    path('work/<uuid:d_id>/', views.discipline, name='discipline'),
     path('login/', views.login_user, name='login'),
     path('register/', views.register_user, name='register'),
     path('logout/', views.logout_user, name='logout'),
