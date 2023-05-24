@@ -6,6 +6,13 @@ ul.errorlist {
     display: none;
 }
 
+.square_button {
+    position: absolute;
+    justify-self: right;
+    left: 80%;
+    top: 40%;
+}
+
 .square {
     width: 30%;
     height: 30%;
@@ -25,4 +32,56 @@ ul.errorlist {
 .square:hover {
     border-color: white;
     transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
+}
+
+.square_input {
+    appearance: auto;
+    writing-mode: horizontal-tb !important;
+    text-rendering: auto;
+    color: buttontext;
+    letter-spacing: normal;
+    word-spacing: normal;
+    line-height: normal;
+    text-transform: none;
+    font-size: 1.875rem
+        /* 30px */
+    ;
+    text-indent: 0px;
+    text-shadow: none;
+    display: inline-block;
+    text-align: center;
+    align-items: flex-start;
+    cursor: default;
+    box-sizing: border-box;
+    background-color: white;
+    margin: 0em;
+    padding: 5px 6px;
+    border-width: 2px;
+    border-style: outset;
+    border-color: black;
+    border-image: initial;
+    /*button definition over*/
+    width: 30%;
+    height: 30%;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-bottom: 15px;
+    padding-top: 10%;
+    padding-bottom: 10%;
+    background-color: white;
+    text-align: center;
+    border-style: solid;
+    border-width: 5px;
+    border-color: black;
+    border-radius: 1rem;
+}
+
+
+
+.form_fit {
+    display: contents;
+}
+
+.buttonfield {
+    display: contents;
 }

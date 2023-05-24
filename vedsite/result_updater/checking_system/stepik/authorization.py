@@ -6,13 +6,14 @@ from bs4 import BeautifulSoup
 from ..protocol import Authorizer
 from .constants import *
 
+
 class StepikAuthorizer(Authorizer):
     def __init__(self, authorize=True):
         Authorizer.__init__(self)
         self._session = None
         if authorize:
             self.authorize({"login": AUTH_LOGIN,
-                             "password": AUTH_PASSWD})
+                            "password": AUTH_PASSWD})
 
     def authorize(self, credentials):
 
@@ -25,7 +26,7 @@ class StepikAuthorizer(Authorizer):
         r = session.get(uri1, headers=headers)
 
         soup = BeautifulSoup(r.text, "lxml")
-        csrf_token = soup.find("input", {"name": "csrf_token"}).get("value")
+        csrf_token = soup.find("meta", {"name": "csrf_cookie_name"})["content"]
 
         post_data = {"csrf_token": csrf_token,
                      "login": credentials["login"],
@@ -44,6 +45,6 @@ class StepikAuthorizer(Authorizer):
                         "password": AUTH_PASSWD})
         return self.get_token()
 
-    #def logout(self):
-        #найти url для logout
-        #req.get(...)
+    # def logout(self):
+        # найти url для logout
+        # req.get(...)

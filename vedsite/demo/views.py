@@ -15,7 +15,7 @@ import os
 from django.contrib.auth import authenticate, login, logout
 
 from .models import Teacher, Discipline
-from .forms import AuthForm, RegisterForm, LogOutForm, CredentialsForm
+from .forms import AuthForm, RegisterForm, LogOutForm, CredentialsForm, DisciplineForm
 import result_updater.checking_system.ya_contest as ya_contest
 
 
@@ -106,6 +106,15 @@ def work(request):
 def discipline(request, d_id):
     d = Discipline.objects.filter(d_id=d_id)[0]
     return HttpResponse("this is "+d.d_name+".\n These are its children: "+d.d_children)
+
+
+def work_new(request):
+    if not request.user.is_authenticated:  # user not yet logged in
+        return HttpResponseRedirect('/login/')
+    # look up named entries for a logged in user
+    lookup = Discipline.objects.filter(d_owner=request.user)
+    d = DisciplineForm()
+    return render(request, 'demo/work_new.html', {'username': request.user, 'lookup': lookup, 'form': d})
 
 # something for the following function down below
 

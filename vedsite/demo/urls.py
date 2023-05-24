@@ -18,6 +18,7 @@ urlpatterns = [
 
     path('', views.main_page, name='main'),
     path('work/', views.work, name='work'),
+    path('work/new/', views.work_new, name='work_new'),
     # dashboard!
     path('work/<uuid:d_id>/', views.discipline, name='discipline'),
     path('login/', views.login_user, name='login'),

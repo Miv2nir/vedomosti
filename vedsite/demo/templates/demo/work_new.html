@@ -34,7 +34,11 @@
                   {% for item in lookup %}
                     <button class="square rounded-2xl text-3xl text-white" onclick="window.location.href='/work/{{ item.d_id }}/';">{{ item.d_name }}</button>
                   {% endfor %}
-                    <button class="square rounded-2xl text-3xl text-white" onclick="window.location.href='/work/new/';">+</button>
+                  <form method="POST" class="form_fit">
+                    {% for field in form %}
+                        <div class="static buttonfield rounded-2xl text-3xl">{{field}}
+                        </div>
+                    {% endfor %}
                 </div>
               
     </div>
