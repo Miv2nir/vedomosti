@@ -26,4 +26,8 @@ class CredentialsForm(forms.Form):
 class DisciplineForm(forms.Form):
     d_name = forms.CharField(widget=forms.TextInput(attrs={"class": "square_input"}))
 
+
+class GroupForm(forms.Form):
+    g_name = forms.IntegerField(widget=forms.TextInput(attrs={"class": "square_input"}))
+
 # class DisciplineForm(forms.Form):

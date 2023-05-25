@@ -22,9 +22,9 @@
     <!--content, forms, etc-->
     <div class="flex-1 text-center justify-center">
         <h1 class="font-sans text-5xl underline font-bold">
-            Welcome, {{username}}!
+            You're in discipline {{d_name}}!
         </h1>
-        <p class="text-2xl"> Select the discipline you'd like to work on today.</p>
+        <p class="text-2xl"> Select the group you'd like to work on today.</p>
             <div class="text-center pt-3 px-5 bg-white">
                 <!--
                 <button class="square rounded-2xl text-3xl text-white">Я</button>
@@ -34,12 +34,7 @@
                   {% for item in lookup %}
                     <button class="square rounded-2xl text-3xl text-white" onclick="window.location.href='/work/{{ item.d_id }}/';">{{ item.d_name }}</button>
                   {% endfor %}
-                  <form action"/work/" method="POST" class="form_fit">
-                    {% csrf_token %}
-                    {% for field in form %}
-                        <div class="static buttonfield rounded-2xl text-3xl">{{field}}
-                        </div>
-                    {% endfor %}
+                    <button class="square rounded-2xl text-3xl text-white" onclick="window.location.href='/work/new/';">+</button>
                 </div>
               
     </div>

@@ -13,23 +13,39 @@ class Teacher(models.Model):
     # to add hse api keys as well
 
 
-class Student(models.Model):
-    linked_teacher = models.CharField(max_length=200)
-    tasks = models.JSONField(blank=True)
-
-
 class Discipline(models.Model):
     d_id = models.UUIDField()
     d_name = models.CharField(max_length=200)
     d_owner = models.CharField(max_length=200)
-    d_children = models.CharField(max_length=200)
+    # d_children = models.CharField(max_length=200)
 
     def __str__(self):
-        return "Discipline " + self.d_name
+        return "Discipline " + self.d_name+" of "+self.d_owner
 
     class Meta:
         verbose_name = "Discipline"
         verbose_name_plural = "Disciplines"
+
+
+class Group(models.Model):
+    g_id = models.UUIDField()
+    g_number = models.IntegerField()
+    g_table = models.FilePathField()
+    # parent Discipline ID
+    d_id = models.UUIDField()
+
+    class Meta:
+        verbose_name = "Student Group"
+        verbose_name_plural = "Student Groups"
+
+
+class Students(models.Model):
+    s_id = models.UUIDField()
+    s_name = models.CharField(max_length=200)
+    s_email = models.CharField(max_length=2000)
+    # parent Group ID
+    g_id = models.UUIDField()
+    g_number = models.IntegerField()
 
 
 '''

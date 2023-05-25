@@ -9,7 +9,7 @@ import json
 import pathlib
 import pandas as pd
 import os
-
+from uuid import uuid4
 # for logins
 
 from django.contrib.auth import authenticate, login, logout
@@ -95,6 +95,7 @@ def main_page(request):
 
 
 def work(request):
+
     if not request.user.is_authenticated:  # user not yet logged in
         return HttpResponseRedirect('/login/')
     # look up named entries for a logged in user
@@ -104,17 +105,27 @@ def work(request):
 
 
 def discipline(request, d_id):
+    # get discipline
     d = Discipline.objects.filter(d_id=d_id)[0]
-    return HttpResponse("this is "+d.d_name+".\n These are its children: "+d.d_children)
+
+    return render(request, 'demo/group.html', {'username': request.user, 'd_name': d.d_name})
 
 
 def work_new(request):
     if not request.user.is_authenticated:  # user not yet logged in
         return HttpResponseRedirect('/login/')
+    if request.method == 'POST':
+        form_new = DisciplineForm(request.POST)
+        if form_new.is_valid():
+            d = Discipline(d_id=uuid4(), d_name=form_new.cleaned_data['d_name'], d_owner=request.user, d_children="")
+            d.save()
+            lookup = Discipline.objects.filter(d_owner=request.user)
+            # print(form_new.cleaned_data['d_name'])
+            return render(request, 'demo/work.html', {'username': request.user, 'lookup': lookup})
     # look up named entries for a logged in user
     lookup = Discipline.objects.filter(d_owner=request.user)
-    d = DisciplineForm()
-    return render(request, 'demo/work_new.html', {'username': request.user, 'lookup': lookup, 'form': d})
+    form_new = DisciplineForm()
+    return render(request, 'demo/work_new.html', {'username': request.user, 'lookup': lookup, 'form': form_new})
 
 # something for the following function down below
 
