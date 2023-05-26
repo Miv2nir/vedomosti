@@ -28,6 +28,6 @@ class DisciplineForm(forms.Form):
 
 
 class GroupForm(forms.Form):
-    g_name = forms.IntegerField(widget=forms.TextInput(attrs={"class": "square_input"}))
+    g_number = forms.IntegerField(widget=forms.TextInput(attrs={"class": "square_input"}))
 
 # class DisciplineForm(forms.Form):

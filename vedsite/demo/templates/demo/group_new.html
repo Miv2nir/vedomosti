@@ -15,7 +15,7 @@
             <img class="w-64 h-64 m-[16px] " src="{% static 'hse_logo.svg' %}" alt="HSE Logo">
             <nav class="text-center font-extrabold space-y-6 text-inherit">
                 <a href="/" class="font-mono text-2xl no-underline block py-2.5 px-4 hover:py-[7px] text-black bg-white border-solid border-y-0 hover:border-y-4 border-x-0 transition-all ease-in-out">Home</a>
-                <a href="/" class="font-mono text-2xl no-underline block py-2 px-4 text-black bg-white border-solid  border-y-4 border-x-0">Dashboard</a>
+                <a href="/work/" class="font-mono text-2xl no-underline block py-2.5 px-4 hover:py-[7px] text-black bg-white border-solid border-y-0 hover:border-y-4 border-x-0 transition-all ease-in-out">Dashboard</a>
                 <a href="/credentials/" class="font-mono text-2xl no-underline block py-2.5 px-4 hover:py-[7px] text-black bg-white border-solid border-y-0 hover:border-y-4 border-x-0 transition-all ease-in-out">Credentials</a>
             </nav>
         </div>
@@ -32,9 +32,14 @@
                   <button class="square rounded-2xl text-3xl text-white">э</button>
                   //-->
                   {% for item in lookup %}
-                    <button class="square rounded-2xl text-3xl text-white" onclick="window.location.href='/work/{{ item.d_id }}/';">{{ item.d_name }}</button>
+                    <button class="square rounded-2xl text-3xl text-white" onclick="window.location.href='/work/{{ item.d_id }}/';">{{ item.g_number }}</button>
                   {% endfor %}
-                    <button class="square rounded-2xl text-3xl text-white" onclick="window.location.href='/work/new/';">+</button>
+                  <form action"/work/" method="POST" class="form_fit">
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div class="static buttonfield rounded-2xl text-3xl">{{field}}
+                        </div>
+                    {% endfor %}
                 </div>
               
     </div>

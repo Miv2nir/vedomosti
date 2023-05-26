@@ -22,20 +22,9 @@
     <!--content, forms, etc-->
     <div class="flex-1 text-center justify-center">
         <h1 class="font-sans text-5xl underline font-bold">
-            You're in discipline {{d_name}}!
+            You're in group {{g_number}}!
         </h1>
-        <p class="text-2xl"> Select the group you'd like to work on today.</p>
-            <div class="text-center pt-3 px-5 bg-white">
-                <!--
-                <button class="square rounded-2xl text-3xl text-white">Я</button>
-                  <button class="square rounded-2xl text-3xl text-white">ебал</button>
-                  <button class="square rounded-2xl text-3xl text-white">э</button>
-                  //-->
-                  {% for item in lookup %}
-                    <button class="square rounded-2xl text-3xl text-white" onclick="window.location.href='/work/{{ item.d_id }}/{{item.g_number}}/';">{{ item.g_number}}</button>
-                  {% endfor %}
-                    <button class="square rounded-2xl text-3xl text-white" onclick="window.location.href='/work/{{ d_id }}/new/';">+</button>
-                </div>
+        <p class="text-2xl"> TODO: Table render.</p>
               
     </div>
 </div>

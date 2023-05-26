@@ -27,12 +27,14 @@ class Discipline(models.Model):
         verbose_name_plural = "Disciplines"
 
 
-class Group(models.Model):
+class DisciplineGroup(models.Model):
     g_id = models.UUIDField()
     g_number = models.IntegerField()
-    g_table = models.FilePathField()
     # parent Discipline ID
     d_id = models.UUIDField()
+
+    def __str__(self):
+        return "Group " + str(self.g_number)+" of "+str(self.d_id)
 
     class Meta:
         verbose_name = "Student Group"

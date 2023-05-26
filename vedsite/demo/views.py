@@ -14,8 +14,8 @@ from uuid import uuid4
 
 from django.contrib.auth import authenticate, login, logout
 
-from .models import Teacher, Discipline
-from .forms import AuthForm, RegisterForm, LogOutForm, CredentialsForm, DisciplineForm
+from .models import Teacher, Discipline, DisciplineGroup
+from .forms import AuthForm, RegisterForm, LogOutForm, CredentialsForm, DisciplineForm, GroupForm
 import result_updater.checking_system.ya_contest as ya_contest
 
 
@@ -104,28 +104,52 @@ def work(request):
     return render(request, 'demo/work.html', {'username': request.user, 'lookup': lookup})
 
 
-def discipline(request, d_id):
-    # get discipline
-    d = Discipline.objects.filter(d_id=d_id)[0]
-
-    return render(request, 'demo/group.html', {'username': request.user, 'd_name': d.d_name})
-
-
 def work_new(request):
     if not request.user.is_authenticated:  # user not yet logged in
         return HttpResponseRedirect('/login/')
     if request.method == 'POST':
         form_new = DisciplineForm(request.POST)
         if form_new.is_valid():
-            d = Discipline(d_id=uuid4(), d_name=form_new.cleaned_data['d_name'], d_owner=request.user, d_children="")
+            d = Discipline(d_id=uuid4(), d_name=form_new.cleaned_data['d_name'], d_owner=request.user)
             d.save()
             lookup = Discipline.objects.filter(d_owner=request.user)
             # print(form_new.cleaned_data['d_name'])
-            return render(request, 'demo/work.html', {'username': request.user, 'lookup': lookup})
+            # return render(request, 'demo/work.html', {'username': request.user, 'lookup': lookup})
+            return HttpResponseRedirect('/work/')
     # look up named entries for a logged in user
     lookup = Discipline.objects.filter(d_owner=request.user)
     form_new = DisciplineForm()
     return render(request, 'demo/work_new.html', {'username': request.user, 'lookup': lookup, 'form': form_new})
+
+
+def discipline(request, d_id):
+    # get discipline
+    d = Discipline.objects.filter(d_id=d_id)[0]
+    lookup = DisciplineGroup.objects.filter(d_id=d_id)
+    return render(request, 'demo/group.html', {'username': request.user, 'lookup': lookup, 'd_id': d_id, 'd_name': d.d_name})
+
+
+def discipline_new(request, d_id):
+    if not request.user.is_authenticated:  # user not yet logged in
+        return HttpResponseRedirect('/login/')
+    d = Discipline.objects.filter(d_id=d_id)[0]
+    if request.method == 'POST':
+        form_new = GroupForm(request.POST)
+        if form_new.is_valid():
+            g = DisciplineGroup(g_id=uuid4(), g_number=form_new.cleaned_data['g_number'], d_id=d_id)
+            g.save()
+            lookup = Discipline.objects.filter(d_owner=request.user)
+            # return render(request, 'demo/group.html', {'username': request.user, 'lookup': lookup, 'd_name': d.d_name})
+            return HttpResponseRedirect('/work/'+str(d_id)+'/')
+    lookup = DisciplineGroup.objects.filter(d_id=d_id)
+    form_new = GroupForm()
+    return render(request, 'demo/group_new.html', {'username': request.user, 'lookup': lookup, 'd_name': d.d_name, 'd_id': d_id, 'form': form_new})
+
+
+def group(request, d_id, g_number):
+    if not request.user.is_authenticated:  # user not yet logged in
+        return HttpResponseRedirect('/login/')
+    return render(request, 'demo/table.html', {'username': request.user, 'g_number': g_number})
 
 # something for the following function down below
 

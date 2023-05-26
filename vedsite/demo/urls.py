@@ -21,6 +21,8 @@ urlpatterns = [
     path('work/new/', views.work_new, name='work_new'),
     # dashboard!
     path('work/<uuid:d_id>/', views.discipline, name='discipline'),
+    path('work/<uuid:d_id>/new/', views.discipline_new, name='discipline_new'),
+    path('work/<uuid:d_id>/<int:g_number>/', views.group, name='group'),
     path('login/', views.login_user, name='login'),
     path('register/', views.register_user, name='register'),
     path('logout/', views.logout_user, name='logout'),
