@@ -6,8 +6,8 @@ class Authorizer:
     def authorize(self, credentials):
         raise Exception("Not implemented!")
 
-    def get_token(self):
-        raise Exception("Not implemented!")
+#    def get_token(self):
+#        raise Exception("Not implemented!")
 
     def logout(self):
         raise Exception("Not implemented!")

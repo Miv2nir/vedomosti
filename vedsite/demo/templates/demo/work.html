@@ -20,12 +20,12 @@
             </nav>
         </div>
     <!--content, forms, etc-->
-    <div class="flex-1 text-center justify-center">
+    <div class="relative flex-1 text-center justify-center">
         <h1 class="font-sans text-5xl underline font-bold">
             Welcome, {{username}}!
         </h1>
         <p class="text-2xl"> Select the discipline you'd like to work on today.</p>
-            <div class="text-center pt-3 px-5 bg-white">
+            <div class=" text-center pt-3 px-5 bg-white">
                 <!--
                 <button class="square rounded-2xl text-3xl text-white">Я</button>
                   <button class="square rounded-2xl text-3xl text-white">ебал</button>
@@ -36,8 +36,11 @@
                   {% endfor %}
                     <button class="square rounded-2xl text-3xl text-white" onclick="window.location.href='/work/new/';">+</button>
                 </div>
-              
-    </div>
+                <form action="/work/manage" class="absolute inset-x-0 bottom-0" method="post">
+                    {% csrf_token %}
+                    <button class="button_screen text-center text-2xl h-16 bg-slate-500 text-white font-3xl py-2 rounded-none rounded-t-md border-solid border-x-0 border-t-8 border-b-0 border-slate-500 hover:border-white" type="submit" value="OK">Manage Disciplines</button>
+                </form>
+            </div>
 </div>
 
 </body>

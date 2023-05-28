@@ -13,6 +13,11 @@ ul.errorlist {
     top: 40%;
 }
 
+.button_screen {
+    width: 100%;
+    cursor: pointer;
+}
+
 .square {
     width: 30%;
     height: 30%;
@@ -27,6 +32,7 @@ ul.errorlist {
     border-width: 5px;
     border-color: slategrey;
     border-radius: 1rem;
+    cursor: pointer;
 }
 
 .square:hover {
