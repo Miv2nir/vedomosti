@@ -22,24 +22,22 @@
     <!--content, forms, etc-->
     <div class="relative flex-1 text-center justify-center">
         <h1 class="font-sans text-5xl underline font-bold">
-            Welcome, {{username}}!
+            Edit Disciplines
         </h1>
-        <p class="text-2xl"> Select the discipline you'd like to work on today.</p>
+        <!--p class="text-2xl"> Select the discipline you'd like to work on today.</p-->
             <div class=" text-center pt-3 px-5 bg-white">
-                <!--
-                <button class="square rounded-2xl text-3xl text-white">Я</button>
-                  <button class="square rounded-2xl text-3xl text-white">ебал</button>
-                  <button class="square rounded-2xl text-3xl text-white">э</button>
-                  //-->
-                  {% for item in lookup %}
-                    <button class="square rounded-2xl text-3xl text-white" onclick="window.location.href='/work/{{ item.d_id }}/';">{{ item.d_name }}</button>
-                  {% endfor %}
-                    <button class="square rounded-2xl text-3xl text-white" onclick="window.location.href='/work/new/';">+</button>
-                </div>
-                <div class="absolute inset-x-0 bottom-0">
-                    <button class="button_screen text-center text-2xl h-16 bg-slate-500 text-white font-3xl py-2 rounded-none rounded-t-md border-solid border-x-0 border-t-8 border-b-0 border-slate-500 hover:border-white" onclick="window.location.href='/work/manage/';">Manage Disciplines</button>
-                </div>
+                <form action="/work/manage/" method="post" >
+                    {% csrf_token %}
+                    {% for field in forml %}
+                        {{field}}
+                    {%endfor%}
+                    <div class="absolute inset-x-0 bottom-0 flex">
+                        <button class="button_screen text-center text-2xl h-16 bg-red-500 text-white font-3xl py-2 rounded-none rounded-t-md border-solid border-x-0 border-t-8 border-b-0 border-red-500 hover:border-white" type="button" onclick="window.location.href='/work/';" value="Cancel">Cancel</button>
+                        <button class="button_screen text-center text-2xl h-16 bg-blue-500 text-white font-3xl py-2 rounded-none rounded-t-md border-solid border-x-0 border-t-8 border-b-0 border-blue-500 hover:border-white" type="submit" value="OK">Submit</button>
+                    </div>
+                    </form>
             </div>
+
 </div>
 
 </body>

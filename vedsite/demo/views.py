@@ -15,7 +15,7 @@ from uuid import uuid4
 from django.contrib.auth import authenticate, login, logout
 
 from .models import Teacher, Discipline, DisciplineGroup
-from .forms import AuthForm, RegisterForm, LogOutForm, CredentialsForm, DisciplineForm, GroupForm
+from .forms import AuthForm, RegisterForm, LogOutForm, CredentialsForm, DisciplineForm, GroupForm, DisciplineListForm
 import result_updater.checking_system.ya_contest as ya_contest
 
 
@@ -101,6 +101,9 @@ def work(request):
     # look up named entries for a logged in user
     lookup = Discipline.objects.filter(d_owner=request.user)
 
+    # for item in lookup:
+    # print(item.d_name)
+
     return render(request, 'demo/work.html', {'username': request.user, 'lookup': lookup})
 
 
@@ -120,6 +123,44 @@ def work_new(request):
     lookup = Discipline.objects.filter(d_owner=request.user)
     form_new = DisciplineForm()
     return render(request, 'demo/work_new.html', {'username': request.user, 'lookup': lookup, 'form': form_new})
+
+
+def work_manage(request):
+
+    if not request.user.is_authenticated:  # user not yet logged in
+        return HttpResponseRedirect('/login/')
+    # look up named entries for a logged in user
+    # lookup = Discipline.objects.filter(d_owner=request.user)
+    lookup = Discipline.objects.filter(d_owner=request.user)
+    l = []
+    for i in lookup:
+        l.append(i.d_name)
+
+    if request.method == 'POST':
+        forml = DisciplineListForm(request.POST, d_names=l)
+        if forml.is_valid():
+            for name in l:
+                d = Discipline.objects.filter(d_owner=request.user, d_name=name)[0]
+                print(d.d_name)
+                if forml.cleaned_data['d_og_name_'+name] != d.d_name:
+                    d.d_name = forml.cleaned_data['d_og_name_'+name]
+                    print(forml.cleaned_data['d_og_name_'+name])
+                    d.save()
+                # print(forml.cleaned_data['d_og_name_'+i])
+            return HttpResponseRedirect('/work/')
+
+    # list of forms for each entry in the database
+
+    forml = DisciplineListForm(d_names=l)
+    '''
+    for item in lookup:
+        prefill = {'d_name': item.d_name}
+        form_new = DisciplineListForm(prefill)
+        print(prefill)
+        formlist.append(form_new)
+    '''
+
+    return render(request, 'demo/work_manage.html', {'forml': forml})
 
 
 def discipline(request, d_id):

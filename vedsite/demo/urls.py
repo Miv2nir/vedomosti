@@ -19,6 +19,7 @@ urlpatterns = [
     path('', views.main_page, name='main'),
     path('work/', views.work, name='work'),
     path('work/new/', views.work_new, name='work_new'),
+    path('work/manage/', views.work_manage, name='work_manage'),
     # dashboard!
     path('work/<uuid:d_id>/', views.discipline, name='discipline'),
     path('work/<uuid:d_id>/new/', views.discipline_new, name='discipline_new'),
