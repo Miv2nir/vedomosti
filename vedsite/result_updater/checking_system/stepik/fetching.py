@@ -7,22 +7,12 @@ import pandas as pd
 from ..protocol import CourseUpdateFetcher
 
 
-def stepik_json(stepik_data):
-    with open("stepik.json", "w") as fh:
-        json.dump(stepik_data, fh)
-
-    with open("stepik.json", "r") as fh:
-        stepik_result = json.load(fh)
-    return stepik_result
-
-
 class StepikUpdFetcher(CourseUpdateFetcher):
     _token = None
 
-    def __init__(self, session, token):
+    def __init__(self, token):
         # self._authorizer = Authorizer(APP_ID, auth_token_path)
         CourseUpdateFetcher.__init__(self)
-        self._session = session
         self._token = token
 
 #    def fetch_updates(self):
@@ -37,37 +27,37 @@ class StepikUpdFetcher(CourseUpdateFetcher):
     # def _fetch_contest_results(self, task_id):
 
     def _fetch_contest_results(self, task_id):
-        print("Hi!")
-        headers = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.146 Safari/537.36",
-                   }
+        # print("Hi!")
+        headers = {'Authorization': 'Bearer '+self._token}
         stepik_final = {"full_name": []}
         all_steps = []
         all_attempts = []
         all_users = []
         all_names = []
+        count = 0
+        # names_copy = []
 
         uri = "https://stepik.org/api/steps?lesson={}".format(task_id)
-        uri_json = self._session.get(uri, headers=headers).json()
-        st_unit = stepik_json(uri_json)
+        st_unit = requests.get(uri, headers=headers).json()
         # берём из step (contest) submissions
         for UnitToStep in st_unit["steps"]:
-            print('st_unit["steps"]', UnitToStep)
+            # print('st_unit["steps"]', UnitToStep)
             all_steps.append(UnitToStep["id"])
         for step in all_steps:
-            print('all_steps', step)
+            all_names.clear()
+            # print('all_steps', step)
             urls = "https://stepik.org/api/submissions?order=asc&page=1&status=correct&step={}".format(step)
             page = 2
 
             # пока есть attempts на нескольких страничках
             while True:
-                print('True')
-                s_json = self._session.get(urls, headers=headers).json()
-                st_steps = stepik_json(s_json)
+                # print('True')
+                st_steps = requests.get(urls, headers=headers).json()
 
             # берём из submissions attempt
                 for StepToAttempt in st_steps["submissions"]:
-                    print('True')
-                    all_attempts.append("ids%5B%5D=".format(StepToAttempt["attempt"]) + "&")
+                    # print(StepToAttempt["attempt"])
+                    all_attempts.append("ids%5B%5D={}".format(StepToAttempt["attempt"]) + "&")
 
                 # есть ли submissions
                 if not st_steps["meta"]["has_next"]:
@@ -76,31 +66,40 @@ class StepikUpdFetcher(CourseUpdateFetcher):
                 urls = "https://stepik.org/api/submissions?order=asc&page={}".format(page) + "&status=correct&step={}".format(step)
                 page += 1
 
+            if len(all_attempts) == 0:
+                continue
+
+            print(len(all_attempts))
+
             # создаём url
             urla_json = "https://stepik.org/api/attempts?"
             for num in all_attempts:
-                print('all_attempts', num)
-                urla_json += all_attempts[num]
-
-            a_json = self._session.get(urla_json, headers=headers).json()
-            st_attempts = stepik_json(a_json)
+                # print('all_attempts', num)
+                urla_json += num
+            # print(urla_json)
+            st_attempts = requests.get(urla_json, headers=headers).json()
 
             # достаём user
             for AttemptToUser in st_attempts["attempts"]:
-                print('st_attempts["attempts"]', AttemptToUser)
-                all_users.append("ids%5B%5D=".format(AttemptToUser["user"]) + "&")
+                # print('st_attempts["attempts"]', AttemptToUser)
+                all_users.append("ids%5B%5D={}".format(AttemptToUser["user"]) + "&")
             # создаём url
             urlu_json = "https://stepik.org/api/users?"
             for num in all_users:
-                print('all_users', num)
-                urlu_json += all_users[num]
-            u_json = self._session.get(urla_json, headers=headers).json()
-            st_users = stepik_json(u_json)
-
+                # print('all_users', num)
+                urlu_json += num
+            st_users = requests.get(urlu_json, headers=headers).json()
+            # print(st_users)
             # берём имя user
             for at in st_users["users"]:
-                print('st_users["users"]', at)
+                # print('st_users["users"]', at)
                 all_names.append(at["full_name"])
-
-            stepik_final["full_name"].append({step: all_names})
+                # print(at["full_name"])
+            # names_copy = all_names
+            stepik_final["full_name"].append({str(step): all_names})
+            # print(stepik_final["full_name"][0])
+            all_attempts.clear()
+            all_users.clear()
+            print(len(stepik_final["full_name"][count][str(step)]))
+            count += 1
         return stepik_final
