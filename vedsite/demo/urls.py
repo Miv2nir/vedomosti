@@ -23,6 +23,7 @@ urlpatterns = [
     # dashboard!
     path('work/<uuid:d_id>/', views.discipline, name='discipline'),
     path('work/<uuid:d_id>/new/', views.discipline_new, name='discipline_new'),
+    path('work/<uuid:d_id>/manage/', views.discipline_manage, name='discipline_manage'),
     path('work/<uuid:d_id>/<int:g_number>/', views.group, name='group'),
     path('login/', views.login_user, name='login'),
     path('register/', views.register_user, name='register'),

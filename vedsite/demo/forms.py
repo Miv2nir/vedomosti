@@ -39,4 +39,12 @@ class DisciplineListForm(forms.Form):
 class GroupForm(forms.Form):
     g_number = forms.IntegerField(widget=forms.TextInput(attrs={"class": "square_input"}))
 
+
+class GroupListForm(forms.Form):
+    # d_uuid = forms.UUIDField()
+    def __init__(self, *args, **kwargs):
+        g_numbers = kwargs.pop('g_numbers')
+        super(GroupListForm, self).__init__(*args, **kwargs)
+        for number in g_numbers:
+            self.fields['g_og_number_'+str(number)] = forms.CharField(widget=forms.TextInput(attrs={"class": "square_input"}), initial=number)
 # class DisciplineForm(forms.Form):

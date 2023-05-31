@@ -15,7 +15,7 @@ from uuid import uuid4
 from django.contrib.auth import authenticate, login, logout
 
 from .models import Teacher, Discipline, DisciplineGroup
-from .forms import AuthForm, RegisterForm, LogOutForm, CredentialsForm, DisciplineForm, GroupForm, DisciplineListForm
+from .forms import AuthForm, RegisterForm, LogOutForm, CredentialsForm, DisciplineForm, GroupForm, DisciplineListForm, GroupListForm
 import result_updater.checking_system.ya_contest as ya_contest
 
 
@@ -185,6 +185,33 @@ def discipline_new(request, d_id):
     lookup = DisciplineGroup.objects.filter(d_id=d_id)
     form_new = GroupForm()
     return render(request, 'demo/group_new.html', {'username': request.user, 'lookup': lookup, 'd_name': d.d_name, 'd_id': d_id, 'form': form_new})
+
+
+def discipline_manage(request, d_id):
+
+    if not request.user.is_authenticated:  # user not yet logged in
+        return HttpResponseRedirect('/login/')
+    # look up named entries for a logged in user
+    # lookup = Discipline.objects.filter(d_owner=request.user)
+    lookup = DisciplineGroup.objects.filter(d_id=d_id)
+    l = []
+    for i in lookup:
+        l.append(i.g_number)
+
+    if request.method == 'POST':
+        forml = GroupListForm(request.POST, g_numbers=l)
+        if forml.is_valid():
+            for num in l:
+                g = DisciplineGroup.objects.filter(d_id=d_id, g_number=num)[0]
+                print(g.g_number)
+                if forml.cleaned_data['g_og_number_'+str(num)] != g.g_number:
+                    g.g_number = forml.cleaned_data['g_og_number_'+str(num)]
+                    print(forml.cleaned_data['g_og_number_'+str(num)])
+                    g.save()
+                # print(forml.cleaned_data['d_og_name_'+i])
+            return HttpResponseRedirect('/work/'+str(d_id)+'/')
+    forml = GroupListForm(g_numbers=l)
+    return render(request, 'demo/group_manage.html', {'forml': forml, 'd_id': d_id})
 
 
 def group(request, d_id, g_number):

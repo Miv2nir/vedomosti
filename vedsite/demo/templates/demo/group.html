@@ -20,7 +20,7 @@
             </nav>
         </div>
     <!--content, forms, etc-->
-    <div class="flex-1 text-center justify-center">
+    <div class="relative flex-1 text-center justify-center">
         <h1 class="font-sans text-5xl underline font-bold">
             You're in discipline {{d_name}}!
         </h1>
@@ -35,6 +35,10 @@
                     <button class="square rounded-2xl text-3xl text-white" onclick="window.location.href='/work/{{ item.d_id }}/{{item.g_number}}/';">{{ item.g_number}}</button>
                   {% endfor %}
                     <button class="square rounded-2xl text-3xl text-white" onclick="window.location.href='/work/{{ d_id }}/new/';">+</button>
+                </div>
+                    <div class="absolute inset-x-0 bottom-0">
+                        <button class="button_screen text-center text-2xl h-16 bg-slate-500 text-white font-3xl py-2 rounded-none rounded-t-md border-solid border-x-0 border-t-8 border-b-0 border-slate-500 hover:border-white" onclick="window.location.href='/work/{{ d_id }}/manage/';">Manage Groups</button>
+                    </div>
                 </div>
               
     </div>

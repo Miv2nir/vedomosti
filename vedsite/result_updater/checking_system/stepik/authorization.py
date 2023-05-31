@@ -8,41 +8,32 @@ from .constants import *
 
 
 class StepikAuthorizer(Authorizer):
-    def __init__(self, authorize=True):
-        Authorizer.__init__(self)
+    def init(self, authorize=True):
+        Authorizer.init(self)
         self._session = None
-        # if authorize:
-        #    self.authorize({"email": AUTH_LOGIN,
-        #                    "password": AUTH_PASSWD})
+        self._token = None
+        if authorize:
+            self.authorize({"client_id": AUTH_LOGIN,
+                            "client_secret": AUTH_PASSWD})
 
     def authorize(self, credentials):
 
-        session = req.session()
+        auth = req.auth.HTTPBasicAuth(credentials["client_id"], credentials["client_secret"])
+        response = req.post('https://stepik.org/oauth2/token/',
+                            data={'grant_type': 'client_credentials'},
+                            auth=auth)
+        token = response.json().get('access_token', None)
+        if not token:
+            print('Unable to authorize with provided credentials')
+            exit(1)
+        self._token = token
 
-        headers = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.146 Safari/537.36"}
-        uri1 = "https://stepik.org/api/users/login"
-
-        r = session.get(uri1, headers=headers)
-
-        soup = BeautifulSoup(r.text, "lxml")
-        # csrf_token = soup.find("meta", {"name": "csrftoken"})["content"]
-
-        post_data = {"email": credentials["login"],
-                     "password": credentials["password"],
-                     }
-        r = session.post(uri1, data=post_data, headers=headers)
-        self._session = session
-
-    def get_session(self):
-        if self._session is None:
+    def get_token(self):
+        if self._token is None:
             raise Exception("Perform auth first!")
-        return self._session
+        return self._token
 
     def update_authorization(self):
-        self.authorize({"login": AUTH_LOGIN,
-                        "password": AUTH_PASSWD})
-        return self.get_session()
-
-    # def logout(self):
-        # найти url для logout
-        # req.get(...)
+        self.authorize({"client_id": AUTH_LOGIN,
+                        "client_secret": AUTH_PASSWD})
+        return self.get_token()
