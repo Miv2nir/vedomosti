@@ -33,7 +33,7 @@ class DisciplineListForm(forms.Form):
         d_names = kwargs.pop('d_names')
         super(DisciplineListForm, self).__init__(*args, **kwargs)
         for name in d_names:
-            self.fields['d_og_name_'+name] = forms.CharField(widget=forms.TextInput(attrs={"class": "square_input"}), initial=name)
+            self.fields['d_og_name_'+name] = forms.CharField(widget=forms.TextInput(attrs={"class": "square_input_manage"}), initial=name)
 
 
 class GroupForm(forms.Form):
@@ -46,5 +46,5 @@ class GroupListForm(forms.Form):
         g_numbers = kwargs.pop('g_numbers')
         super(GroupListForm, self).__init__(*args, **kwargs)
         for number in g_numbers:
-            self.fields['g_og_number_'+str(number)] = forms.CharField(widget=forms.TextInput(attrs={"class": "square_input"}), initial=number)
+            self.fields['g_og_number_'+str(number)] = forms.CharField(widget=forms.TextInput(attrs={"class": "square_input_manage"}), initial=number)
 # class DisciplineForm(forms.Form):

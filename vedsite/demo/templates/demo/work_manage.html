@@ -20,13 +20,13 @@
             </nav>
         </div>
     <!--content, forms, etc-->
-    <div class="relative flex-1 text-center justify-center">
+    <div class="relative text-center justify-center">
         <h1 class="font-sans text-5xl underline font-bold">
             Edit Disciplines
         </h1>
         <!--p class="text-2xl"> Select the discipline you'd like to work on today.</p-->
             <div class=" text-center pt-3 px-5 bg-white">
-                <form action="/work/manage/" method="post" >
+                <form action="/work/manage/" method="post" class="min-w-full" >
                     {% csrf_token %}
                     {% for field in forml %}
                         {{field}}

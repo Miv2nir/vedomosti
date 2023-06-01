@@ -336,6 +336,14 @@ select {
   margin-bottom: 0px;
 }
 
+.mb-32 {
+  margin-bottom: 8rem;
+}
+
+.mb-64 {
+  margin-bottom: 16rem;
+}
+
 .block {
   display: block;
 }
@@ -356,6 +364,22 @@ select {
   height: 100vh;
 }
 
+.h-10 {
+  height: 2.5rem;
+}
+
+.h-32 {
+  height: 8rem;
+}
+
+.h-60 {
+  height: 15rem;
+}
+
+.max-h-screen {
+  max-height: 100vh;
+}
+
 .min-h-screen {
   min-height: 100vh;
 }
@@ -372,6 +396,14 @@ select {
   width: 18rem;
 }
 
+.w-screen {
+  width: 100vw;
+}
+
+.min-w-full {
+  min-width: 100%;
+}
+
 .flex-1 {
   flex: 1 1 0%;
 }
@@ -380,6 +412,10 @@ select {
   --tw-scale-x: 1.25;
   --tw-scale-y: 1.25;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.snap-end {
+  scroll-snap-align: end;
 }
 
 .content-center {
@@ -410,6 +446,14 @@ select {
   --tw-space-y-reverse: 0;
   margin-top: calc(1.5rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(1.5rem * var(--tw-space-y-reverse));
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.overflow-y-auto {
+  overflow-y: auto;
 }
 
 .rounded-2xl {
@@ -456,11 +500,6 @@ select {
   border-style: solid;
 }
 
-.border-slate-500 {
-  --tw-border-opacity: 1;
-  border-color: rgb(100 116 139 / var(--tw-border-opacity));
-}
-
 .border-blue-500 {
   --tw-border-opacity: 1;
   border-color: rgb(59 130 246 / var(--tw-border-opacity));
@@ -469,6 +508,11 @@ select {
 .border-red-500 {
   --tw-border-opacity: 1;
   border-color: rgb(239 68 68 / var(--tw-border-opacity));
+}
+
+.border-slate-500 {
+  --tw-border-opacity: 1;
+  border-color: rgb(100 116 139 / var(--tw-border-opacity));
 }
 
 .bg-blue-500 {
@@ -486,6 +530,11 @@ select {
   background-color: rgb(107 114 128 / var(--tw-bg-opacity));
 }
 
+.bg-red-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 68 68 / var(--tw-bg-opacity));
+}
+
 .bg-slate-200 {
   --tw-bg-opacity: 1;
   background-color: rgb(226 232 240 / var(--tw-bg-opacity));
@@ -499,11 +548,6 @@ select {
 .bg-white {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
-}
-
-.bg-red-500 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(239 68 68 / var(--tw-bg-opacity));
 }
 
 .px-4 {
@@ -524,6 +568,11 @@ select {
 .py-2\.5 {
   padding-top: 0.625rem;
   padding-bottom: 0.625rem;
+}
+
+.py-3 {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
 }
 
 .pt-3 {
@@ -560,6 +609,10 @@ select {
 
 .text-5xl {
   font-size: 3rem;
+}
+
+.text-6xl {
+  font-size: 4rem;
 }
 
 .font-bold {
