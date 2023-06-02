@@ -18,6 +18,7 @@ from django.contrib.auth import authenticate, login, logout
 from .models import Teacher, Discipline, DisciplineGroup
 from .forms import AuthForm, RegisterForm, LogOutForm, CredentialsForm, DisciplineForm, GroupForm, DisciplineListForm, GroupListForm
 import result_updater.checking_system.ya_contest as ya_contest
+from .utils import *
 
 
 def index(request):
@@ -171,6 +172,20 @@ def work_manage(request):
     return render(request, 'demo/work_manage.html', {'forml': forml, 'name_uuid': name_uuid})
 
 
+def work_delete(request, d_id):
+    if not request.user.is_authenticated:  # user not yet logged in
+        return HttpResponseRedirect('/login/')
+    if request.method == 'POST':
+        del_discipline(d_id, request.user)
+        return HttpResponseRedirect('/work/manage/')
+    d = Discipline.objects.filter(d_owner=request.user, d_id=d_id)[0]
+    lookup = DisciplineGroup.objects.filter(d_id=d_id)
+    l = []
+    for i in lookup:
+        l.append(i.g_number)
+    return render(request, 'demo/work_delete.html', {'d_id': d_id, 'd_name': d.d_name, 'g_list': l})
+
+
 def discipline(request, d_id):
     # get discipline
     d = Discipline.objects.filter(d_id=d_id)[0]
@@ -220,6 +235,15 @@ def discipline_manage(request, d_id):
             return HttpResponseRedirect('/work/'+str(d_id)+'/')
     forml = GroupListForm(g_numbers=l)
     return render(request, 'demo/group_manage.html', {'forml': forml, 'd_id': d_id})
+
+
+def discipline_delete(request, d_id, g_number):
+    if not request.user.is_authenticated:  # user not yet logged in
+        return HttpResponseRedirect('/login/')
+    if request.method == 'POST':
+        del_group(g_number, request.user)
+        return HttpResponseRedirect('/work/'+str(d_id)+'/manage/')
+    return render(request, 'demo/group_delete.html', {'g_number': g_number, 'd_id': d_id})
 
 
 def group(request, d_id, g_number):

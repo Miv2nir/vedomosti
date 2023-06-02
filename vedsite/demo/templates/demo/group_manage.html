@@ -1,44 +1,62 @@
 {% load static tailwind_tags %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     {% tailwind_css %}
     <link rel="stylesheet" href="{% static 'css/output.css' %}">
     <link rel="stylesheet" href="{% static 'style.css' %}">
 </head>
 
-<body class="font-sans mx-0 my-0">
+<body class="overflow-hidden font-sans h-screen mx-0 my-0">
     <div class="relative min-h-screen flex bg-white">
         <!--sidebar-->
         <div class="text-white items-center top-0 bg-slate-200 w-72 space-y-6">
             {% load static %}
             <img class="w-64 h-64 m-[16px] " src="{% static 'hse_logo.svg' %}" alt="HSE Logo">
             <nav class="text-center font-extrabold space-y-6 text-inherit">
-                <a href="/" class="font-mono text-2xl no-underline block py-2.5 px-4 hover:py-[7px] text-black bg-white border-solid border-y-0 hover:border-y-4 border-x-0 transition-all ease-in-out">Home</a>
-                <a href="/work/" class="font-mono text-2xl no-underline block py-2 px-4 text-black bg-white border-solid  border-y-4 border-x-0">Dashboard</a>
-                <a href="/credentials/" class="font-mono text-2xl no-underline block py-2.5 px-4 hover:py-[7px] text-black bg-white border-solid border-y-0 hover:border-y-4 border-x-0 transition-all ease-in-out">Credentials</a>
+                <a href="/"
+                    class="font-mono text-2xl no-underline block py-2.5 px-4 hover:py-[7px] text-black bg-white border-solid border-y-0 hover:border-y-4 border-x-0 transition-all ease-in-out">Home</a>
+                <a href="/work/"
+                    class="font-mono text-2xl no-underline block py-2 px-4 text-black bg-white border-solid  border-y-4 border-x-0">Dashboard</a>
+                <a href="/credentials/"
+                    class="font-mono text-2xl no-underline block py-2.5 px-4 hover:py-[7px] text-black bg-white border-solid border-y-0 hover:border-y-4 border-x-0 transition-all ease-in-out">Credentials</a>
             </nav>
         </div>
-    <!--content, forms, etc-->
-    <div class="relative flex-1 text-center justify-center">
-        <h1 class="font-sans text-5xl underline font-bold">
-            Edit Groups
-        </h1>
-        <!--p class="text-2xl"> Select the discipline you'd like to work on today.</p-->
-            <div class=" text-center pt-3 px-5 bg-white">
-                <form action="/work/{{ d_id }}/manage/" method="post" >
+        <!--content, forms, etc-->
+        <div class="relative max-h-screen flex-1">
+            <div class="static flex-1 text-center justify-center">
+                <h1 class="font-sans text-5xl underline font-bold">
+                    Edit Groups
+                </h1>
+            </div>
+            <!--p class="text-2xl"> Select the discipline you'd like to work on today.</p-->
+            <div class="justify-end max-h-screen text-center py-3 px-5 bg-white">
+                <form action="/work/{{ d_id }}/manage/" method="post" id="groupedit">
                     {% csrf_token %}
                     {% for field in forml %}
+                    <div class="">
                         {{field}}
-                    {%endfor%}
-                    <div class="absolute inset-x-0 bottom-0 flex">
-                        <button class="button_screen text-center text-2xl h-16 bg-red-500 text-white font-3xl py-2 rounded-none rounded-t-md border-solid border-x-0 border-t-8 border-b-0 border-red-500 hover:border-white" type="button" onclick="window.location.href='/work/{{ d_id }}/';" value="Cancel">Cancel</button>
-                        <button class="button_screen text-center text-2xl h-16 bg-blue-500 text-white font-3xl py-2 rounded-none rounded-t-md border-solid border-x-0 border-t-8 border-b-0 border-blue-500 hover:border-white" type="submit" value="OK">Submit</button>
+                        <button
+                            class="text-center ml-8 text-2xl bg-red-500 hover:bg-red-700 text-white font-bold py-4 px-4 rounded-full"
+                            onclick="window.location.href='/work/{{d_id}}/delete/{{field.value}}';"
+                            type="button" value="OK">Delete</button>
                     </div>
-                    </form>
+                    {%endfor%}
+                    <p class="text-white h-56"></p>
+                </form>
+                <div class="absolute inset-x-0 bottom-0 flex">
+                    <button
+                        class="button_screen text-center text-2xl h-16 bg-red-500 text-white font-3xl py-2 rounded-none rounded-t-md border-solid border-x-0 border-t-8 border-b-0 border-red-500 hover:border-white"
+                        type="button" onclick="window.location.href='/work/{{d_id}}/';" value="Cancel">Go Back</button>
+                    <button
+                        class="button_screen text-center text-2xl h-16 bg-blue-500 text-white font-3xl py-2 rounded-none rounded-t-md border-solid border-x-0 border-t-8 border-b-0 border-blue-500 hover:border-white"
+                        form="groupedit" type="submit" value="OK">Submit</button>
+                </div>
             </div>
 
-</div>
+        </div>
 
 </body>
+
 </html>

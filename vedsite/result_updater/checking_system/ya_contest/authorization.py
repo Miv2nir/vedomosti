@@ -13,12 +13,12 @@ from .constants import *
 
 
 class YaContestAuthorizer(Authorizer):
-    def __init__(self, authorize=True):
-        Authorizer.__init__(self)
+    def init(self, authorize=False):
+        Authorizer.init(self)
         self._session = None
         if authorize:
             self.authorize({"login": AUTH_LOGIN,
-                             "password": AUTH_PASSWD})
+                            "password": AUTH_PASSWD})
 
     def authorize(self, credentials):
 
@@ -84,6 +84,6 @@ class YaContestAuthorizer(Authorizer):
 
 
 if __name__ == "__main__":
-    Authorizer() # .authorize({"login": AUTH_LOGIN,
-                           #  "password": AUTH_PASSWD}
-                           # )
+    Authorizer()  # .authorize({"login": AUTH_LOGIN,
+    #  "password": AUTH_PASSWD}
+    # )

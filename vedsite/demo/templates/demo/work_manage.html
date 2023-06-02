@@ -40,7 +40,7 @@
                         {{field}}
                         <button
                             class="text-center ml-8 text-2xl bg-red-500 hover:bg-red-700 text-white font-bold py-4 px-4 rounded-full"
-                            onclick="window.location.href='/work/delete/{{name_uuid|get_value:field.value}}';"
+                            onclick="window.location.href='/work/delete/{{name_uuid|get_value:field.value}}/';"
                             type="button" value="OK">Delete</button>
                     </div>
                     {%endfor%}
@@ -50,7 +50,7 @@
             <div class="absolute inset-x-0 bottom-0 flex">
                 <button
                     class="button_screen text-center text-2xl h-16 bg-red-500 text-white font-3xl py-2 rounded-none rounded-t-md border-solid border-x-0 border-t-8 border-b-0 border-red-500 hover:border-white"
-                    type="button" onclick="window.location.href='/work/';" value="Cancel">Cancel</button>
+                    type="button" onclick="window.location.href='/work/';" value="Cancel">Go Back</button>
                 <button
                     class="button_screen text-center text-2xl h-16 bg-blue-500 text-white font-3xl py-2 rounded-none rounded-t-md border-solid border-x-0 border-t-8 border-b-0 border-blue-500 hover:border-white"
                     form="disciplineedit" type="submit" value="OK">Submit</button>

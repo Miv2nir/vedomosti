@@ -27,13 +27,9 @@
         <div class="relative max-h-screen flex-1">
             <div class="static flex-1 text-center justify-center">
                 <h1 class="font-sans text-5xl underline font-bold">
-                    You're in discipline {{d_name}}!
+                    Are you sure you want to delete {{d_name}}?
                 </h1>
-                <p class="text-2xl"> Select the group you'd like to work on today.</p>
-                <button
-                    class="text-center scale-125 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full"
-                    onclick="window.location.href='/work/';">Go Back</button>
-                <p class="text-xs"></p>
+                <p class="text-2xl"> Doing so will delete the following groups and their tables:</p>
             </div>
             <div class="overflow-y-auto max-h-screen text-center py-3 px-5 mb-64 bg-white">
                 <!--
@@ -41,23 +37,24 @@
                   <button class="square rounded-2xl text-3xl text-white">ебал</button>
                   <button class="square rounded-2xl text-3xl text-white">э</button>
                   //-->
-                {% for item in lookup %}
-                <button class="square rounded-2xl text-3xl text-white"
-                    onclick="window.location.href='/work/{{ item.d_id }}/{{item.g_number}}/';">{{ item.g_number}}</button>
-                {% endfor %}
-                <button class="square rounded-2xl text-3xl text-white"
-                    onclick="window.location.href='/work/{{ d_id }}/new/';">+</button>
-                <p class="text-white h-[18rem]"></p>
+                <div class="list-disc text-center text-3xl mb-5">
+                    {% for i in g_list %}
+                    <li>Group {{i}} ❌</li>
+                    {%endfor%}
+                </div>
+                <form action="/work/delete/{{d_id}}/" method="post" class="flex-1 justify-center space-x-10 space-y-5">
+                    {% csrf_token %}
+                    <button
+                        class="text-center scale-125 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full"
+                        type="submit" value="OK">Delete!</button>
+                    <button
+                        class="text-center scale-125 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full"
+                        type="button" onclick="window.location.href='/work/{{d_id}}/manage/';" value="Cancel">No, take
+                        me back</button>
+                </form>
             </div>
-            <div class="absolute inset-x-0 bottom-0">
-                <button
-                    class="absolute inset-x-0 bottom-0 snap-end button_screen text-center text-2xl h-16 bg-slate-500 text-white font-3xl py-2 rounded-none rounded-t-md border-solid border-x-0 border-t-8 hover:border-t-[10px] border-b-0 border-white"
-                    onclick="window.location.href='/work/{{ d_id }}/manage/';">Manage Groups
-                </button>
-            </div>
-        </div>
 
-    </div>
+        </div>
     </div>
 
 </body>
