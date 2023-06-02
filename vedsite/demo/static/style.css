@@ -6,29 +6,6 @@ ul.errorlist {
     display: none;
 }
 
-.layout_parent {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    grid-template-rows: repeat(5, 1fr);
-    grid-column-gap: 0px;
-    grid-row-gap: 0px;
-}
-
-.div1 {
-    grid-area: 1 / 1 / 6 / 2;
-}
-
-.div2 {
-    grid-area: 5 / 2 / 6 / 6;
-}
-
-.div3 {
-    grid-area: 2 / 2 / 5 / 6;
-}
-
-.div4 {
-    grid-area: 1 / 2 / 2 / 6;
-}
 
 .square_button {
     position: absolute;
@@ -129,7 +106,6 @@ ul.errorlist {
     box-sizing: border-box;
     background-color: white;
     margin: 0em;
-    padding: 5px 6px;
     border-width: 2px;
     border-style: outset;
     border-color: black;
@@ -140,8 +116,8 @@ ul.errorlist {
     margin-left: 5px;
     margin-right: 5px;
     margin-bottom: 15px;
-    padding-top: max(5%, 10px);
-    padding-bottom: 5%;
+    padding-top: max(2%, 20px);
+    padding-bottom: max(2%, 20px);
     background-color: white;
     text-align: center;
     border-style: solid;

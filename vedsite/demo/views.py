@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.template.defaulttags import register
 from django.http import HttpResponse, HttpResponseRedirect
 from django import forms
 from django.contrib.auth import authenticate
@@ -125,6 +126,11 @@ def work_new(request):
     return render(request, 'demo/work_new.html', {'username': request.user, 'lookup': lookup, 'form': form_new})
 
 
+@register.filter  # for being able to send dicts over to templates basically
+def get_value(dictionary, key):
+    return dictionary.get(key)
+
+
 def work_manage(request):
 
     if not request.user.is_authenticated:  # user not yet logged in
@@ -133,8 +139,10 @@ def work_manage(request):
     # lookup = Discipline.objects.filter(d_owner=request.user)
     lookup = Discipline.objects.filter(d_owner=request.user)
     l = []
+    name_uuid = {}
     for i in lookup:
         l.append(i.d_name)
+        name_uuid[i.d_name] = i.d_id
 
     if request.method == 'POST':
         forml = DisciplineListForm(request.POST, d_names=l)
@@ -160,7 +168,7 @@ def work_manage(request):
         formlist.append(form_new)
     '''
 
-    return render(request, 'demo/work_manage.html', {'forml': forml})
+    return render(request, 'demo/work_manage.html', {'forml': forml, 'name_uuid': name_uuid})
 
 
 def discipline(request, d_id):
