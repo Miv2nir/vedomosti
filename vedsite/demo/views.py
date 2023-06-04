@@ -200,7 +200,7 @@ def discipline_new(request, d_id):
     if request.method == 'POST':
         form_new = GroupForm(request.POST)
         if form_new.is_valid():
-            g = DisciplineGroup(g_id=uuid4(), g_number=form_new.cleaned_data['g_number'], d_id=d_id)
+            g = DisciplineGroup(g_id=uuid4(), g_number=form_new.cleaned_data['g_number'], d_id=d_id, g_owner=request.user)
             g.save()
             lookup = Discipline.objects.filter(d_owner=request.user)
             # return render(request, 'demo/group.html', {'username': request.user, 'lookup': lookup, 'd_name': d.d_name})
@@ -225,7 +225,7 @@ def discipline_manage(request, d_id):
         forml = GroupListForm(request.POST, g_numbers=l)
         if forml.is_valid():
             for num in l:
-                g = DisciplineGroup.objects.filter(d_id=d_id, g_number=num)[0]
+                g = DisciplineGroup.objects.filter(g_owner=request.user, d_id=d_id, g_number=num)[0]
                 print(g.g_number)
                 if forml.cleaned_data['g_og_number_'+str(num)] != g.g_number:
                     g.g_number = forml.cleaned_data['g_og_number_'+str(num)]
@@ -246,7 +246,7 @@ def discipline_delete(request, d_id, g_number):
     return render(request, 'demo/group_delete.html', {'g_number': g_number, 'd_id': d_id})
 
 
-def group(request, d_id, g_number):
+def table(request, d_id, g_number):
     if not request.user.is_authenticated:  # user not yet logged in
         return HttpResponseRedirect('/login/')
     return render(request, 'demo/table.html', {'username': request.user, 'g_number': g_number})

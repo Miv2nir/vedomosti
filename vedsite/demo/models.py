@@ -32,6 +32,7 @@ class DisciplineGroup(models.Model):
     g_number = models.IntegerField()
     # parent Discipline ID
     d_id = models.UUIDField()
+    g_owner = models.CharField(max_length=200)
 
     def __str__(self):
         return "Group " + str(self.g_number)+" of "+str(self.d_id)
