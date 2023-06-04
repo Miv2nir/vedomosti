@@ -10,7 +10,10 @@ import json
 import pathlib
 import pandas as pd
 import os
+import re
+import xlsx2html
 from uuid import uuid4
+from bs4 import BeautifulSoup
 # for logins
 
 from django.contrib.auth import authenticate, login, logout
@@ -249,7 +252,28 @@ def discipline_delete(request, d_id, g_number):
 def table(request, d_id, g_number):
     if not request.user.is_authenticated:  # user not yet logged in
         return HttpResponseRedirect('/login/')
-    return render(request, 'demo/table.html', {'username': request.user, 'g_number': g_number})
+
+    print(pathlib.Path().resolve())
+    # find a table dir, make one if absent
+    p = pathlib.Path('./generated/'+str(d_id)+'/'+str(g_number))  # dir with tables
+    if not p.is_dir():
+        p.mkdir(parents=True, exist_ok=True)
+    # convert xlsx to html, must be named as table.xlsx
+    print(str(p)+'/table.xlsx')
+    t = xlsx2html.xlsx2html(str(p)+'/table.xlsx')
+    t.seek(0)
+    # print(t.read())
+    # get the body out of the html element
+    soup = BeautifulSoup(t.read(), "lxml")
+    # return HttpResponse(soup.body.table)
+    print(len(re.findall("\"*!.*3\"", str(soup.body.table))))
+    # fix column formatting by adding more spacing arguments
+    soup.body.table.colgroup
+    coln = len(re.findall("\"*!.*3\"", str(soup.body.table)))
+    for i in range(coln):
+        soup.body.table.colgroup.insert(3, soup.new_tag('col style="width: 87.36px"'))
+
+    return render(request, 'demo/table.html', {'username': request.user, 'g_number': g_number, 'xlsx': str(soup.body.table)})
 
 # something for the following function down below
 
