@@ -321,6 +321,10 @@ select {
   margin: 16px;
 }
 
+.m-0 {
+  margin: 0px;
+}
+
 .mx-0 {
   margin-left: 0px;
   margin-right: 0px;
@@ -336,16 +340,16 @@ select {
   margin-bottom: 0px;
 }
 
+.mb-5 {
+  margin-bottom: 1.25rem;
+}
+
 .mb-64 {
   margin-bottom: 16rem;
 }
 
 .ml-8 {
   margin-left: 2rem;
-}
-
-.mb-5 {
-  margin-bottom: 1.25rem;
 }
 
 .block {
@@ -376,16 +380,12 @@ select {
   height: 16rem;
 }
 
-.h-\[16rem\] {
-  height: 16rem;
+.h-\[18rem\] {
+  height: 18rem;
 }
 
 .h-screen {
   height: 100vh;
-}
-
-.h-\[18rem\] {
-  height: 18rem;
 }
 
 .max-h-screen {
@@ -408,12 +408,37 @@ select {
   width: 18rem;
 }
 
-.w-10 {
-  width: 2.5rem;
+.w-screen {
+  width: 100vw;
 }
 
-.max-w-xl {
-  max-width: 36rem;
+.w-full {
+  width: 100%;
+}
+
+.w-fit {
+  width: -moz-fit-content;
+  width: fit-content;
+}
+
+.w-\[100vw\] {
+  width: 100vw;
+}
+
+.w-\[80vw\] {
+  width: 80vw;
+}
+
+.w-\[90vw\] {
+  width: 90vw;
+}
+
+.w-\[85vw\] {
+  width: 85vw;
+}
+
+.min-w-full {
+  min-width: 100%;
 }
 
 .flex-1 {
@@ -432,10 +457,6 @@ select {
 
 .list-disc {
   list-style-type: disc;
-}
-
-.flex-col {
-  flex-direction: column;
 }
 
 .content-center {
@@ -476,8 +497,16 @@ select {
   overflow: hidden;
 }
 
+.overflow-x-auto {
+  overflow-x: auto;
+}
+
 .overflow-y-auto {
   overflow-y: auto;
+}
+
+.overflow-x-scroll {
+  overflow-x: scroll;
 }
 
 .rounded-2xl {
