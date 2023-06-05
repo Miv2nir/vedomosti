@@ -126,8 +126,19 @@ ul.errorlist {
     border-radius: 1rem;
 }
 
+.xlsx_parent {
+    max-height: min-content;
+
+
+}
+
 .xlsx {
-    width: inherit
+    resize: vertical;
+    /*min-height: 200px;*/
+    height: 50%;
+    max-width: max-content;
+    max-height: max-content;
+
 }
 
 .form_fit {

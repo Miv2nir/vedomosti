@@ -69,7 +69,7 @@ class StepikUpdFetcher(CourseUpdateFetcher):
             if len(all_attempts) == 0:
                 continue
 
-            print(len(all_attempts))
+            # print(len(all_attempts))
 
             # создаём url
             urla_json = "https://stepik.org/api/attempts?"

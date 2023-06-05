@@ -11,7 +11,7 @@
 <body class="overflow-hidden font-sans h-screen mx-0 my-0">
     <div class="relative min-h-screen flex bg-white">
         <!--sidebar-->
-        <div class="text-white items-center top-0 bg-slate-200 w-72 space-y-6">
+        <div class="text-white items-center top-0 bg-slate-200 w-72 h-screen space-y-6">
             {% load static %}
             <img class="w-64 h-64 m-[16px] " src="{% static 'hse_logo.svg' %}" alt="HSE Logo">
             <nav class="text-center font-extrabold space-y-6 text-inherit">
@@ -24,7 +24,7 @@
             </nav>
         </div>
         <!--content, forms, etc-->
-        <div class="static w-0 max-h-screen flex-1" >
+        <div class="static w-0 overflow-x-scroll max-h-screen flex-1" >
             <div class="static flex-1 text-center justify-center">
             <h1 class="font-sans text-5xl underline font-bold">
                 You're in group {{g_number}}!
@@ -33,10 +33,11 @@
             class="text-center scale-125 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full"
             onclick="window.location.href='/work/{{d_id}}/';" style="margin-bottom: 16px;">Go Back</button>
             <!--p class="text-2xl"> TODO: Table render.</p-->
-                <div class="flex justify-center">
-                    <div class="xlsx overflow-x-scroll">
+                <div class="flex justify-center xlsx_parent">
+                    <div class="xlsx overflow-scroll border-solid border-2 border-black">
                     {{xlsx|safe}} <!--таблицер-->
             </div></div>
+            <p class="text-2xl">Select from where you want to retrieve data:</p>
         </div>
     </div>
 

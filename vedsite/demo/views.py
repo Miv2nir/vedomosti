@@ -11,6 +11,7 @@ import pathlib
 import pandas as pd
 import os
 import re
+import openpyxl
 import xlsx2html
 from uuid import uuid4
 from bs4 import BeautifulSoup
@@ -260,9 +261,14 @@ def table(request, d_id, g_number):
         p.mkdir(parents=True, exist_ok=True)
     # convert xlsx to html, must be named as table.xlsx
     print(str(p)+'/table.xlsx')
-    t = xlsx2html.xlsx2html(str(p)+'/table.xlsx')
+
+    # gen instance of a table with only the first sheet present
+    table_set_first_sheet(str(p))
+    # clear empty rows
+    table_clear_empty_rows(str(p), table_name='tablecache.xlsx')
+    t = xlsx2html.xlsx2html(str(p)+'/tablecache.xlsx')
     t.seek(0)
-    # print(t.read())
+
     # get the body out of the html element
     soup = BeautifulSoup(t.read(), "lxml")
     # return HttpResponse(soup.body.table)
