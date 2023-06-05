@@ -28,7 +28,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     'vedomosti.miv2nir.me',
-    'localhost'
+    'localhost',
+    '127.0.0.1'
 ]
 
 CSRF_TRUSTED_ORIGINS = ['https://vedomosti.miv2nir.me', 'https://*.127.0.0.1']

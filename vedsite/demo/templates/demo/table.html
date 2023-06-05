@@ -24,14 +24,19 @@
             </nav>
         </div>
         <!--content, forms, etc-->
-        <div class="flex-1 text-center justify-center">
+        <div class="static w-0 max-h-screen flex-1" >
+            <div class="static flex-1 text-center justify-center">
             <h1 class="font-sans text-5xl underline font-bold">
                 You're in group {{g_number}}!
             </h1>
+            <button
+            class="text-center scale-125 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full"
+            onclick="window.location.href='/work/{{d_id}}/';" style="margin-bottom: 16px;">Go Back</button>
             <!--p class="text-2xl"> TODO: Table render.</p-->
-            <div class="overflow-x-scroll w-[80vw] text-center m">
-                {{xlsx|safe}}
-            </div>
+                <div class="flex justify-center">
+                    <div class="xlsx overflow-x-scroll">
+                    {{xlsx|safe}} <!--таблицер-->
+            </div></div>
         </div>
     </div>
 

@@ -126,7 +126,9 @@ ul.errorlist {
     border-radius: 1rem;
 }
 
-
+.xlsx {
+    width: inherit
+}
 
 .form_fit {
     display: contents;

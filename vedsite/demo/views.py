@@ -272,13 +272,17 @@ def table(request, d_id, g_number):
     coln = len(re.findall("\"*!.*3\"", str(soup.body.table)))
     # replace style="width with style="min-width as it causes rendering issues
     for i in soup.body.table.colgroup.select('col'):
-        soup.body.table.colgroup.insert(3, soup.new_tag(str(i).replace("width", "min-width")[1:-2]))
-        print(str(i).replace("width", "min-width")[1:-2])
+        # soup.body.table.colgroup.insert(3, soup.new_tag(str(i).replace("width", "min-width")[1:-2]))
+        # print(str(i).replace("width", "min-width")[1:-2])
         i.extract()
+    # regen col styles
+    soup.body.table.colgroup.insert(0, soup.new_tag('col style="min-width: 172.8px"'))
+    soup.body.table.colgroup.insert(1, soup.new_tag('col style="min-width: 172.8px"'))
+    # soup.body.table.colgroup.insert(1, soup.new_tag('col style="min-width: 120px"'))
     for i in range(coln-2):
         soup.body.table.colgroup.insert(3, soup.new_tag('col style="min-width: 87.36px"'))
 
-    return render(request, 'demo/table.html', {'username': request.user, 'g_number': g_number, 'xlsx': str(soup.body.table)})
+    return render(request, 'demo/table.html', {'username': request.user, 'd_id': d_id, 'g_number': g_number, 'xlsx': str(soup.body.table)})
 
 # something for the following function down below
 
