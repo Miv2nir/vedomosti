@@ -1,41 +1,53 @@
 {% load static tailwind_tags %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     {% tailwind_css %}
     <link rel="stylesheet" href="{% static 'css/output.css' %}">
 </head>
 
-<body class="font-sans mx-0 my-0">
+<body class="overflow-y-hidden font-sans mx-0 my-0">
     <div class="relative min-h-screen flex bg-white">
         <!--sidebar-->
         <div class="text-white items-center top-0 bg-slate-200 w-72 space-y-6">
             {% load static %}
             <img class="w-64 h-64 m-[16px] " src="{% static 'hse_logo.svg' %}" alt="HSE Logo">
-            <nav class="text-center font-extrabold space-y-6 text-inherit">
-                <a href="/" class="font-mono text-2xl no-underline block py-2 px-4 text-black bg-white border-solid  border-y-4 border-x-0">Home</a>
-                <a href="/work/" class="font-mono text-2xl no-underline block py-2.5 px-4 hover:py-[7px] text-black bg-white border-solid border-y-0 hover:border-y-4 border-x-0 transition-all ease-in-out">Dashboard</a>
-                <a href="/credentials/" class="font-mono text-2xl no-underline block py-2.5 px-4 hover:py-[7px] text-black bg-white border-solid border-y-0 hover:border-y-4 border-x-0 transition-all ease-in-out">Credentials</a>
-            </nav>
+            <nav class="relative bg-slate-200 z-0 text-center font-extrabold space-y-6 text-inherit">
+                <a href="/"
+                    class="z-10 font-mono text-2xl no-underline block py-2 px-4 text-black bg-white border-solid  border-y-4 border-x-0">Home</a>
+                <a href="/work/"
+                    class="z-10  font-mono text-2xl no-underline block py-2.5 px-4 hover:py-[7px] text-black bg-white border-solid border-y-0 hover:border-y-4 border-x-0 transition-all ease-in-out">Dashboard</a>
+                <a href="/credentials/"
+                    class="z-10 font-mono text-2xl no-underline block py-2.5 px-4 hover:py-[7px] text-black bg-white border-solid border-y-0 hover:border-y-4 border-x-0 transition-all ease-in-out">Credentials</a>
+                    <a href="/logout/"
+                    class="z-10 font-mono text-2xl no-underline block py-2.5 px-4 hover:py-[7px] text-black bg-white border-solid border-y-0 hover:border-y-4 border-x-0 transition-all ease-in-out">Log
+                    Out</a>
+                </nav>
         </div>
-    <!--content, forms, etc-->
-    <div class="flex-1 text-center justify-center">
-        <h1 class="font-sans text-5xl underline font-bold">
-            Welcome, {{username}}!
-        </h1>
-        <p class="text-2xl"> Click on credentials button to access the Yandex.Contest data retrieval page.</p>
-        <div class="flex space-x-10 justify-center">
-            <form action="/credentials/" method="post">
-                {% csrf_token %}
-                <button class="text-center scale-125 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" type="submit" value="OK">Credentials</button>
-            </form>
-            <form action="/logout/" method="post">
-                {% csrf_token %}
-                <button class="text-center scale-125 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full" type="submit" value="OK">Log Out</button>
-            </form>
+        <!--content, forms, etc-->
+        <div class="flex-1 text-center justify-center">
+            <h1 class="font-sans text-5xl underline font-bold">
+                Welcome, {{username}}!
+            </h1>
+            <p class="text-2xl"> Click on credentials button to access the Yandex.Contest data retrieval page.</p>
+            <div class="flex space-x-10 justify-center">
+                <form action="/credentials/" method="post">
+                    {% csrf_token %}
+                    <button
+                        class="text-center scale-125 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+                        type="submit" value="OK">Credentials</button>
+                </form>
+                <form action="/logout/" method="post">
+                    {% csrf_token %}
+                    <button
+                        class="text-center scale-125 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full"
+                        type="submit" value="OK">Log Out</button>
+                </form>
+            </div>
         </div>
     </div>
-</div>
 
 </body>
+
 </html>
