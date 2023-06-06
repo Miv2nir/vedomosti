@@ -282,6 +282,8 @@ def table(request, d_id, g_number):
         # print(str(i).replace("width", "min-width")[1:-2])
         i.extract()
     # regen col styles
+    soup.body.table.attrs['id'] = 'xlsxtable'
+    soup.body.table.attrs['class'] = 'xlsx'
     soup.body.table.colgroup.insert(0, soup.new_tag('col style="min-width: 172.8px"'))
     soup.body.table.colgroup.insert(1, soup.new_tag('col style="min-width: 172.8px"'))
     # soup.body.table.colgroup.insert(1, soup.new_tag('col style="min-width: 120px"'))

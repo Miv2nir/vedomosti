@@ -127,19 +127,18 @@ ul.errorlist {
 }
 
 .xlsx_parent {
-    max-height: min-content;
-
-
+    resize: vertical;
+    max-height: max-content;
+    overflow-x: scroll;
+    height: fit-content;
 }
 
 .xlsx {
-    resize: vertical;
-    /*min-height: 200px;*/
-    height: 50%;
-    max-width: max-content;
-    max-height: max-content;
-
+    width: 100%;
+    overflow: visible;
+    box-sizing: border-box;
 }
+
 
 .form_fit {
     display: contents;
