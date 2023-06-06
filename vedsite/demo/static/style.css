@@ -6,6 +6,11 @@ ul.errorlist {
     display: none;
 }
 
+.login_style {
+    text-align: center;
+    border-radius: 2px;
+
+}
 
 .square_button {
     position: absolute;

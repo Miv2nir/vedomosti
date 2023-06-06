@@ -33,7 +33,7 @@ class StepikUpdFetcher(CourseUpdateFetcher):
         all_steps = []
         all_attempts = []
         all_users = []
-        all_names = []
+        # all_names = []
         count = 0
         # names_copy = []
 
@@ -44,7 +44,7 @@ class StepikUpdFetcher(CourseUpdateFetcher):
             # print('st_unit["steps"]', UnitToStep)
             all_steps.append(UnitToStep["id"])
         for step in all_steps:
-            all_names.clear()
+            # all_names.clear()
             # print('all_steps', step)
             urls = "https://stepik.org/api/submissions?order=asc&page=1&status=correct&step={}".format(step)
             page = 2
@@ -91,15 +91,16 @@ class StepikUpdFetcher(CourseUpdateFetcher):
             st_users = requests.get(urlu_json, headers=headers).json()
             # print(st_users)
             # берём имя user
+            stepik_final["full_name"].append({str(step): []})
             for at in st_users["users"]:
                 # print('st_users["users"]', at)
-                all_names.append(at["full_name"])
+                stepik_final["full_name"][count][str(step)].append(at["full_name"])
                 # print(at["full_name"])
             # names_copy = all_names
-            stepik_final["full_name"].append({str(step): all_names})
             # print(stepik_final["full_name"][0])
             all_attempts.clear()
             all_users.clear()
             print(len(stepik_final["full_name"][count][str(step)]))
+            print(stepik_final["full_name"][count][str(step)])
             count += 1
         return stepik_final

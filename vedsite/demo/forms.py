@@ -2,8 +2,11 @@ from django import forms
 
 
 class AuthForm(forms.Form):
-    login = forms.CharField(label='Login', max_length=100)
-    password = forms.CharField(label='Password', max_length=100, widget=forms.PasswordInput)
+    # login = forms.CharField(label='Login', max_length=100)
+    login = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Login', 'style': 'login_style'}))
+
+    # password = forms.CharField(label='Password', max_length=100, widget=forms.PasswordInput)
+    password = forms.CharField(label='Password', widget=forms.PasswordInput(attrs={'placeholder': 'Password', 'style': 'login_style'}))
 
 
 class RegisterForm(forms.Form):
