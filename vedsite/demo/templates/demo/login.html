@@ -4,6 +4,7 @@
 <head>
     {% tailwind_css %}
     <link rel="stylesheet" href="{% static 'css/output.css' %}">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
 </head>
 <body class="font-sans mx-0 my-0">
     <div class="relative min-h-screen flex bg-white">
@@ -22,9 +23,8 @@
 {%endif%}
 <form class="text-center" action="/login/" method="post">
     {% csrf_token %}
-    <div>
-    <a>{{ form.login }}</a>
-    <p>{{form.password}}</p>
+    <div class="text-center">
+        {{form.as_p}}
     </div>
     <button class="text-center scale-125 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" type="submit" value="OK">Submit</button>
 </form>

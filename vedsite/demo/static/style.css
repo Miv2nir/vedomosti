@@ -6,10 +6,10 @@ ul.errorlist {
     display: none;
 }
 
-.login_style {
+.square_login {
     text-align: center;
-    border-radius: 2px;
-
+    border-radius: 1rem;
+    border-style: solid;
 }
 
 .square_button {
@@ -64,7 +64,7 @@ ul.errorlist {
     display: inline-block;
     text-align: center;
     align-items: flex-start;
-    cursor: default;
+    /*cursor: default;*/
     box-sizing: border-box;
     background-color: white;
     margin: 0em;
