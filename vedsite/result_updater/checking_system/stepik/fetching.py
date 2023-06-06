@@ -98,6 +98,7 @@ class StepikUpdFetcher(CourseUpdateFetcher):
                 # print(at["full_name"])
             # names_copy = all_names
             # print(stepik_final["full_name"][0])
+            stepik_final["full_name"][count][str(step)].sort()
             all_attempts.clear()
             all_users.clear()
             print(len(stepik_final["full_name"][count][str(step)]))
