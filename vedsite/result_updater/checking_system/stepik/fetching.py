@@ -29,7 +29,8 @@ class StepikUpdFetcher(CourseUpdateFetcher):
     def _fetch_contest_results(self, task_id):
         # print("Hi!")
         headers = {'Authorization': 'Bearer '+self._token}
-        stepik_final = {"full_name": []}
+        # stepik_final = {"full_name": [], "checking_system_name": "Stepik", "color": "C6EFCE"}
+        stepik_final = {"full_name": [], "contest_title": "contest {}".format(task_id), "checking_system_name": "Stepik", "color": "C6EFCE"}
         all_steps = []
         all_attempts = []
         all_users = []

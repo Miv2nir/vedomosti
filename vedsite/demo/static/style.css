@@ -136,6 +136,8 @@ ul.errorlist {
     max-height: max-content;
     overflow-x: scroll;
     height: fit-content;
+    margin-left: 20px;
+    margin-right: 20px;
 }
 
 .xlsx {

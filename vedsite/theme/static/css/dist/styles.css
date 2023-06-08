@@ -344,12 +344,13 @@ select {
   margin-bottom: 0px;
 }
 
-.mb-5 {
-  margin-bottom: 1.25rem;
+.mx-36 {
+  margin-left: 9rem;
+  margin-right: 9rem;
 }
 
-.mb-6 {
-  margin-bottom: 1.5rem;
+.mb-5 {
+  margin-bottom: 1.25rem;
 }
 
 .mb-64 {
@@ -362,6 +363,10 @@ select {
 
 .ml-8 {
   margin-left: 2rem;
+}
+
+.mb-10 {
+  margin-bottom: 2.5rem;
 }
 
 .block {
@@ -414,10 +419,6 @@ select {
 
 .w-64 {
   width: 16rem;
-}
-
-.w-7\/12 {
-  width: 58.333333%;
 }
 
 .w-72 {
@@ -601,10 +602,6 @@ select {
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
 
-.p-24 {
-  padding: 6rem;
-}
-
 .px-4 {
   padding-left: 1rem;
   padding-right: 1rem;
@@ -639,20 +636,8 @@ select {
   padding-top: 0.75rem;
 }
 
-.pb-24 {
-  padding-bottom: 6rem;
-}
-
-.pb-6 {
-  padding-bottom: 1.5rem;
-}
-
 .text-center {
   text-align: center;
-}
-
-.text-right {
-  text-align: right;
 }
 
 .font-mono {

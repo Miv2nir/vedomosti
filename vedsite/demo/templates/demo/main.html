@@ -26,13 +26,22 @@
                 </nav>
         </div>
         <!--content, forms, etc-->
-        <div class="flex-1 text-center justify-center">
+        <div class="relative max-h-screen flex-1">
+            <div class="static flex-1 text-center justify-center">
             <h1 class="font-sans text-5xl underline font-bold">
                 Welcome, {{username}}!
             </h1>
-            <p class="text-2xl"> Click on credentials button to access the Yandex.Contest data retrieval page.</p>
-            <div class="flex space-x-10 justify-center">
-                <form action="/credentials/" method="post">
+            <p class="text-2xl"> Select which action would you like to do.</p>
+        </div>
+        <div class="overflow-y-auto max-h-screen text-center py-3 px-5 mb-64 bg-white">
+                <button class="square rounded-2xl text-3xl text-white"
+                onclick="window.location.href='/work/';">Disciplines</button>
+                <button class="square rounded-2xl text-3xl text-white"
+                onclick="window.location.href='/credentials/';">Credentials</button>
+                <button class="square rounded-2xl text-3xl text-white"
+                onclick="window.location.href='/account/';">Account Settings</button>
+            <p class="text-white h-60"></p>
+                <!--form action="/credentials/" method="post">
                     {% csrf_token %}
                     <button
                         class="text-center scale-125 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
@@ -43,7 +52,7 @@
                     <button
                         class="text-center scale-125 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full"
                         type="submit" value="OK">Log Out</button>
-                </form>
+                </form-->
             </div>
         </div>
     </div>

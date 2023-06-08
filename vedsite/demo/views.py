@@ -100,6 +100,17 @@ def main_page(request):
     return render(request, 'demo/main.html', {'username': request.user, 'form_logout': form_logout})
 
 
+def account(request):
+    if not request.user.is_authenticated:  # user not yet logged in
+        return HttpResponseRedirect('/login/')
+    if request.method == 'POST':  # look for the imports
+        form = AuthForm(request.POST)
+        if form.is_valid():
+            user_login = form.cleaned_data['login']
+            user_password = form.cleaned_data['password']
+            user = authenticate(username=user_login, password=user_password)
+
+
 def work(request):
 
     if not request.user.is_authenticated:  # user not yet logged in

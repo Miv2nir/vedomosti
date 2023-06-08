@@ -3,7 +3,7 @@ from django import forms
 
 class AuthForm(forms.Form):
     # login = forms.CharField(label='Login', max_length=100)
-    login = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Login', 'class': 'square_login'}))
+    login = forms.CharField(label='Login', widget=forms.TextInput(attrs={'placeholder': 'Login', 'class': 'square_login'}))
 
     # password = forms.CharField(label='Password', max_length=100, widget=forms.PasswordInput)
     password = forms.CharField(label='Password', widget=forms.PasswordInput(attrs={'placeholder': 'Password', 'class': 'square_login'}))
@@ -15,9 +15,20 @@ class AuthForm(forms.Form):
 
 
 class RegisterForm(forms.Form):
-    email = forms.CharField(label='Email', max_length=100, widget=forms.EmailInput)
-    login = forms.CharField(label='Login', max_length=100)
-    password = forms.CharField(label='Password', max_length=100, widget=forms.PasswordInput)
+    email = forms.CharField(label='Email', widget=forms.EmailInput(attrs={'placeholder': 'Email', 'class': 'square_login'}))
+    login = forms.CharField(label='Login', widget=forms.TextInput(attrs={'placeholder': 'Login', 'class': 'square_login'}))
+    password = forms.CharField(label='Password', widget=forms.PasswordInput(attrs={'placeholder': 'Password', 'class': 'square_login'}))
+    password_verify = forms.CharField(label='Repeat Password', widget=forms.PasswordInput(attrs={'placeholder': 'Repeat Password', 'class': 'square_login'}))
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for key, field in self.fields.items():
+            field.label = ""
+
+
+class NewAuthForm(forms.Form):
+    password_old = forms.CharField(label='Old Password', max_length=100, widget=forms.PasswordInput)
+    password = forms.CharField(label='New Password', max_length=100, widget=forms.PasswordInput)
     password_verify = forms.CharField(label='Repeat Password', max_length=100, widget=forms.PasswordInput)
 
 
@@ -26,9 +37,14 @@ class LogOutForm(forms.Form):
 
 
 class CredentialsForm(forms.Form):
-    ya_login = forms.CharField(label='Yandex.Contest Login', max_length=100)
-    ya_password = forms.CharField(label='Yandex.Contest Password', max_length=100, widget=forms.PasswordInput)
-    ya_id = forms.IntegerField(label='Yandex.Contest Contest ID')
+    ya_login = forms.CharField(label='Yandex.Contest Login', widget=forms.TextInput(attrs={'placeholder': 'Ya.Contest Login', 'class': 'square_login'}))
+    ya_password = forms.CharField(label='Yandex.Contest Password', widget=forms.PasswordInput(attrs={'placeholder': 'Ya.Contest Password', 'class': 'square_login'}))
+    ya_id = forms.IntegerField(widget=forms.TextInput(attrs={'placeholder': 'Contest ID', 'class': 'square_login'}))
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for key, field in self.fields.items():
+            field.label = ""
 
 
 class DisciplineForm(forms.Form):
