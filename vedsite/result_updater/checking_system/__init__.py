@@ -1,28 +1,28 @@
 from .ya_contest.authorization import YaContestAuthorizer
-from .hse_online.authorization import HSEOnlineAuthorizer
+# from .hse_online.authorization import HSEOnlineAuthorizer
 # from hse_lms.authorization import Authorizer as HSELMSAuthorizer
 
 from .ya_contest.fetching import YaContestUpdFetcher
-from .hse_online.fetching import HSEOnlineTaskUpdFetcher
+# from .hse_online.fetching import HSEOnlineTaskUpdFetcher
 
 from .ya_contest.task_updating import YaContestUpdater
-from .hse_online.task_updating import HSEOnlineTaskUpdater
+# from .hse_online.task_updating import HSEOnlineTaskUpdater
 
 
 _authorizers = {
     "yandex.contest": YaContestAuthorizer,
-    "hse.online": HSEOnlineAuthorizer,
+    # "hse.online": HSEOnlineAuthorizer,
     # "hse.lms": HSELMSAuthorizer
 }
 
 _fetchers = {
     "yandex.contest": YaContestUpdFetcher,
-    "hse.online": HSEOnlineTaskUpdFetcher,
+    # "hse.online": HSEOnlineTaskUpdFetcher,
 }
 
 _task_updaters = {
     "yandex.contest": YaContestUpdater,
-    "hse.online": HSEOnlineTaskUpdater,
+    # "hse.online": HSEOnlineTaskUpdater,
 }
 
 

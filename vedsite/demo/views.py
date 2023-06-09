@@ -303,7 +303,10 @@ def table(request, d_id, g_number):
     for i in range(coln-2):
         soup.body.table.colgroup.insert(3, soup.new_tag('col style="min-width: 87.36px"'))
 
-    return render(request, 'demo/table.html', {'username': request.user, 'd_id': d_id, 'g_number': g_number, 'xlsx': str(soup.body.table)})
+    l = student_name_interface(d_id, g_number, mode='all')
+    print(l)
+
+    return render(request, 'demo/table.html', {'username': request.user, 'd_id': d_id, 'g_number': g_number, 'xlsx': str(soup.body.table), 'l': l})
 
 
 def student(request, d_id, g_number):
@@ -318,6 +321,7 @@ def student(request, d_id, g_number):
             st.d_id = d_id
             st.g_number = g_number
             st.save()
+
         return render(request, 'demo/students.html', {'username': request.user, 'form': form, 'd_id': d_id, 'g_number': g_number})
     form = StudentForm()
     return render(request, 'demo/students.html', {'username': request.user, 'form': form, 'd_id': d_id, 'g_number': g_number})

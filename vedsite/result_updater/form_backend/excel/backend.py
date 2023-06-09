@@ -32,13 +32,13 @@ def CreateTable(data, names):
     checking_system.value = data["checking_system_name"]
     checking_system.alignment = Alignment(horizontal="center", vertical="center")
     checking_system.fill = PatternFill("solid", fgColor=data["color"])
-    checking_system.font = Font(bold=True, name='Sans', size=16)
+    checking_system.font = Font(bold=True, name='Sans', size=24)
 
     ws.merge_cells(start_row=2, start_column=3, end_row=2, end_column=len(data["full_name"]) + 3)
     contest_name = ws['C2']
     contest_name.value = data["contest_title"]
     contest_name.alignment = Alignment(horizontal="center", vertical="center")
-    contest_name.font = Font(bold=False, name='Sans', size=14)
+    contest_name.font = Font(bold=False, name='Sans', size=22)
 
     steps = []
     for step in data["full_name"]:
@@ -48,13 +48,13 @@ def CreateTable(data, names):
     # print(len(steps))
 
     for step in range(3, len(data["full_name"]) + 3):
-        ws.cell(column=step, row=3, value=steps[step - 3])
+        ws.cell(column=step, row=3, value=steps[step - 3], font=20)
     ws.cell(column=len(data["full_name"]) + 3, row=3).value = "Score"
     ws.cell(column=len(data["full_name"]) + 3, row=3).alignment = Alignment(horizontal="center", vertical="center")
 
     for i in range(len(names)):
         for j in range(len(data["full_name"])):
-            ws.cell(column=j + 3, row=i + 4, value=0)
+            ws.cell(column=j + 3, row=i + 4, value=0, font=20)
 
     # for name in data["full_name"]:
     # print(len(name))
@@ -80,7 +80,7 @@ def CreateTable(data, names):
                 # print(n, len(names))
                 r += 1
                 if names[n] == stud[cnt]:
-                    ws.cell(column=col, row=r, value=1)
+                    ws.cell(column=col, row=r, value=1, font=20)
                     cnt += 1
             col += 1
             r = 3
