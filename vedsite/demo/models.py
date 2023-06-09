@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 
 
 class Credentials(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user_name = models.CharField(max_length=200)
     ya_session = models.FilePathField(blank=True)
     stepik_key = models.CharField(max_length=2000, blank=True)
 

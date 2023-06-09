@@ -346,10 +346,15 @@ def student(request, d_id, g_number):
     form = StudentForm()
     return render(request, 'demo/students.html', {'username': request.user, 'form': form, 'd_id': d_id, 'g_number': g_number})
 
+
+def imports(request, d_id, g_number):
+    if not request.user.is_authenticated:  # user not yet logged in
+        return HttpResponseRedirect('/login/')
+
 # something for the following function down below
 
 
-def credentials(request):
+def account(request):
     if not request.user.is_authenticated:  # user not yet logged in
         return HttpResponseRedirect('/login/')
     user = User.objects.get(username=request.user)
@@ -360,12 +365,18 @@ def credentials(request):
             if user.check_password(form.cleaned_data['password_old']) and form.cleaned_data['password'] == form.cleaned_data['password']:
                 user.set_password(form.cleaned_data['password'])
                 user.save()
-                return render(request, 'demo/credentials.html', {'username': request.user, 'form': form, 'change_success': True})
+                return render(request, 'demo/account.html', {'username': request.user, 'form': form, 'change_success': True})
             else:
-                return render(request, 'demo/credentials.html', {'username': request.user, 'form': form, 'change_fail': True})
+                return render(request, 'demo/account.html', {'username': request.user, 'form': form, 'change_fail': True})
 
     form = NewPasswordForm()
-    return render(request, 'demo/credentials.html', {'username': request.user, 'form': form})
+    return render(request, 'demo/account.html', {'username': request.user, 'form': form})
+
+
+def credentials(request):
+    if not request.user.is_authenticated:  # user not yet logged in
+        return HttpResponseRedirect('/login/')
+    creds = Credentials.objects.filter(user=request.user)
 
 
 '''

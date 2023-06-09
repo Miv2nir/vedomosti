@@ -32,7 +32,7 @@ class YaContestUpdFetcher(CourseUpdateFetcher):
         return paths
 
     def _fetch_contest_results(self, task_id):
-        uri = "https://admin.contest.yandex.ru/api/contests/{}/submission?filter=".format(task_id)
+        # uri = "https://admin.contest.yandex.ru/api/contests/{}/submission?filter=".format(task_id)
         # uri = "https://admin.contest.yandex.ru/api/contest/{}/monitor/csv".format(task_id)
 
         # uri = "https://contest.yandex.ru/admin/contest-submissions/get-standings-csv?contestId={}".format(contest_id)
@@ -43,20 +43,19 @@ class YaContestUpdFetcher(CourseUpdateFetcher):
         #     "Accept": "text/static,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9"
         # }
         # r = req.get(uri, headers=headers)
-        r = self._session.get(uri)
         # print(r.content)
         # input("c?")
         # print(r.history)
         # input('c?')
-        if r.status_code != 200:
-            print(uri)
-            print(r.text)
-            # raise Exception("Failed to open!")
-            # input("Failed to fetch contest {}. Continue?".format(task_id))
+        # if r.status_code != 200:
+        #    print(uri)
+        #    print(r.text)
+        # raise Exception("Failed to open!")
+        # input("Failed to fetch contest {}. Continue?".format(task_id))
 
         # input("c?")
-        open(self._name_template.format(task_id),
-             'wb').write(r.content)
+        # open(self._name_template.format(task_id),
+        #     'wb').write(r.content)
         # return self._name_template.format(task_id)
         # yandex_df = pd.DataFrame(r.content)
         # print(r.content)
@@ -68,16 +67,31 @@ class YaContestUpdFetcher(CourseUpdateFetcher):
         yandex_final = {"full_name": [], "contest_title": "contest {}".format(task_id), "checking_system_name": "Yandex",
                         "color": "FFEB9C"}
         all_tasks = {}
+
+        uri = "https://admin.contest.yandex.ru/api/contests/{}/submission?offset=0&limit=30&sortBy=id" \
+            "&sortDirection=DESC&searchBy=&searchField=&filter=verdict%3DOK".format(task_id)
+        r = self._session.get(uri)
         j = json.loads(r.text)
-        print(len(j['items']))
-        for item in j['items']:
-            all_tasks.setdefault(item["problem"]["title"], [])
-            if item["verdict"] == "OK":
+        page = j["count"] // 30
+        print(page)
+        print(j["count"], j['total'])
+        for i in range(page + 1):
+            uri = "https://admin.contest.yandex.ru/api/contests/{}".format(task_id)+"/submission?offset={}&limit=30&sortBy=id".format(i) + "&sortDirection=DESC&searchBy=&searchField=&filter=verdict%3DOK"
+            r = self._session.get(uri)
+            j = json.loads(r.text)
+            # print(uri)
+            # print(j)
+            # j = чему он там равен но с этой ссылкой
+            for item in j["items"]:
+                print(item["problem"]["title"])
+                all_tasks.setdefault(item["problem"]["title"], [])
+                # if item["verdict"] == "OK":
                 all_tasks[item["problem"]["title"]].append(item["participant"]["participantName"])
+            # print(len(all_tasks))
+
         # print(all_tasks)
         for task in all_tasks:
             yandex_final["full_name"].append(dict().fromkeys(task, all_tasks[task]))
-        # print(yandex_final)
         return yandex_final
 
 
