@@ -6,7 +6,7 @@ from openpyxl import load_workbook
 from openpyxl.styles import Border, Side, PatternFill, Font, Alignment
 
 
-def CreateTable(data, names):
+def CreateTable(names, path, data={}):
     # C6EFCE - stepik
     # FFEB9C - yandex
 
@@ -54,7 +54,8 @@ def CreateTable(data, names):
 
     for i in range(len(names)):
         for j in range(len(data["full_name"])):
-            ws.cell(column=j + 3, row=i + 4, value=0, font=20)
+            ws.cell(column=j + 3, row=i + 4, value=0)
+            ws.cell(column=j + 3, row=i + 4).font = Font(bold=False, name='Sans', size=20)
 
     # for name in data["full_name"]:
     # print(len(name))
@@ -80,7 +81,8 @@ def CreateTable(data, names):
                 # print(n, len(names))
                 r += 1
                 if names[n] == stud[cnt]:
-                    ws.cell(column=col, row=r, value=1, font=20)
+                    ws.cell(column=col, row=r, value=1)
+                    ws.cell(column=col, row=r).font = Font(bold=False, name='Sans', size=20)
                     cnt += 1
             col += 1
             r = 3
@@ -93,10 +95,11 @@ def CreateTable(data, names):
         # print(row)
         # print(score)
         ws.cell(row=rows + 4, column=len(data["full_name"]) + 3, value=score)
+        ws.cell(row=rows + 4, column=len(data["full_name"]) + 3).font = Font(bold=False, name='Sans', size=20)
 
-    wb.save(contest_name.value + '.xlsx')
+        wb.save(str(path) + '/table.xlsx')
 
-    return 0
+        return 0
 
 
 class ExcelBackend(FormBackendProtocol):

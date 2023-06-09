@@ -24,6 +24,8 @@ from .forms import *
 import result_updater.checking_system.ya_contest as ya_contest
 from .utils import *
 
+from result_updater.form_backend.excel.backend import CreateTable
+
 
 def index(request):
     latest_question_list = Question.objects.order_by('-pub_date')[:5]
@@ -220,6 +222,7 @@ def discipline_new(request, d_id):
             g = DisciplineGroup(g_id=uuid4(), g_number=form_new.cleaned_data['g_number'], d_id=d_id, g_owner=request.user)
             g.save()
             lookup = Discipline.objects.filter(d_owner=request.user)
+
             # return render(request, 'demo/group.html', {'username': request.user, 'lookup': lookup, 'd_name': d.d_name})
             return HttpResponseRedirect('/work/'+str(d_id)+'/')
     lookup = DisciplineGroup.objects.filter(d_id=d_id)
@@ -275,8 +278,28 @@ def table(request, d_id, g_number):
     # convert xlsx to html, must be named as table.xlsx
     print(str(p)+'/table.xlsx')
 
+    # get user groups
+    l = student_name_interface(d_id, g_number, mode='all')
+    print(l)
+
     # gen instance of a table with only the first sheet present
-    table_set_first_sheet(str(p))
+    try:
+        table_set_first_sheet(str(p))
+    except FileNotFoundError:
+        wb = openpyxl.Workbook()
+        wb.save(str(p)+'/table.xlsx')
+        table_set_first_sheet(str(p))
+
+    # see if the table is empty
+    wb = openpyxl.load_workbook(str(p)+'/table.xlsx')
+    sheet = wb.active
+    for cells in sheet.rows:
+        for cell in cells:
+            print(cell.value)
+
+    if [cell.value for cells in sheet.rows for cell in cells] == []:
+        return render(request, 'demo/table.html', {'username': request.user, 'd_id': d_id, 'g_number': g_number, 'emptyTable': True, 'l': l})
+
     # clear empty rows
     table_clear_empty_rows(str(p), table_name='tablecache.xlsx')
     t = xlsx2html.xlsx2html(str(p)+'/tablecache.xlsx')
@@ -303,10 +326,7 @@ def table(request, d_id, g_number):
     for i in range(coln-2):
         soup.body.table.colgroup.insert(3, soup.new_tag('col style="min-width: 87.36px"'))
 
-    l = student_name_interface(d_id, g_number, mode='all')
-    print(l)
-
-    return render(request, 'demo/table.html', {'username': request.user, 'd_id': d_id, 'g_number': g_number, 'xlsx': str(soup.body.table), 'l': l})
+    return render(request, 'demo/table.html', {'username': request.user, 'd_id': d_id, 'g_number': g_number, 'emptyTable': False, 'xlsx': str(soup.body.table), 'l': l})
 
 
 def student(request, d_id, g_number):

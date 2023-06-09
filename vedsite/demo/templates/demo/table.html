@@ -36,12 +36,16 @@
                     class="text-center scale-125 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full"
                     onclick="window.location.href='/work/{{d_id}}/';">Go Back</button>
                 <p class="text-2xl"></p>
+                {%if emptyTable%}
+                <p class="text-2xl">Import data to generate a table.</p>
+                {% else %}
                 <div class="flex justify-center">
                     <div class="xlsx_parent text-2xl border-solid border-2 border-black mb-10" id="xlsxdiv">
                         {{xlsx|safe}}
                         <!--таблицер-->
                     </div>
                 </div>
+                {% endif %}
                 <div class="flex space-x-20  justify-center mb-7">
                     <button
                         class="text-center scale-125 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full">Import
@@ -60,27 +64,29 @@
                     Student names that are to be updated in the table:
                 </h1>
                 <button
-                class="text-center scale-125 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mb-7 rounded-full"
-                onclick="window.location.href='/work/{{d_id}}/{{g_number}}/students/';">Edit Students
-            </button>
+                    class="text-center scale-125 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mb-7 rounded-full"
+                    onclick="window.location.href='/work/{{d_id}}/{{g_number}}/students/';">Edit Students
+                </button>
+                {% if l%}
                 <div class="flex justify-center">
-                <table class="border-spacing-0 border-solid border-4 text-2xl">
-                    <tr>
-                        <th class="border-solid border-[1px] min-w-[170px]">Display Name</th>
-                        <th class="border-solid border-[1px] min-w-[170px]">Yandex Name</th>
-                        <th class="border-solid border-[1px] min-w-[170px]">Stepik Name</th>
-                    </tr>
-                    {% for st in l %}
-                    <tr>
-                        {% for name in st%}
-                        <td class="border-solid border-[1px] min-w-[170px]">
-                            {{name}}
-                        </td>
-                        {%endfor%}
-                    </tr>
-                    {% endfor %}
-                </table>
-            </div>
+                    <table class="border-spacing-0 border-solid border-4 text-2xl">
+                        <tr>
+                            <th class="border-solid border-[1px] min-w-[170px]">Display Name</th>
+                            <th class="border-solid border-[1px] min-w-[170px]">Yandex Name</th>
+                            <th class="border-solid border-[1px] min-w-[170px]">Stepik Name</th>
+                        </tr>
+                        {% for st in l %}
+                        <tr>
+                            {% for name in st%}
+                            <td class="border-solid border-[1px] min-w-[170px]">
+                                {{name}}
+                            </td>
+                            {%endfor%}
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+                {% endif%}
             </div>
         </div>
         <script>
