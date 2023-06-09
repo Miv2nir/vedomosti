@@ -59,14 +59,18 @@ class YaContestUpdFetcher(CourseUpdateFetcher):
              'wb').write(r.content)
         # return self._name_template.format(task_id)
         # yandex_df = pd.DataFrame(r.content)
-        print(r.text)
-        pd.DataFrame(json.loads(r.content)).to_csv("result.csv", index=False)
-        print(yandex_df.columns.values.tolist())
+        # print(r.content)
+        # for i in r.content:
+        #    print(i)
+        # pd.DataFrame(json.loads(r.content)).to_csv("result.csv", index=False)
+        # print(yandex_df.columns.values.tolist())
         # return r.content  # file generation is unnecessary
         yandex_final = {"full_name": [], "contest_title": "contest {}".format(task_id), "checking_system_name": "Yandex",
                         "color": "FFEB9C"}
         all_tasks = {}
-        for item in r.content["items"]:
+        j = json.loads(r.text)
+        print(len(j['items']))
+        for item in j['items']:
             all_tasks.setdefault(item["problem"]["title"], [])
             if item["verdict"] == "OK":
                 all_tasks[item["problem"]["title"]].append(item["participant"]["participantName"])

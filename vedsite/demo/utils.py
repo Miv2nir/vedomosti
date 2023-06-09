@@ -1,4 +1,4 @@
-from .models import Teacher, Discipline, DisciplineGroup
+from .models import *
 import openpyxl
 
 # for dir deletion
@@ -45,3 +45,43 @@ def table_clear_empty_rows(table_dir, table_name='table.xlsx', table_result_name
     for i in range(len(index)):
         ws.delete_rows(idx=index[i]+1-i)
     wb.save(table_dir+'/'+table_result_name)
+
+# leftovers from a deprecated ye olde yandex puller
+
+
+def _digest(j,  contest_id, teacher_name=''):
+    jout = {'contest_ID': contest_id,
+            'contest_students': {}}
+    for i in range(len(j['items'])):  # add students
+        student_name = j['items'][i]['participant']['participantName']
+        # print(jout['contest_students'])
+        if not (student_name in jout['contest_students']):  # check if an entry for a student is already present
+            student = {
+                j['items'][i]['problem']['title']: (j['items'][i]['verdict'] == 'OK')}
+            jout['contest_students'][student_name] = student
+        else:
+            # print('hi')
+            task_title = j['items'][i]['problem']['title']
+            try:  # task titles match
+                jout['contest_students'][student_name][task_title] = ((j['items'][i]['verdict'] == 'OK') or (jout['contest_students'][student_name][task_title]))  # logical or on whether the test has been passed or not before
+            except KeyError:
+                jout['contest_students'][student_name][task_title] = (j['items'][i]['verdict'] == 'OK')
+    return jout
+
+
+def _json_to_csv(json_string, filename, pth):
+    df = pd.read_json(json_string)
+    df.to_csv(pth+'/static/generated/'+filename)
+
+
+def student_name_interface(d_id, g_number, mode=''):
+    l = []
+    grps = Student.objects.filter(d_id=d_id, g_number=g_number)
+    for i in grps:
+        if not mode:
+            l.append(i.s_display_name)
+        if mode == 'yandex':
+            l.append(i.s_ya_name)
+        if mode == 'stepik':
+            l.append(i.s_stepik_name)
+    return l

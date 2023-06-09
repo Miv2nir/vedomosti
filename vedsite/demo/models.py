@@ -1,6 +1,13 @@
 from django.db import models
 from django.utils import timezone
 import datetime
+from django.contrib.auth.models import User
+
+
+class Credentials(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    ya_session = models.FilePathField(blank=True)
+    stepik_key = models.CharField(max_length=2000, blank=True)
 
 
 class Teacher(models.Model):
@@ -42,13 +49,19 @@ class DisciplineGroup(models.Model):
         verbose_name_plural = "Student Groups"
 
 
-class Students(models.Model):
+class Student(models.Model):
     s_id = models.UUIDField()
-    s_name = models.CharField(max_length=200)
-    s_email = models.CharField(max_length=2000)
+    s_owner = models.CharField(max_length=200)
+    s_display_name = models.CharField(max_length=200, blank=True)
+    s_email = models.CharField(max_length=2000, blank=True)
+    s_ya_name = models.CharField(max_length=200, blank=True)
+    s_stepik_name = models.CharField(max_length=200, blank=True)
     # parent Group ID
-    g_id = models.UUIDField()
+    d_id = models.UUIDField()
     g_number = models.IntegerField()
+
+    def __str__(self):
+        return "Student " + str(self.s_display_name)+" of "+str(self.g_number)+' of '+str(self.s_owner)
 
 
 '''

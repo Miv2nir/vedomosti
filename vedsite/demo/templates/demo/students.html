@@ -1,17 +1,18 @@
 {% load static tailwind_tags %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     {% tailwind_css %}
     <link rel="stylesheet" href="{% static 'css/output.css' %}">
     <link rel="stylesheet" href="{% static 'style.css' %}">
 </head>
+
 <body class="font-sans mx-0 my-0">
     <div class="relative min-h-screen flex bg-white">
         <!--sidebar-->
-        <div class="text-white items-center top-0 bg-slate-200 w-72 space-y-6">
+        <div class="text-white items-center top-0 bg-slate-200 w-72 h-screen space-y-6">
             {% load static %}
-
             <img class="w-64 h-64 m-[16px] " src="{% static 'hse_logo.svg' %}" alt="HSE Logo">
             <nav class="relative text-center font-extrabold space-y-6 text-inherit">
                 <a href="/"
@@ -19,26 +20,26 @@
                 <a href="/work/"
                     class="z-10 font-mono text-2xl no-underline block py-2.5 px-4 hover:py-[7px] text-black bg-white border-solid border-y-0 hover:border-y-4 border-x-0 transition-all ease-in-out">Dashboard</a>
                 <a href="/credentials/"
-                    class="z-10 font-mono text-2xl no-underline block py-2 px-4 text-black bg-white border-solid  border-y-4 border-x-0">Credentials</a>
+                    class="z-10 font-mono text-2xl no-underline block py-2.5 px-4 hover:py-[7px] text-black bg-white border-solid border-y-0 hover:border-y-4 border-x-0 transition-all ease-in-out">Credentials</a>
                 <a href="/logout/"
                     class="z-10 font-mono text-2xl no-underline block py-2.5 px-4 hover:py-[7px] text-black bg-white border-solid border-y-0 hover:border-y-4 border-x-0 transition-all ease-in-out">Log
                     Out</a>
-                </nav>
-            </div>
-            <!--content, forms, etc-->
-            <div class="flex-1 text-center justify-center">
-<h1 class="font-sans text-5xl underline font-bold">Change your account password:</h1>
-{%if change_fail%}
-<p class="text-2xl text-green-500">Sorry, passwords did not match.</p>
-{%endif%}
-{%if change_success%}
-<p class="text-2xl text-green-500">Password Change Successful!</p>
-{%endif%}
-<form class="text-center" action="/credentials/" method="post">
-    {% csrf_token %}
-    <div class="text-center">
-        {{form.as_p}}
-    </div>
-    <button class="text-center scale-125 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" type="submit" value="OK">Submit</button>
-</form>
+            </nav>
+        </div>
+        <!--content, forms, etc-->
+        <div class="static w-0 overflow-x-auto max-h-screen flex-1">
+            <div class="static flex-1 text-center justify-center">
+                <h1 class="font-sans text-5xl underline font-bold">You're in group 211!</h1>
+                <button
+                class="text-center scale-125 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full"
+                onclick="window.location.href='/work/{{d_id}}/{{g_number}}/';">Go Back</button>
+                <form class="text-center" action="/work/{{d_id}}/{{g_number}}/students/" method="post">
+                    {% csrf_token %}
+                    <div class="text-center">
+                        {{form.as_p}}
+                    </div>
+                    <button
+                        class="text-center scale-125 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+                        type="submit" value="OK">Submit</button>
+                </form>
 </body>

@@ -1,4 +1,5 @@
 from django import forms
+from .models import Student
 
 
 class AuthForm(forms.Form):
@@ -26,10 +27,15 @@ class RegisterForm(forms.Form):
             field.label = ""
 
 
-class NewAuthForm(forms.Form):
-    password_old = forms.CharField(label='Old Password', max_length=100, widget=forms.PasswordInput)
-    password = forms.CharField(label='New Password', max_length=100, widget=forms.PasswordInput)
-    password_verify = forms.CharField(label='Repeat Password', max_length=100, widget=forms.PasswordInput)
+class NewPasswordForm(forms.Form):
+    password_old = forms.CharField(label='Old Password', max_length=100, widget=forms.PasswordInput(attrs={'placeholder': 'Old Password', 'class': 'square_login'}))
+    password = forms.CharField(label='New Password', max_length=100, widget=forms.PasswordInput(attrs={'placeholder': 'Password', 'class': 'square_login'}))
+    password_verify = forms.CharField(label='Repeat Password', max_length=100, widget=forms.PasswordInput(attrs={'placeholder': 'Repeat Password', 'class': 'square_login'}))
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for key, field in self.fields.items():
+            field.label = ""
 
 
 class LogOutForm(forms.Form):
@@ -71,4 +77,19 @@ class GroupListForm(forms.Form):
         super(GroupListForm, self).__init__(*args, **kwargs)
         for number in g_numbers:
             self.fields['g_og_number_'+str(number)] = forms.CharField(widget=forms.TextInput(attrs={"class": "square_input_manage"}), initial=number)
+
+
+class StudentForm(forms.ModelForm):
+    class Meta:
+        model = Student
+        exclude = ["s_id", "s_owner", "d_id", "g_number"]
+
+    def __init__(self, *args, **kwargs):
+        super(StudentForm, self).__init__(*args, **kwargs)
+        self.fields['s_ya_name'].widget.attrs.update({'placeholder': 'Ya.Contest Student Name', 'class': 'square_login'})
+        self.fields['s_stepik_name'].widget.attrs.update({'placeholder': 'Stepik Student Name', 'class': 'square_login'})
+        self.fields['s_display_name'].widget.attrs.update({'placeholder': 'Student Display Name', 'class': 'square_login'})
+        self.fields['s_email'].widget.attrs.update({'placeholder': 'Student Email', 'class': 'square_login'})
+        for key, field in self.fields.items():
+            field.label = ""
 # class DisciplineForm(forms.Form):

@@ -19,8 +19,8 @@ from bs4 import BeautifulSoup
 
 from django.contrib.auth import authenticate, login, logout
 
-from .models import Teacher, Discipline, DisciplineGroup
-from .forms import AuthForm, RegisterForm, LogOutForm, CredentialsForm, DisciplineForm, GroupForm, DisciplineListForm, GroupListForm
+from .models import *
+from .forms import *
 import result_updater.checking_system.ya_contest as ya_contest
 from .utils import *
 
@@ -202,6 +202,8 @@ def work_delete(request, d_id):
 
 
 def discipline(request, d_id):
+    if not request.user.is_authenticated:  # user not yet logged in
+        return HttpResponseRedirect('/login/')
     # get discipline
     d = Discipline.objects.filter(d_id=d_id)[0]
     lookup = DisciplineGroup.objects.filter(d_id=d_id)
@@ -303,34 +305,46 @@ def table(request, d_id, g_number):
 
     return render(request, 'demo/table.html', {'username': request.user, 'd_id': d_id, 'g_number': g_number, 'xlsx': str(soup.body.table)})
 
+
+def student(request, d_id, g_number):
+    if not request.user.is_authenticated:  # user not yet logged in
+        return HttpResponseRedirect('/login/')
+    if request.method == 'POST':
+        form = StudentForm(request.POST)
+        if form.is_valid():
+            st = form.save(commit=False)
+            st.s_id = uuid4()
+            st.s_owner = request.user
+            st.d_id = d_id
+            st.g_number = g_number
+            st.save()
+        return render(request, 'demo/students.html', {'username': request.user, 'form': form, 'd_id': d_id, 'g_number': g_number})
+    form = StudentForm()
+    return render(request, 'demo/students.html', {'username': request.user, 'form': form, 'd_id': d_id, 'g_number': g_number})
+
 # something for the following function down below
 
 
-def _digest(j,  contest_id, teacher_name=''):
-    jout = {'contest_ID': contest_id,
-            'contest_students': {}}
-    for i in range(len(j['items'])):  # add students
-        student_name = j['items'][i]['participant']['participantName']
-        # print(jout['contest_students'])
-        if not (student_name in jout['contest_students']):  # check if an entry for a student is already present
-            student = {
-                j['items'][i]['problem']['title']: (j['items'][i]['verdict'] == 'OK')}
-            jout['contest_students'][student_name] = student
-        else:
-            # print('hi')
-            task_title = j['items'][i]['problem']['title']
-            try:  # task titles match
-                jout['contest_students'][student_name][task_title] = ((j['items'][i]['verdict'] == 'OK') or (jout['contest_students'][student_name][task_title]))  # logical or on whether the test has been passed or not before
-            except KeyError:
-                jout['contest_students'][student_name][task_title] = (j['items'][i]['verdict'] == 'OK')
-    return jout
+def credentials(request):
+    if not request.user.is_authenticated:  # user not yet logged in
+        return HttpResponseRedirect('/login/')
+    user = User.objects.get(username=request.user)
+    if request.method == 'POST':
+        # validate retrieved password
+        form = NewPasswordForm(request.POST)
+        if form.is_valid():
+            if user.check_password(form.cleaned_data['password_old']) and form.cleaned_data['password'] == form.cleaned_data['password']:
+                user.set_password(form.cleaned_data['password'])
+                user.save()
+                return render(request, 'demo/credentials.html', {'username': request.user, 'form': form, 'change_success': True})
+            else:
+                return render(request, 'demo/credentials.html', {'username': request.user, 'form': form, 'change_fail': True})
+
+    form = NewPasswordForm()
+    return render(request, 'demo/credentials.html', {'username': request.user, 'form': form})
 
 
-def _json_to_csv(json_string, filename, pth):
-    df = pd.read_json(json_string)
-    df.to_csv(pth+'/static/generated/'+filename)
-
-
+'''
 def credentials(request):  # /credentials page
     print("Retrieving some stuff")
     if request.method == 'POST':
@@ -389,3 +403,4 @@ def credentials(request):  # /credentials page
     else:
         form_credentials = CredentialsForm()
         return render(request, 'demo/credentials.html', {'form_credentials': form_credentials, 'changes_saved': False, 'relog_needed': False})
+'''
