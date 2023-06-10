@@ -79,6 +79,19 @@ class GroupListForm(forms.Form):
             self.fields['g_og_number_'+str(number)] = forms.CharField(widget=forms.TextInput(attrs={"class": "square_input_manage"}), initial=number)
 
 
+class StudentForm(forms.Form):
+    s_display_name = forms.CharField(label='Login', widget=forms.TextInput(attrs={'placeholder': 'Student Display Name', 'class': 'square_login'}))
+    s_email = forms.CharField(label='Login', widget=forms.TextInput(attrs={'placeholder': 'Student Email', 'class': 'square_login'}))
+    s_ya_name = forms.CharField(label='Login', widget=forms.TextInput(attrs={'placeholder': 'Ya.Contest Student Name', 'class': 'square_login'}))
+    s_stepik_name = forms.CharField(label='Login', widget=forms.TextInput(attrs={'placeholder': 'Stepik Student Name', 'class': 'square_login'}))
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for key, field in self.fields.items():
+            field.label = ""
+
+
+'''
 class StudentForm(forms.ModelForm):
     class Meta:
         model = Student
@@ -92,4 +105,14 @@ class StudentForm(forms.ModelForm):
         self.fields['s_email'].widget.attrs.update({'placeholder': 'Student Email', 'class': 'square_login'})
         for key, field in self.fields.items():
             field.label = ""
+'''
+
+
+class StudentListForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        s_numbers = kwargs.pop('s_numbers')
+        super(StudentListForm, self).__init__(*args, **kwargs)
+        for number in s_numbers:
+            self.fields['']
+
 # class DisciplineForm(forms.Form):

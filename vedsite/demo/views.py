@@ -332,18 +332,29 @@ def table(request, d_id, g_number):
 def student(request, d_id, g_number):
     if not request.user.is_authenticated:  # user not yet logged in
         return HttpResponseRedirect('/login/')
+    l = student_name_interface(d_id, g_number, mode='all')
+    print(l)
     if request.method == 'POST':
         form = StudentForm(request.POST)
         if form.is_valid():
-            st = form.save(commit=False)
-            st.s_id = uuid4()
-            st.s_owner = request.user
-            st.d_id = d_id
-            st.g_number = g_number
+            if form.cleaned_data['s_email']:
+                lookup = Student.objects.filter(s_email=form.cleaned_data['s_email'], d_id=d_id, g_number=g_number)
+            else:
+                lookup = Student.objects.filter(s_display_name=form.cleaned_data['s_display_name'], d_id=d_id, g_number=g_number)
+            if not lookup:
+                st = Student(s_id=uuid4(), s_owner=request.user, d_id=d_id, g_number=g_number)
+            else:
+                st = lookup[0]
+                # st.s_id = lookup[0].s_id
+            st.s_display_name = form.cleaned_data['s_display_name']
+            st.s_email = form.cleaned_data['s_email']
+            st.s_ya_name = form.cleaned_data['s_ya_name']
+            st.s_stepik_name = form.cleaned_data['s_stepik_name']
             st.save()
 
         return render(request, 'demo/students.html', {'username': request.user, 'form': form, 'd_id': d_id, 'g_number': g_number})
     form = StudentForm()
+
     return render(request, 'demo/students.html', {'username': request.user, 'form': form, 'd_id': d_id, 'g_number': g_number})
 
 
