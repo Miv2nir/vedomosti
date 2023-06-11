@@ -296,11 +296,11 @@ def table(request, d_id, g_number):
     if not p.is_dir():
         p.mkdir(parents=True, exist_ok=True)
     # convert xlsx to html, must be named as table.xlsx
-    print(str(p)+'/table.xlsx')
+    # print(str(p)+'/table.xlsx')
 
     # get user groups
     l = student_name_interface(d_id, g_number, mode='all')
-    print(l)
+    # print(l)
 
     # gen instance of a table with only the first sheet present
     try:
@@ -313,9 +313,9 @@ def table(request, d_id, g_number):
     # see if the table is empty
     wb = openpyxl.load_workbook(str(p)+'/table.xlsx')
     sheet = wb.active
-    for cells in sheet.rows:
-        for cell in cells:
-            print(cell.value)
+    # for cells in sheet.rows:
+    #    for cell in cells:
+    #        #print(cell.value)
 
     if [cell.value for cells in sheet.rows for cell in cells] == []:
         return render(request, 'demo/table.html', {'username': request.user, 'd_id': d_id, 'g_number': g_number, 'emptyTable': True, 'l': l})
@@ -341,9 +341,9 @@ def table(request, d_id, g_number):
     soup.body.table.attrs['id'] = 'xlsxtable'
     soup.body.table.attrs['class'] = 'xlsx'
     soup.body.table.colgroup.insert(0, soup.new_tag('col style="min-width: 172.8px"'))
-    soup.body.table.colgroup.insert(1, soup.new_tag('col style="min-width: 172.8px"'))
+    # soup.body.table.colgroup.insert(1, soup.new_tag('col style="min-width: 172.8px"'))
     # soup.body.table.colgroup.insert(1, soup.new_tag('col style="min-width: 120px"'))
-    for i in range(coln-2):
+    for i in range(coln-1):
         soup.body.table.colgroup.insert(3, soup.new_tag('col style="min-width: 87.36px"'))
 
     return render(request, 'demo/table.html', {'username': request.user, 'd_id': d_id, 'g_number': g_number, 'emptyTable': False, 'xlsx': str(soup.body.table), 'l': l})
@@ -356,8 +356,8 @@ def imports(request, d_id, g_number):
         print('post')
         form = PlatformSelectForm(request.POST)
         if form.is_valid():
-            print(form.cleaned_data['p_choice'])
-            print(form.cleaned_data['p_id'])
+            # print(form.cleaned_data['p_choice'])
+            # print(form.cleaned_data['p_id'])
             user = request.user
             source = form.cleaned_data['p_choice']
             task_id = form.cleaned_data['p_id']

@@ -93,7 +93,7 @@ class YaContestUpdFetcher(CourseUpdateFetcher):
         # print('тут')
         all_tasks = dict(sorted(all_tasks.items()))
         for task in all_tasks:
-            print(task, sep=' ')
+            # print(task, sep=' ')
             d = {}
             d[task] = sorted(set(all_tasks[task]))
             # yandex_final["full_name"].append(dict().fromkeys(task, sorted(set(all_tasks[task]))))

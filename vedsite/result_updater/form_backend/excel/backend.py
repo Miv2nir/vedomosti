@@ -81,25 +81,25 @@ def CreateTable(names, path, data={}):
     # col += 1
     # r = 3
     # print('здесь')
-
-    cnt = 0
+    print(len(names), 'cheburek')
     for name in data["full_name"]:
         for stud in name.values():
             if len(stud) == 0:
                 continue
-            for n in range(len(names)):
-                # print(n, len(names))
-                r += 1
-                if names[n] == stud[cnt]:
-                    ws.cell(column=col, row=r, value=1)
-                    ws.cell(column=col, row=r).font = Font(bold=False, name='Sans', size=20)
-                    ws.cell(column=col, row=r).border = Border(top=thins, bottom=thins,
-                                                               right=thins, left=thins)
+            for cnt in range(len(stud)):
+                for n in range(len(names)):
+                    # print(n, len(names))
+                    r += 1
+                    # print(r)
+                    if names[n] == stud[cnt]:
+                        ws.cell(column=col, row=r, value=1)
+                        ws.cell(column=col, row=r).font = Font(bold=False, name='Sans', size=20)
+                        ws.cell(column=col, row=r).border = Border(top=thins, bottom=thins,
+                                                                   right=thins, left=thins)
+                        break
 
-                    cnt += 1
+                r = 3
             col += 1
-            r = 3
-            cnt = 0
 
     for rows in range(len(names)):
         score = 0

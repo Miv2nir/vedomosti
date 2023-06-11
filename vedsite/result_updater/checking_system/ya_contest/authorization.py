@@ -74,8 +74,8 @@ class YaContestAuthorizer(Authorizer):
 
     def logout(self):
         req = self._session.get("https://passport.yandex.ru/passport?mode=embeddedauth&action=logout")
-        print(req.history)
-        print(req.status_code)
+        # print(req.history)
+        # print(req.status_code)
 
     # def _get_auth_cookies(self):
     #     raise Exception("Replace cookies!")
