@@ -1,22 +1,33 @@
 from .models import *
 import openpyxl
+import shutil
 
 # for dir deletion
 
 
-def del_group(g_number, user):
+def del_group(g_number, d_id, user):
     print("wow deleting", g_number)
-    g = DisciplineGroup.objects.filter(g_owner=user, g_number=g_number)
+    g = DisciplineGroup.objects.filter(g_owner=user, d_id=d_id, g_number=g_number)
+    # delete all belonging students
+    s = Student.objects.filter(g_owner=user, d_id=d_id, g_number=g_number)
+    for i in s:
+        s.delete()
     for o in g:
+        shutil.rmtree('generated/'+str(d_id)+'/'+str(g_number))
         o.delete()
 
 
 def del_discipline(d_id, user):
     g = DisciplineGroup.objects.filter(g_owner=user, d_id=d_id)
+    # delete all belonging students
+    s = Student.objects.filter(s_owner=user, d_id=d_id)
+    for i in s:
+        s.delete()
     for o in g:
         print("wow deleting", o.g_number)
         o.delete()
     print("wow deleting", d_id)
+    shutil.rmtree('generated/'+str(d_id))
     d = Discipline.objects.filter(d_owner=user, d_id=d_id)
     d.delete()
 

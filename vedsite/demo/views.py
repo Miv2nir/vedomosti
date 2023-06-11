@@ -11,6 +11,7 @@ import pathlib
 import pandas as pd
 import os
 import re
+import shutil
 import openpyxl
 import xlsx2html
 from uuid import uuid4
@@ -261,7 +262,8 @@ def discipline_delete(request, d_id, g_number):
     if not request.user.is_authenticated:  # user not yet logged in
         return HttpResponseRedirect('/login/')
     if request.method == 'POST':
-        del_group(g_number, request.user)
+        del_group(g_number, d_id, request.user)
+
         return HttpResponseRedirect('/work/'+str(d_id)+'/manage/')
     return render(request, 'demo/group_delete.html', {'g_number': g_number, 'd_id': d_id})
 
