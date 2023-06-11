@@ -90,7 +90,8 @@ class YaContestUpdFetcher(CourseUpdateFetcher):
                 all_tasks[item["problem"]["title"]].append(item["participant"]["participantName"])
             # print(len(all_tasks))
            # print(all_tasks.keys())
-        print('тут')
+        # print('тут')
+        all_tasks = dict(sorted(all_tasks.items()))
         for task in all_tasks:
             print(task, sep=' ')
             d = {}

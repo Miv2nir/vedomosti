@@ -3,7 +3,12 @@ import openpyxl
 import shutil
 import pickle
 import requests
-
+import pathlib
+import result_updater.form_backend.excel.backend as bck
+import result_updater.checking_system.ya_contest.authorization as yauth
+import result_updater.checking_system.ya_contest.fetching as yfetch
+import result_updater.checking_system.stepik.authorization as sauth
+import result_updater.checking_system.stepik.fetching as sfetch
 # for dir deletion
 
 
@@ -113,3 +118,32 @@ def read_cookies(cookie_dir, user):
         session = requests.Session()
         session.cookies = pickle.load(f)
     return session
+
+
+def fill_table(user, source, task_id, d_id, g_number, table_path):
+    # retrieve names
+    l = []
+    lookup = Student.objects.filter(s_owner=user, d_id=d_id, g_number=g_number)
+    if source == 'yandex':
+        for o in lookup:
+            if o.s_ya_name:
+                l.append(o.s_ya_name)
+        yuser = yauth.YaContestAuthorizer(authorize=False)
+        # yuser._session = requests.Session()
+        yuser._session = read_cookies(pathlib.Path('./generated/cookies'), user.username)
+        ywork = yfetch.YaContestUpdFetcher(yuser.get_session(), task_id, "automatic", '{}.json')
+        j = ywork._fetch_contest_results(task_id)
+    elif source == 'stepik':
+        for o in lookup:
+            if o.s_stepik_name:
+                l.append(o.s_stepik_name)
+        # get things from db
+        creds = Credentials.objects.filter(user_name=user)[0]
+        d = {"client_id": creds.stepik_id, "client_secret": creds.stepik_key}
+        suser = sauth.StepikAuthorizer()
+        suser.authorize(d)
+        sf = sfetch.StepikUpdFetcher(suser.get_token())
+        j = sf._fetch_contest_results(task_id)
+    # set thing in the table
+
+    bck.CreateTable(l, table_path, data=j)

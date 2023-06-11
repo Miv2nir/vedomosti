@@ -45,7 +45,9 @@ class LogOutForm(forms.Form):
 class CredentialsForm(forms.Form):
     ya_l = forms.CharField(required=False, label='Yandex.Contest1', widget=forms.TextInput(attrs={'placeholder': 'Yandex.Contest Login', 'class': 'square_login', 'autocomplete': "new-password"}))
     ya_p = forms.CharField(required=False, label='Yandex.Contest2', widget=forms.PasswordInput(attrs={'placeholder': 'Yandex.Contest Password', 'class': 'square_login', 'autocomplete': "new-password"}))
-    step_api = forms.CharField(required=False, label='Stepik API Key', widget=forms.TextInput(attrs={'placeholder': 'Stepik API Key', 'class': 'square_login', 'autocomplete': "new-password"}))
+
+    step_id = forms.CharField(required=False, label='Stepik Client ID', widget=forms.TextInput(attrs={'placeholder': 'Stepik Client ID', 'class': 'square_login', 'autocomplete': "new-password"}))
+    step_api = forms.CharField(required=False, label='Stepik Client Secret', widget=forms.PasswordInput(attrs={'placeholder': 'Stepik Client Secret', 'class': 'square_login', 'autocomplete': "new-password"}))
     # ya_id = forms.IntegerField(widget=forms.TextInput(attrs={'placeholder': 'Contest ID', 'class': 'square_login'}))
 
     def __init__(self, *args, **kwargs):
@@ -82,14 +84,19 @@ class GroupListForm(forms.Form):
 
 class StudentForm(forms.Form):
     s_display_name = forms.CharField(label='Login', widget=forms.TextInput(attrs={'placeholder': 'Student Display Name', 'class': 'square_login'}))
-    s_email = forms.CharField(label='Login', widget=forms.TextInput(attrs={'placeholder': 'Student Email', 'class': 'square_login'}))
-    s_ya_name = forms.CharField(label='Login', widget=forms.TextInput(attrs={'placeholder': 'Ya.Contest Student Name', 'class': 'square_login'}))
-    s_stepik_name = forms.CharField(label='Login', widget=forms.TextInput(attrs={'placeholder': 'Stepik Student Name', 'class': 'square_login'}))
+    s_email = forms.CharField(required=False, label='Login', widget=forms.TextInput(attrs={'placeholder': 'Student Email', 'class': 'square_login'}))
+    s_ya_name = forms.CharField(required=False, label='Login', widget=forms.TextInput(attrs={'placeholder': 'Ya.Contest Student Name', 'class': 'square_login'}))
+    s_stepik_name = forms.CharField(required=False, label='Login', widget=forms.TextInput(attrs={'placeholder': 'Stepik Student Name', 'class': 'square_login'}))
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for key, field in self.fields.items():
             field.label = ""
+
+
+class PlatformSelectForm(forms.Form):
+    p_choice = forms.ChoiceField(widget=forms.Select(attrs={'class': 'square_login_big'}), choices=[('yandex', 'Yandex Contest'), ('stepik', 'Stepik')])
+    p_id = forms.CharField(label='TID', widget=forms.TextInput(attrs={'placeholder': 'Enter Contest ID', 'class': 'square_login'}))
 
 
 '''

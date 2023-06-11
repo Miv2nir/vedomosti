@@ -349,6 +349,26 @@ def table(request, d_id, g_number):
     return render(request, 'demo/table.html', {'username': request.user, 'd_id': d_id, 'g_number': g_number, 'emptyTable': False, 'xlsx': str(soup.body.table), 'l': l})
 
 
+def imports(request, d_id, g_number):
+    if not request.user.is_authenticated:  # user not yet logged in
+        return HttpResponseRedirect('/login/')
+    if request.method == 'POST':
+        print('post')
+        form = PlatformSelectForm(request.POST)
+        if form.is_valid():
+            print(form.cleaned_data['p_choice'])
+            print(form.cleaned_data['p_id'])
+            user = request.user
+            source = form.cleaned_data['p_choice']
+            task_id = form.cleaned_data['p_id']
+            table_path = pathlib.Path('./generated/'+str(d_id)+'/'+str(g_number))
+
+            fill_table(user, source, task_id, d_id=d_id, g_number=g_number, table_path=table_path)
+            return HttpResponseRedirect('/work/'+str(d_id)+'/'+str(g_number)+'/')
+    form = PlatformSelectForm()
+    return render(request, 'demo/imports.html', {'username': request.user, 'd_id': d_id, 'g_number': g_number, 'form': form})
+
+
 def student(request, d_id, g_number):
     if not request.user.is_authenticated:  # user not yet logged in
         return HttpResponseRedirect('/login/')
@@ -372,17 +392,10 @@ def student(request, d_id, g_number):
             st.s_stepik_name = form.cleaned_data['s_stepik_name']
             st.save()
 
-        return render(request, 'demo/students.html', {'username': request.user, 'form': form, 'd_id': d_id, 'g_number': g_number, 'l': l})
+        return HttpResponseRedirect('/work/'+str(d_id)+'/'+str(g_number)+'/students/')
     form = StudentForm()
 
     return render(request, 'demo/students.html', {'username': request.user, 'form': form, 'd_id': d_id, 'g_number': g_number, 'l': l})
-
-
-def imports(request, d_id, g_number):
-    if not request.user.is_authenticated:  # user not yet logged in
-        return HttpResponseRedirect('/login/')
-
-# something for the following function down below
 
 
 def account(request):
@@ -426,7 +439,8 @@ def credentials(request):
                 yuser.authorize(d)
                 write_cookies(p, request.user.username, yuser._session)
                 creds.ya_login = form.cleaned_data['ya_l']
-            if form.cleaned_data['step_api']:
+            if form.cleaned_data['step_api'] and form.cleaned_data['step_id']:
+                creds.stepik_id = form.cleaned_data['step_id']
                 creds.stepik_key = form.cleaned_data['step_api']
             creds.save()
 
@@ -435,12 +449,13 @@ def credentials(request):
 
     form = CredentialsForm()
     isLookup = False
-    ya_l = step_api = ''
+    ya_l = step_api = step_id = ''
     if lookup:
         isLookup = True
         ya_l = lookup[0].ya_login
-        step_api = lookup[0].stepik_key[:5]+'...'
-    return render(request, 'demo/credentials.html', {'user': request.user, 'form': form, 'isLookup': isLookup, 'isStepik': step_api != '...', 'ya_l': ya_l, 'step_api': step_api})
+        step_id = lookup[0].stepik_id
+        step_api = lookup[0].stepik_id[:5]+'...'
+    return render(request, 'demo/credentials.html', {'user': request.user, 'form': form, 'isLookup': isLookup, 'isStepik': step_api != '...', 'ya_l': ya_l, 'step_id': step_id, 'step_api': step_api})
 
 
 '''

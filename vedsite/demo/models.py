@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 class Credentials(models.Model):
     user_name = models.CharField(max_length=200)
     ya_login = models.CharField(max_length=200, blank=True)
+    stepik_id = models.CharField(max_length=2000, blank=True)
     stepik_key = models.CharField(max_length=2000, blank=True)
 
     def __str__(self):

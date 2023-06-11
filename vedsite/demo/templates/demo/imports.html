@@ -20,11 +20,10 @@
                     class="z-10 font-mono text-2xl no-underline block py-2.5 px-4 hover:py-[7px] text-black bg-white border-solid border-y-0 hover:border-y-4 border-x-0 transition-all ease-in-out">Home</a>
                 <a href="/work/"
                     class="z-10 font-mono text-2xl no-underline block py-2.5 px-4 hover:py-[7px] text-black bg-white border-solid border-y-0 hover:border-y-4 border-x-0 transition-all ease-in-out">Dashboard</a>
-
                 <a href="/credentials/"
-                    class="z-10 font-mono text-2xl no-underline block py-2 px-4 text-black bg-white border-solid  border-y-4 border-x-0">Credentials</a>
+                    class="z-10 font-mono text-2xl no-underline block py-2.5 px-4 hover:py-[7px] text-black bg-white border-solid border-y-0 hover:border-y-4 border-x-0 transition-all ease-in-out">Credentials</a>
                 <a href="/account/"
-                    class="z-10 font-mono text-2xl no-underline block py-2.5 px-4 hover:py-[7px] text-black bg-white border-solid border-y-0 hover:border-y-4 border-x-0 transition-all ease-in-out">Account</a>
+                    class="z-10 font-mono text-2xl no-underline block py-2 px-4 text-black bg-white border-solid  border-y-4 border-x-0">Account</a>
                 <a href="/logout/"
                     class="z-10 font-mono text-2xl no-underline block py-2.5 px-4 hover:py-[7px] text-black bg-white border-solid border-y-0 hover:border-y-4 border-x-0 transition-all ease-in-out">Log
                     Out</a>
@@ -32,36 +31,16 @@
         </div>
         <!--content, forms, etc-->
         <div class="flex-1 text-center justify-center">
-            <h1 class="font-sans text-5xl font-bold mb-3">Add or Edit Login Info</h1>
-            <form class="flex text-center justify-center space-x-4 mb-4" action="/credentials/" method="post" autocomplete="off" id="credform">
-                {% csrf_token %}
-                <div class="text-center">
-                    <p>
-                    {{form.ya_l}}</p>
-                    <p>{{form.ya_p}}</p>
-                </div>
-                <div class="text-center">
-                    <p>{{form.step_id}}</p>
-                    <p>{{form.step_api}}</p>
-                </div>
-
-            </form>
+            <h1 class="font-sans text-5xl font-bold">Add Data to the table</h1>
             <button
-            class="text-center scale-125 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-            form="credform"
-            type="submit" value="OK">Submit</button>
-            {%if isLookup%}
-            {%if ya_l%}
-            <p class="font-sans text-xl font-bold">Your Yandex Login is: {{ya_l}}</p>
-            {%endif%}
-
-            {%if step_api%}
-
-            <p class="font-sans text-xl font-bold">Your Stepik ID is: {{step_id}}</p>
-            {%endif%}
-
-            {%if isStepik%}
-            <p class="font-sans text-xl font-bold">Your Stepik API key is: {{step_api}}</p>
-            {%endif%}
-            {%endif%}
+            class="text-center scale-125 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full"
+            onclick="window.location.href='/work/{{d_id}}/{{g_number}}';">Go Back</button>
+            <form class="text-center justify-center mb-4" action="/work/{{d_id}}/{{g_number}}/imports/"
+                method="post" id="contestid">
+                {% csrf_token %}
+                <p>
+                {{form.p_choice}}</p>
+            <p>{{form.p_id}}</p>
+            </form>
+            <button class="text-center scale-125 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" form="contestid" type="submit" value="OK">Submit</button>
 </body>
