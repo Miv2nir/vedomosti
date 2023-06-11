@@ -328,7 +328,7 @@ def table(request, d_id, g_number):
     # get the body out of the html element
     soup = BeautifulSoup(t.read(), "lxml")
     # return HttpResponse(soup.body.table)
-    print(len(re.findall("\"*!.*3\"", str(soup.body.table))))
+    # print(len(re.findall("\"*!.*3\"", str(soup.body.table))))
     # fix column formatting by adding more spacing arguments
     soup.body.table.colgroup
     coln = len(re.findall("\"*!.*3\"", str(soup.body.table)))
@@ -340,18 +340,36 @@ def table(request, d_id, g_number):
     # regen col styles
     soup.body.table.attrs['id'] = 'xlsxtable'
     soup.body.table.attrs['class'] = 'xlsx'
-    soup.body.table.colgroup.insert(0, soup.new_tag('col style="min-width: 172.8px"'))
+    # soup.body.table.colgroup.insert(0, soup.new_tag('col style="min-width: 172.8px"'))
     # soup.body.table.colgroup.insert(1, soup.new_tag('col style="min-width: 172.8px"'))
     # soup.body.table.colgroup.insert(1, soup.new_tag('col style="min-width: 120px"'))
-    for i in range(coln-1):
+    for i in range(coln):
         soup.body.table.colgroup.insert(3, soup.new_tag('col style="min-width: 87.36px"'))
 
     return render(request, 'demo/table.html', {'username': request.user, 'd_id': d_id, 'g_number': g_number, 'emptyTable': False, 'xlsx': str(soup.body.table), 'l': l})
 
 
+def table_delete(request, d_id, g_number):
+    if not request.user.is_authenticated:  # user not yet logged in
+        return HttpResponseRedirect('/login/')
+        # verify if user is owner of the object being looked up
+    if not Discipline.objects.filter(d_owner=request.user, d_id=d_id):
+        return HttpResponseRedirect('/work/')
+    if request.method == 'POST':
+        # wipe the table
+        shutil.rmtree('./generated/'+str(d_id)+'/'+str(g_number)+'')
+        group = DisciplineGroup.objects.filter(g_owner=request.user, d_id=d_id, g_number=g_number)[0]
+        group.t_col = 2
+        group.save()
+        return HttpResponseRedirect('/work/'+str(d_id)+'/'+str(g_number)+'/')
+    return render(request, 'demo/table_delete.html', {'g_number': g_number, 'd_id': d_id, 'g_number': g_number})
+
+
 def imports(request, d_id, g_number):
     if not request.user.is_authenticated:  # user not yet logged in
         return HttpResponseRedirect('/login/')
+    if not Discipline.objects.filter(d_owner=request.user, d_id=d_id):
+        return HttpResponseRedirect('/work/')
     if request.method == 'POST':
         print('post')
         form = PlatformSelectForm(request.POST)
@@ -363,7 +381,13 @@ def imports(request, d_id, g_number):
             task_id = form.cleaned_data['p_id']
             table_path = pathlib.Path('./generated/'+str(d_id)+'/'+str(g_number))
 
-            fill_table(user, source, task_id, d_id=d_id, g_number=g_number, table_path=table_path)
+            group = DisciplineGroup.objects.filter(d_id=d_id, g_number=g_number, g_owner=request.user)[0]
+            col = group.t_col
+            print(col)
+            col += fill_table(user, source, task_id, d_id=d_id, g_number=g_number, table_path=table_path, col=col)
+            print(col)
+            group.t_col = col
+            group.save()
             return HttpResponseRedirect('/work/'+str(d_id)+'/'+str(g_number)+'/')
     form = PlatformSelectForm()
     return render(request, 'demo/imports.html', {'username': request.user, 'd_id': d_id, 'g_number': g_number, 'form': form})

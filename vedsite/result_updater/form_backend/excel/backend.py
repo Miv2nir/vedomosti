@@ -6,14 +6,13 @@ from openpyxl import load_workbook
 from openpyxl.styles import Border, Side, PatternFill, Font, Alignment
 
 
-def CreateTable(names, path, data={}):
+def CreateTable(names, path, data={}, col=2):
     # C6EFCE - stepik
     # FFEB9C - yandex
 
     # print(len(names))
     # print(names)
-
-    col = 2
+    start = col
     r = 3
     thins = Side(border_style="thin", color="000000")
 
@@ -22,24 +21,27 @@ def CreateTable(names, path, data={}):
     ws.title = "Контесты"
     # print(wb.sheetnames)
     # ws.column_dimensions['A'].width = 36
-    ws["A3"] = "Student"
-    ws["A3"].border = Border(top=thins, bottom=thins, right=thins, left=thins)
-    ws["A3"].alignment = Alignment(horizontal="center", vertical="center")
-    for row in range(1, len(names) + 1):
-        ws.cell(column=1, row=row + 3, value=names[row - 1])
-        ws.cell(column=1, row=row + 3, value=names[row - 1]).border = Border(top=thins, bottom=thins, right=thins,
-                                                                             left=thins)
+    ws.cell(column=col - 1, row=3).value = "Student"
+    ws.cell(column=col - 1, row=3).alignment = Alignment(horizontal="center", vertical="center")
+    ws.cell(column=col - 1, row=3).font = Font(bold=False, name='Sans', size=20)
 
-    ws.merge_cells(start_row=1, start_column=2, end_row=1, end_column=len(data["full_name"]) + 2)
-    checking_system = ws['B1']
+    ws.cell(column=col - 1, row=3).border = Border(top=thins, bottom=thins, right=thins, left=thins)
+    for row in range(1, len(names) + 1):
+        ws.cell(column=col - 1, row=row + 3, value=names[row - 1])
+        ws.cell(column=col - 1, row=row + 3, value=names[row - 1]).font = Font(bold=False, name='Sans', size=16)
+        ws.cell(column=col - 1, row=row + 3, value=names[row - 1]).border = Border(top=thins, bottom=thins, right=thins,
+                                                                                   left=thins)
+
+    ws.merge_cells(start_row=1, start_column=col, end_row=1, end_column=len(data["full_name"]) + col)
+    checking_system = ws.cell(row=1, column=col)
     checking_system.value = data["checking_system_name"]
     checking_system.alignment = Alignment(horizontal="center", vertical="center")
     checking_system.fill = PatternFill("solid", fgColor=data["color"])
     checking_system.font = Font(bold=True, name='Sans', size=24)
     checking_system.border = Border(top=thins, bottom=thins, right=thins, left=thins)
 
-    ws.merge_cells(start_row=2, start_column=2, end_row=2, end_column=len(data["full_name"]) + 2)
-    contest_name = ws['B2']
+    ws.merge_cells(start_row=2, start_column=col, end_row=2, end_column=len(data["full_name"]) + col)
+    contest_name = ws.cell(row=2, column=col)
     contest_name.value = data["contest_title"]
     contest_name.alignment = Alignment(horizontal="center", vertical="center")
     contest_name.font = Font(bold=False, name='Sans', size=22)
@@ -52,20 +54,22 @@ def CreateTable(names, path, data={}):
     # steps = [int(x) for x in steps]
     # print(len(steps))
 
-    for step in range(2, len(data["full_name"]) + 2):
-        ws.cell(column=step, row=3, value=steps[step - 2])
-        ws.cell(column=step, row=3, value=steps[step - 2]).border = Border(top=thins, bottom=thins, right=thins,
-                                                                           left=thins)
-    ws.cell(column=len(data["full_name"]) + 2, row=3).value = "Score"
-    ws.cell(column=len(data["full_name"]) + 2, row=3).alignment = Alignment(horizontal="center", vertical="center")
-    ws.cell(column=len(data["full_name"]) + 2, row=3).border = Border(top=thins, bottom=thins, right=thins, left=thins)
+    for step in range(col, len(data["full_name"]) + col):
+        ws.cell(column=step, row=3, value=steps[step - col])
+        ws.cell(column=step, row=3, value=steps[step - col]).font = Font(bold=False, name='Sans', size=20)
+        ws.cell(column=step, row=3, value=steps[step - col]).border = Border(top=thins, bottom=thins, right=thins,
+                                                                             left=thins)
+    ws.cell(column=len(data["full_name"]) + col, row=3).value = "Score"
+    ws.cell(column=len(data["full_name"]) + col, row=3).alignment = Alignment(horizontal="center", vertical="center")
+    ws.cell(column=len(data["full_name"]) + col, row=3).font = Font(bold=False, name='Sans', size=20)
+    ws.cell(column=len(data["full_name"]) + col, row=3).border = Border(top=thins, bottom=thins, right=thins, left=thins)
 
     for i in range(len(names)):
         for j in range(len(data["full_name"])):
-            ws.cell(column=j + 2, row=i + 4, value=0)
-            ws.cell(column=j + 2, row=i + 4).font = Font(bold=False, name='Sans', size=20)
-            ws.cell(column=j + 2, row=i + 4).border = Border(top=thins, bottom=thins, right=thins,
-                                                             left=thins)
+            ws.cell(column=j + col, row=i + 4, value=0)
+            ws.cell(column=j + col, row=i + 4).font = Font(bold=False, name='Sans', size=16)
+            ws.cell(column=j + col, row=i + 4).border = Border(top=thins, bottom=thins, right=thins,
+                                                               left=thins)
 
     # for name in data["full_name"]:
     # print(len(name))
@@ -81,7 +85,7 @@ def CreateTable(names, path, data={}):
     # col += 1
     # r = 3
     # print('здесь')
-    print(len(names), 'cheburek')
+
     for name in data["full_name"]:
         for stud in name.values():
             if len(stud) == 0:
@@ -90,29 +94,26 @@ def CreateTable(names, path, data={}):
                 for n in range(len(names)):
                     # print(n, len(names))
                     r += 1
-                    # print(r)
                     if names[n] == stud[cnt]:
                         ws.cell(column=col, row=r, value=1)
-                        ws.cell(column=col, row=r).font = Font(bold=False, name='Sans', size=20)
+                        ws.cell(column=col, row=r).font = Font(bold=False, name='Sans', size=16)
                         ws.cell(column=col, row=r).border = Border(top=thins, bottom=thins,
                                                                    right=thins, left=thins)
-                        break
-
                 r = 3
             col += 1
-
     for rows in range(len(names)):
         score = 0
-        for columns in range(len(data["full_name"])):
-            score += ws.cell(row=rows + 4, column=columns + 2).value
+        for columns in range(start, len(data["full_name"])+start):
+            score += ws.cell(row=rows + 4, column=columns).value
         # print(row)
         # print(score)
-        ws.cell(row=rows + 4, column=len(data["full_name"]) + 2, value=score)
-        ws.cell(row=rows + 4, column=len(data["full_name"]) + 2).font = Font(bold=False, name='Sans', size=20)
-        ws.cell(row=rows + 4, column=len(data["full_name"]) + 2).border = Border(top=thins, bottom=thins, right=thins,
-                                                                                 left=thins)
+        ws.cell(row=rows + 4, column=len(data["full_name"]) + start, value=score)
+        ws.cell(row=rows + 4, column=len(data["full_name"]) + start).font = Font(bold=False, name='Sans', size=16)
+        ws.cell(row=rows + 4, column=len(data["full_name"]) + start).border = Border(top=thins, bottom=thins, right=thins,
+                                                                                     left=thins)
 
     wb.save(str(path) + '/table.xlsx')
+    return ws.max_column  # openpyxl call to get the pointer position, to reuse in views.py on deletion event
 
 
 class ExcelBackend(FormBackendProtocol):

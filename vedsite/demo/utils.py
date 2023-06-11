@@ -120,7 +120,7 @@ def read_cookies(cookie_dir, user):
     return session
 
 
-def fill_table(user, source, task_id, d_id, g_number, table_path):
+def fill_table(user, source, task_id, d_id, g_number, table_path, col):
     # retrieve names
     l = []
     lookup = Student.objects.filter(s_owner=user, d_id=d_id, g_number=g_number)
@@ -146,4 +146,5 @@ def fill_table(user, source, task_id, d_id, g_number, table_path):
         j = sf._fetch_contest_results(task_id)
     # set thing in the table
 
-    bck.CreateTable(l, table_path, data=j)
+    col = bck.CreateTable(l, table_path, j, col)
+    return col
