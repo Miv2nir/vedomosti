@@ -31,8 +31,8 @@
             <div class="static flex-1 text-center justify-center">
                 <h1 class="font-sans text-5xl font-bold">You're in group 211!</h1>
                 <button
-                class="text-center scale-125 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full"
-                onclick="window.location.href='/work/{{d_id}}/{{g_number}}/';">Go Back</button>
+                    class="text-center scale-125 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full"
+                    onclick="window.location.href='/work/{{d_id}}/{{g_number}}/';">Go Back</button>
                 <form class="text-center" action="/work/{{d_id}}/{{g_number}}/students/" method="post">
                     {% csrf_token %}
                     <div class="text-center">
@@ -42,4 +42,26 @@
                         class="text-center scale-125 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
                         type="submit" value="OK">Submit</button>
                 </form>
+                {% if l%}
+                <div class="flex mt-5 justify-center">
+                    <table class="border-spacing-0 border-solid border-4 text-2xl">
+                        <tr>
+                            <th class="border-solid border-[1px] min-w-[170px]">Display Name</th>
+                            <th class="border-solid border-[1px] min-w-[170px]">Email</th>
+                            <th class="border-solid border-[1px] min-w-[170px]">Yandex Name</th>
+                            <th class="border-solid border-[1px] min-w-[170px]">Stepik Name</th>
+                        </tr>
+                        {% for st in l %}
+                        <tr>
+                            {% for name in st%}
+                            <td class="border-solid border-[1px] min-w-[170px]">
+                                {{name}}
+                            </td>
+                            {%endfor%}
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+                {% endif%}
+
 </body>

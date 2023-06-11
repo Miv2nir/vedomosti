@@ -352,10 +352,10 @@ def student(request, d_id, g_number):
             st.s_stepik_name = form.cleaned_data['s_stepik_name']
             st.save()
 
-        return render(request, 'demo/students.html', {'username': request.user, 'form': form, 'd_id': d_id, 'g_number': g_number})
+        return render(request, 'demo/students.html', {'username': request.user, 'form': form, 'd_id': d_id, 'g_number': g_number, 'l': l})
     form = StudentForm()
 
-    return render(request, 'demo/students.html', {'username': request.user, 'form': form, 'd_id': d_id, 'g_number': g_number})
+    return render(request, 'demo/students.html', {'username': request.user, 'form': form, 'd_id': d_id, 'g_number': g_number, 'l': l})
 
 
 def imports(request, d_id, g_number):

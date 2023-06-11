@@ -364,20 +364,12 @@ select {
   margin-left: 2rem;
 }
 
-.mt-5 {
-  margin-top: 1.25rem;
-}
-
-.mt-7 {
-  margin-top: 1.75rem;
-}
-
 .mt-10 {
   margin-top: 2.5rem;
 }
 
-.mb-4 {
-  margin-bottom: 1rem;
+.mt-5 {
+  margin-top: 1.25rem;
 }
 
 .block {
@@ -444,10 +436,6 @@ select {
   flex: 1 1 0%;
 }
 
-.border-collapse {
-  border-collapse: collapse;
-}
-
 .border-spacing-0 {
   --tw-border-spacing-x: 0px;
   --tw-border-spacing-y: 0px;
@@ -482,10 +470,6 @@ select {
 
 .justify-center {
   justify-content: center;
-}
-
-.gap-0 {
-  gap: 0px;
 }
 
 .space-x-10 > :not([hidden]) ~ :not([hidden]) {
@@ -549,12 +533,12 @@ select {
   border-width: 2px;
 }
 
-.border-\[1px\] {
-  border-width: 1px;
-}
-
 .border-4 {
   border-width: 4px;
+}
+
+.border-\[1px\] {
+  border-width: 1px;
 }
 
 .border-x-0 {

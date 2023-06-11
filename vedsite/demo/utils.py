@@ -85,5 +85,5 @@ def student_name_interface(d_id, g_number, mode=''):
         if mode == 'stepik':
             l.append(i.s_stepik_name)
         if mode == 'all':
-            l.append([i.s_display_name, i.s_ya_name, i.s_stepik_name])
+            l.append([i.s_display_name, i.s_email, i.s_ya_name, i.s_stepik_name])
     return l
