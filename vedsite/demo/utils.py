@@ -1,6 +1,8 @@
 from .models import *
 import openpyxl
 import shutil
+import pickle
+import requests
 
 # for dir deletion
 
@@ -30,6 +32,7 @@ def del_discipline(d_id, user):
     shutil.rmtree('generated/'+str(d_id))
     d = Discipline.objects.filter(d_owner=user, d_id=d_id)
     d.delete()
+
 
 # for defaulting for a first sheet in xlsx
 
@@ -98,3 +101,15 @@ def student_name_interface(d_id, g_number, mode=''):
         if mode == 'all':
             l.append([i.s_display_name, i.s_email, i.s_ya_name, i.s_stepik_name])
     return l
+
+
+def write_cookies(cookie_dir, user, session):
+    with open(str(cookie_dir)+'/ya_'+user, 'wb') as f:
+        pickle.dump(session.cookies, f)
+
+
+def read_cookies(cookie_dir, user):
+    with open(str(cookie_dir)+'/ya_'+user, 'rb') as f:
+        session = requests.Session()
+        session.cookies = pickle.load(f)
+    return session

@@ -6,8 +6,15 @@ from django.contrib.auth.models import User
 
 class Credentials(models.Model):
     user_name = models.CharField(max_length=200)
-    ya_session = models.FilePathField(blank=True)
+    ya_login = models.CharField(max_length=200, blank=True)
     stepik_key = models.CharField(max_length=2000, blank=True)
+
+    def __str__(self):
+        return "Credentials of "+self.user_name
+
+    class Meta:
+        verbose_name = "Credentials"
+        verbose_name_plural = "Credentials"
 
 
 class Teacher(models.Model):

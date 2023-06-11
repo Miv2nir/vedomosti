@@ -43,9 +43,10 @@ class LogOutForm(forms.Form):
 
 
 class CredentialsForm(forms.Form):
-    ya_login = forms.CharField(label='Yandex.Contest Login', widget=forms.TextInput(attrs={'placeholder': 'Ya.Contest Login', 'class': 'square_login'}))
-    ya_password = forms.CharField(label='Yandex.Contest Password', widget=forms.PasswordInput(attrs={'placeholder': 'Ya.Contest Password', 'class': 'square_login'}))
-    ya_id = forms.IntegerField(widget=forms.TextInput(attrs={'placeholder': 'Contest ID', 'class': 'square_login'}))
+    ya_l = forms.CharField(required=False, label='Yandex.Contest1', widget=forms.TextInput(attrs={'placeholder': 'Yandex.Contest Login', 'class': 'square_login', 'autocomplete': "new-password"}))
+    ya_p = forms.CharField(required=False, label='Yandex.Contest2', widget=forms.PasswordInput(attrs={'placeholder': 'Yandex.Contest Password', 'class': 'square_login', 'autocomplete': "new-password"}))
+    step_api = forms.CharField(required=False, label='Stepik API Key', widget=forms.TextInput(attrs={'placeholder': 'Stepik API Key', 'class': 'square_login', 'autocomplete': "new-password"}))
+    # ya_id = forms.IntegerField(widget=forms.TextInput(attrs={'placeholder': 'Contest ID', 'class': 'square_login'}))
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

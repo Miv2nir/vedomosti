@@ -25,6 +25,9 @@ from .forms import *
 import result_updater.checking_system.ya_contest as ya_contest
 from .utils import *
 
+import result_updater.checking_system.ya_contest.authorization as yauth
+import result_updater.checking_system.ya_contest.fetching as yfetch
+
 from result_updater.form_backend.excel.backend import CreateTable
 
 
@@ -207,6 +210,9 @@ def work_delete(request, d_id):
 def discipline(request, d_id):
     if not request.user.is_authenticated:  # user not yet logged in
         return HttpResponseRedirect('/login/')
+    # verify if user is owner of the object being looked up
+    if not Discipline.objects.filter(d_owner=request.user, d_id=d_id):
+        return HttpResponseRedirect('/work/')
     # get discipline
     d = Discipline.objects.filter(d_id=d_id)[0]
     lookup = DisciplineGroup.objects.filter(d_id=d_id)
@@ -216,6 +222,9 @@ def discipline(request, d_id):
 def discipline_new(request, d_id):
     if not request.user.is_authenticated:  # user not yet logged in
         return HttpResponseRedirect('/login/')
+        # verify if user is owner of the object being looked up
+    if not Discipline.objects.filter(d_owner=request.user, d_id=d_id):
+        return HttpResponseRedirect('/work/')
     d = Discipline.objects.filter(d_id=d_id)[0]
     if request.method == 'POST':
         form_new = GroupForm(request.POST)
@@ -235,6 +244,9 @@ def discipline_manage(request, d_id):
 
     if not request.user.is_authenticated:  # user not yet logged in
         return HttpResponseRedirect('/login/')
+        # verify if user is owner of the object being looked up
+    if not Discipline.objects.filter(d_owner=request.user, d_id=d_id):
+        return HttpResponseRedirect('/work/')
     # look up named entries for a logged in user
     # lookup = Discipline.objects.filter(d_owner=request.user)
     lookup = DisciplineGroup.objects.filter(d_id=d_id)
@@ -261,6 +273,9 @@ def discipline_manage(request, d_id):
 def discipline_delete(request, d_id, g_number):
     if not request.user.is_authenticated:  # user not yet logged in
         return HttpResponseRedirect('/login/')
+        # verify if user is owner of the object being looked up
+    if not Discipline.objects.filter(d_owner=request.user, d_id=d_id):
+        return HttpResponseRedirect('/work/')
     if request.method == 'POST':
         del_group(g_number, d_id, request.user)
 
@@ -271,6 +286,9 @@ def discipline_delete(request, d_id, g_number):
 def table(request, d_id, g_number):
     if not request.user.is_authenticated:  # user not yet logged in
         return HttpResponseRedirect('/login/')
+        # verify if user is owner of the object being looked up
+    if not Discipline.objects.filter(d_owner=request.user, d_id=d_id):
+        return HttpResponseRedirect('/work/')
 
     print(pathlib.Path().resolve())
     # find a table dir, make one if absent
@@ -389,7 +407,40 @@ def account(request):
 def credentials(request):
     if not request.user.is_authenticated:  # user not yet logged in
         return HttpResponseRedirect('/login/')
-    creds = Credentials.objects.filter(user=request.user)
+    # creds = Credentials.objects.filter(user=request.user)
+    p = pathlib.Path('./generated/cookies')
+    lookup = Credentials.objects.filter(user_name=request.user)
+    if request.method == 'POST':
+        # validate retrieved password
+        form = CredentialsForm(request.POST)
+        if form.is_valid():
+            if not lookup:
+                creds = Credentials(user_name=request.user)
+            else:
+                creds = lookup[0]
+
+            if form.cleaned_data['ya_l'] and form.cleaned_data['ya_p']:
+                # print('YANDEX!!!')
+                d = {"login": form.cleaned_data['ya_l'], 'password': form.cleaned_data['ya_p']}
+                yuser = yauth.YaContestAuthorizer(authorize=False)
+                yuser.authorize(d)
+                write_cookies(p, request.user.username, yuser._session)
+                creds.ya_login = form.cleaned_data['ya_l']
+            if form.cleaned_data['step_api']:
+                creds.stepik_key = form.cleaned_data['step_api']
+            creds.save()
+
+            return HttpResponseRedirect('/credentials/')
+            # creds=Credentials
+
+    form = CredentialsForm()
+    isLookup = False
+    ya_l = step_api = ''
+    if lookup:
+        isLookup = True
+        ya_l = lookup[0].ya_login
+        step_api = lookup[0].stepik_key[:5]+'...'
+    return render(request, 'demo/credentials.html', {'user': request.user, 'form': form, 'isLookup': isLookup, 'isStepik': step_api != '...', 'ya_l': ya_l, 'step_api': step_api})
 
 
 '''

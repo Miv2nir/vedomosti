@@ -73,8 +73,8 @@ class YaContestUpdFetcher(CourseUpdateFetcher):
         r = self._session.get(uri)
         j = json.loads(r.text)
         page = j["count"] // 30
-        print(page)
-        print(j["count"], j['total'])
+        # print(page)
+        # print(j["count"], j['total'])
         for i in range(page + 1):
             uri = "https://admin.contest.yandex.ru/api/contests/{}".format(task_id)+"/submission?offset={}&limit=30&sortBy=id".format(i) + "&sortDirection=DESC&searchBy=&searchField=&filter=verdict%3DOK"
             r = self._session.get(uri)
@@ -83,15 +83,20 @@ class YaContestUpdFetcher(CourseUpdateFetcher):
             # print(j)
             # j = чему он там равен но с этой ссылкой
             for item in j["items"]:
-                print(item["problem"]["title"])
+                # print(item["problem"]["title"])
                 all_tasks.setdefault(item["problem"]["title"], [])
+                # print(all_tasks[item["problem"]["title"]])
                 # if item["verdict"] == "OK":
                 all_tasks[item["problem"]["title"]].append(item["participant"]["participantName"])
             # print(len(all_tasks))
-
-        # print(all_tasks)
+           # print(all_tasks.keys())
+        print('тут')
         for task in all_tasks:
-            yandex_final["full_name"].append(dict().fromkeys(task, all_tasks[task]))
+            print(task, sep=' ')
+            d = {}
+            d[task] = sorted(set(all_tasks[task]))
+            # yandex_final["full_name"].append(dict().fromkeys(task, sorted(set(all_tasks[task]))))
+            yandex_final["full_name"].append(d)
         return yandex_final
 
 
