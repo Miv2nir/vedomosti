@@ -46,6 +46,9 @@
                     {% for i in g_list %}
                     <li>Group {{i}} ❌</li>
                     {%endfor%}
+                    {% for i in s_list %}
+                    <li>Student {{i}} ❌</li>
+                    {%endfor%}
                 </div>
                 <form action="/work/delete/{{d_id}}/" method="post" class="flex-1 justify-center space-x-10 space-y-5">
                     {% csrf_token %}

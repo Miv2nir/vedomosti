@@ -71,7 +71,19 @@ class Student(models.Model):
     g_number = models.IntegerField()
 
     def __str__(self):
-        return "Student " + str(self.s_ya_name)+" / "+str(self.s_stepik_name) + "of "+str(self.g_number)+' of '+str(self.s_owner)
+        return "Student " + str(self.s_ya_name)+" / "+str(self.s_stepik_name) + " of "+str(self.g_number)+' of '+str(self.s_owner)
+
+
+class ImportLog(models.Model):
+    i_id = models.UUIDField()
+    d_id = models.UUIDField()
+    g_number = models.IntegerField()
+    i_type = models.CharField(max_length=100)
+    i_contest = models.IntegerField()
+    t_col = models.IntegerField(default=2)
+
+    def __str__(self):
+        return "Imports of " + str(self.i_contest)+' for '+str(self.g_number)
 
 
 '''

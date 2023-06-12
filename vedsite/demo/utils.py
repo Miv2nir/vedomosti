@@ -16,7 +16,10 @@ def del_group(g_number, d_id, user):
     print("wow deleting", g_number)
     g = DisciplineGroup.objects.filter(g_owner=user, d_id=d_id, g_number=g_number)
     # delete all belonging students
-    s = Student.objects.filter(g_owner=user, d_id=d_id, g_number=g_number)
+    s = Student.objects.filter(s_owner=user, d_id=d_id, g_number=g_number)
+    l = ImportLog.objects.filter(d_id=d_id, g_number=g_number)
+    for n in l:
+        n.delete()
     for i in s:
         s.delete()
     for o in g:
@@ -28,6 +31,9 @@ def del_discipline(d_id, user):
     g = DisciplineGroup.objects.filter(g_owner=user, d_id=d_id)
     # delete all belonging students
     s = Student.objects.filter(s_owner=user, d_id=d_id)
+    l = ImportLog.objects.filter(d_id=d_id)
+    for n in l:
+        n.delete()
     for i in s:
         s.delete()
     for o in g:

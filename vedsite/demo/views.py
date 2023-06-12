@@ -202,9 +202,19 @@ def work_delete(request, d_id):
     d = Discipline.objects.filter(d_owner=request.user, d_id=d_id)[0]
     lookup = DisciplineGroup.objects.filter(d_id=d_id)
     l = []
+    s = []
     for i in lookup:
         l.append(i.g_number)
-    return render(request, 'demo/work_delete.html', {'d_id': d_id, 'd_name': d.d_name, 'g_list': l})
+    slookup = Student.objects.filter(d_id=d_id)
+    for i in slookup:
+        if i.s_ya_name and i.s_stepik_name:
+            query = i.s_ya_name+' - '+i.s_stepik_name
+        elif i.s_ya_name:
+            query = i.s_ya_name
+        else:
+            query = i.s_stepik_name
+        s.append(query)
+    return render(request, 'demo/work_delete.html', {'d_id': d_id, 'd_name': d.d_name, 'g_list': l, 's_list': s})
 
 
 def discipline(request, d_id):
@@ -278,9 +288,19 @@ def discipline_delete(request, d_id, g_number):
         return HttpResponseRedirect('/work/')
     if request.method == 'POST':
         del_group(g_number, d_id, request.user)
-
         return HttpResponseRedirect('/work/'+str(d_id)+'/manage/')
-    return render(request, 'demo/group_delete.html', {'g_number': g_number, 'd_id': d_id})
+
+    s = []
+    slookup = Student.objects.filter(d_id=d_id, g_number=g_number)
+    for i in slookup:
+        if i.s_ya_name and i.s_stepik_name:
+            query = i.s_ya_name+' - '+i.s_stepik_name
+        elif i.s_ya_name:
+            query = i.s_ya_name
+        else:
+            query = i.s_stepik_name
+        s.append(query)
+    return render(request, 'demo/group_delete.html', {'g_number': g_number, 'd_id': d_id, 's_list': s})
 
 
 def table(request, d_id, g_number):
@@ -349,6 +369,20 @@ def table(request, d_id, g_number):
     return render(request, 'demo/table.html', {'username': request.user, 'd_id': d_id, 'g_number': g_number, 'emptyTable': False, 'xlsx': str(soup.body.table), 'l': l})
 
 
+def table_update(request, d_id, g_number):
+    if not request.user.is_authenticated:  # user not yet logged in
+        return HttpResponseRedirect('/login/')
+        # verify if user is owner of the object being looked up
+    if not Discipline.objects.filter(d_owner=request.user, d_id=d_id):
+        return HttpResponseRedirect('/work/')
+    table_path = pathlib.Path('./generated/'+str(d_id)+'/'+str(g_number))
+    if request.method == 'POST':
+        lookup = ImportLog.objects.filter(d_id=d_id, g_number=g_number)
+        for i in lookup:
+            fill_table(request.user, i.i_type, i.i_contest, d_id=d_id, g_number=g_number, table_path=table_path, col=i.t_col)
+    return HttpResponseRedirect('/work/'+str(d_id)+'/'+str(g_number)+'/')
+
+
 def table_delete(request, d_id, g_number):
     if not request.user.is_authenticated:  # user not yet logged in
         return HttpResponseRedirect('/login/')
@@ -356,6 +390,9 @@ def table_delete(request, d_id, g_number):
     if not Discipline.objects.filter(d_owner=request.user, d_id=d_id):
         return HttpResponseRedirect('/work/')
     if request.method == 'POST':
+        l = ImportLog.objects.filter(d_id=d_id, g_number=g_number)
+        for n in l:
+            n.delete()
         # wipe the table
         shutil.rmtree('./generated/'+str(d_id)+'/'+str(g_number)+'')
         group = DisciplineGroup.objects.filter(g_owner=request.user, d_id=d_id, g_number=g_number)[0]
@@ -380,9 +417,11 @@ def imports(request, d_id, g_number):
             source = form.cleaned_data['p_choice']
             task_id = form.cleaned_data['p_id']
             table_path = pathlib.Path('./generated/'+str(d_id)+'/'+str(g_number))
-
             group = DisciplineGroup.objects.filter(d_id=d_id, g_number=g_number, g_owner=request.user)[0]
+
             col = group.t_col
+            ilog = ImportLog(i_id=uuid4(), d_id=d_id, g_number=g_number, i_type=source, i_contest=task_id, t_col=col)
+            ilog.save()
             print(col)
             col += fill_table(user, source, task_id, d_id=d_id, g_number=g_number, table_path=table_path, col=col)
             print(col)
