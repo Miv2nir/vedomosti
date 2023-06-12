@@ -12,3 +12,4 @@ vedsite/generated/*
 *.pyc
 test.xlsx
 vedsite/db.sqlite3
+bfg.jar
