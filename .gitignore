@@ -1,13 +1,14 @@
 vedsite/demo/static/generated/*
 get-pip.py
-vedomosti
 vedsite/notes.txt
 *.tar.gz
 stepik.json
 test
 generated/*
+vedsite/generated/*
 48092.csv
 48092.json
 48711.json
 *.pyc
 test.xlsx
+vedsite/db.sqlite3

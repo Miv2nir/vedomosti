@@ -568,6 +568,8 @@ def credentials(request):
                 d = {"login": form.cleaned_data['ya_l'], 'password': form.cleaned_data['ya_p']}
                 yuser = yauth.YaContestAuthorizer(authorize=False)
                 yuser.authorize(d)
+                if not os.path.exists('./generated/cookies/'):
+                    os.makedirs('./generated/cookies/')
                 write_cookies(p, request.user.username, yuser._session)
                 creds.ya_login = form.cleaned_data['ya_l']
             if form.cleaned_data['step_api'] and form.cleaned_data['step_id']:
