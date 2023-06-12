@@ -12,6 +12,23 @@ ul.errorlist {
     border-style: solid;
 }
 
+.round_button--loading .round_button__text {
+    visibility: hidden;
+    opacity: 0;
+
+}
+
+.round_button--loading::after {
+    content: url(static/loadcat.gif);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+
+}
+
 .square_login_big {
     text-align: center;
     border-radius: 1rem;

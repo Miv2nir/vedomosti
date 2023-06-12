@@ -54,11 +54,23 @@
                         onclick="window.location.href='/work/{{d_id}}/{{g_number}}/imports/';">Import
                         Data
                     </button>
+                    <button
+                        class="text-center scale-125 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full"
+                        onclick="window.location.href='/work/{{d_id}}/{{g_number}}/download/';">Download Table
+                    </button> 
+                    <button
+                    class="text-center scale-125 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full"
+                    onclick="window.location.href='/work/{{d_id}}/{{g_number}}/upload/';">Upload Table
+                </button> 
 
-                        <button
-                            class="text-center scale-125 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full" form="updateform">
-                            Update Table Entries
-                </button>
+
+
+                    <button
+                        class="text-center scale-125 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full"
+                        form="updateform" id="loader" type="submit" onclick="ButtonClicked()">
+                        Update Table Entries
+                    </button>
+                    <img src="{% static 'loadcat.gif' %}" id="loadcat" style="display:none;" alt="loadcat">
                     <button
                         class="text-center scale-125 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full"
                         onclick="window.location.href='/work/{{d_id}}/{{g_number}}/delete/';">Clear Table
@@ -94,11 +106,28 @@
                     </table>
                 </div>
                 {% endif%}
+                <form class="contents" method="post" action="/work/{{d_id}}/{{g_number}}/update/" id="updateform"> 
+                    {%csrf_token%}</form>
             </div>
-            <form class="contents" method="post" action="/work/{{d_id}}/{{g_number}}/update/" id="updateform"> 
-                {%csrf_token%}</form>
         </div>
         <script>
+            function ButtonClicked()
+            {
+               document.getElementById("loader").style.display = "none"; // to undisplay
+               document.getElementById("loadcat").style.display = ""; // to display
+               return true;
+            }
+            var FirstLoading = true;
+            function RestoreSubmitButton()
+            {
+               if( FirstLoading )
+               {
+                  FirstLoading = false;
+                  return;
+               }
+               document.getElementById("loader").style.display = ""; // to display
+               document.getElementById("loadcat").style.display = "none"; // to undisplay
+            }
             const container = document.querySelector('.xlsx_parent');
             const content = container.querySelector('.xlsx');
             const resizeObserver = new ResizeObserver(event => {
@@ -113,6 +142,8 @@
                 requestAnimationFrame(() => resizeObserver.observe(container));
             });
             resizeObserver.observe(container);
+            // To disable restoring submit button, disable or delete next line.
+            //document.onfocus = RestoreSubmitButton;
         </script>
 </body>
 

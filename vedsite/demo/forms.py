@@ -99,6 +99,11 @@ class PlatformSelectForm(forms.Form):
     p_id = forms.CharField(label='TID', widget=forms.TextInput(attrs={'placeholder': 'Enter Contest ID', 'class': 'square_login'}))
 
 
+class UploadFileForm(forms.Form):
+    # f_title = forms.CharField(max_length=50)
+    f_file = forms.FileField()
+
+
 '''
 class StudentForm(forms.ModelForm):
     class Meta:

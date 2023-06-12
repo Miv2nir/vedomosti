@@ -42,5 +42,30 @@
                 {{form.p_choice}}</p>
             <p>{{form.p_id}}</p>
             </form>
-            <button class="text-center scale-125 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" form="contestid" type="submit" value="OK">Submit</button>
-</body>
+            <button class="text-center scale-125 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full round_button--loading round_button--loading::after" id="loader" onclick="ButtonClicked()" form="contestid" type="submit" value="OK">Submit</button>
+            <img src="{% static 'loadcat.gif' %}" id="loadcat" style="display:none;" alt="loadcat">
+            <script type="text/javascript">
+
+                function ButtonClicked()
+                {
+                   document.getElementById("loader").style.display = "none"; // to undisplay
+                   document.getElementById("loadcat").style.display = ""; // to display
+                   return true;
+                }
+                var FirstLoading = true;
+                function RestoreSubmitButton()
+                {
+                   if( FirstLoading )
+                   {
+                      FirstLoading = false;
+                      return;
+                   }
+                   document.getElementById("loader").style.display = ""; // to display
+                   document.getElementById("loadcat").style.display = "none"; // to undisplay
+                }
+                // To disable restoring submit button, disable or delete next line.
+                //document.onfocus = RestoreSubmitButton;
+                </script>
+                
+                
+        </body>

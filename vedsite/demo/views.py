@@ -1,8 +1,9 @@
 from django.shortcuts import render
 from django.template.defaulttags import register
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, FileResponse
 from django import forms
 from django.contrib.auth import authenticate
+from django.core.files.storage import FileSystemStorage
 from django.contrib.auth.models import User
 import django_cryptography.fields as crypt
 import requests
@@ -366,7 +367,9 @@ def table(request, d_id, g_number):
     for i in range(coln):
         soup.body.table.colgroup.insert(3, soup.new_tag('col style="min-width: 87.36px"'))
 
-    return render(request, 'demo/table.html', {'username': request.user, 'd_id': d_id, 'g_number': g_number, 'emptyTable': False, 'xlsx': str(soup.body.table), 'l': l})
+    fileform = UploadFileForm()
+
+    return render(request, 'demo/table.html', {'username': request.user, 'd_id': d_id, 'g_number': g_number, 'emptyTable': False, 'fileform': fileform, 'xlsx': str(soup.body.table), 'l': l})
 
 
 def table_update(request, d_id, g_number):
@@ -381,6 +384,56 @@ def table_update(request, d_id, g_number):
         for i in lookup:
             fill_table(request.user, i.i_type, i.i_contest, d_id=d_id, g_number=g_number, table_path=table_path, col=i.t_col)
     return HttpResponseRedirect('/work/'+str(d_id)+'/'+str(g_number)+'/')
+
+
+def table_download(request, d_id, g_number):
+    if not request.user.is_authenticated:  # user not yet logged in
+        return HttpResponseRedirect('/login/')
+        # verify if user is owner of the object being looked up
+    if not Discipline.objects.filter(d_owner=request.user, d_id=d_id):
+        return HttpResponseRedirect('/work/')
+    table_path = pathlib.Path('./generated/'+str(d_id)+'/'+str(g_number)+'/table.xlsx')
+    # with open(table_path, 'rb') as fh:
+    # response = HttpResponse(content_type='application/force-download')
+    # response['Content-Disposition'] = 'attachment; filename=%s' % 'table.xlsx'
+    # response['Content-Disposition'] = "attachment; filename=%s" % fh
+    # response['X-Sendfile'] = smart_str(table_path)
+    response = FileResponse(open(table_path, 'rb'))
+    return response
+
+
+def table_upload(request, d_id, g_number):
+    if not request.user.is_authenticated:  # user not yet logged in
+        return HttpResponseRedirect('/login/')
+        # verify if user is owner of the object being looked up
+    if not Discipline.objects.filter(d_owner=request.user, d_id=d_id):
+        return HttpResponseRedirect('/work/')
+    table_path = pathlib.Path('./generated/'+str(d_id)+'/'+str(g_number)+'/table.xlsx')
+    if request.method == 'POST' and request.FILES['table']:
+        t = request.FILES['table']
+        fs = FileSystemStorage()
+        if os.path.isfile(table_path):
+            os.remove(table_path)
+        fs.save(table_path, t)
+
+        # handle t_col
+        wb = openpyxl.load_workbook(table_path)
+        ws = wb.active
+        lookup = DisciplineGroup.objects.filter(d_id=d_id, g_number=g_number)[0]
+        lookup.t_col = ws.max_column
+        lookup.save()
+
+        # form = UploadFileForm(request.POST, request.FILES)
+        # print(form.errors)
+        # if form.is_valid():
+        #    print("HIIIIIIIIIII")
+#
+        #    with open(table_path, 'wb+') as t:
+        #        for chunk in request.FILES["file"].chunks():
+        #            t.write(chunk)
+        return HttpResponseRedirect('/work/'+str(d_id)+'/'+str(g_number)+'/')
+    fileform = UploadFileForm()
+    return render(request, 'demo/table_upload.html', {'d_id': d_id, 'g_number': g_number, 'table_path': table_path, 'fileform': fileform})
 
 
 def table_delete(request, d_id, g_number):
