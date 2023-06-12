@@ -28,6 +28,7 @@ urlpatterns = [
     path('work/<uuid:d_id>/delete/<int:g_number>', views.discipline_delete, name='discipline_delete'),
     path('work/<uuid:d_id>/<int:g_number>/', views.table, name='table'),
     path('work/<uuid:d_id>/<int:g_number>/students/', views.student, name='student'),
+    path('work/<uuid:d_id>/<int:g_number>/students/delete/<uuid:s_id>', views.student_delete, name='student_delete'),
     path('work/<uuid:d_id>/<int:g_number>/imports/', views.imports, name='imports'),
     path('work/<uuid:d_id>/<int:g_number>/delete/', views.table_delete, name='table_delete'),
     path('login/', views.login_user, name='login'),

@@ -62,8 +62,8 @@ class DisciplineGroup(models.Model):
 class Student(models.Model):
     s_id = models.UUIDField()
     s_owner = models.CharField(max_length=200)
-    s_display_name = models.CharField(max_length=200, blank=True)
-    s_email = models.CharField(max_length=2000, blank=True)
+    # s_display_name = models.CharField(max_length=200, blank=True)
+    # s_email = models.CharField(max_length=2000, blank=True)
     s_ya_name = models.CharField(max_length=200, blank=True)
     s_stepik_name = models.CharField(max_length=200, blank=True)
     # parent Group ID
@@ -71,7 +71,7 @@ class Student(models.Model):
     g_number = models.IntegerField()
 
     def __str__(self):
-        return "Student " + str(self.s_display_name)+" of "+str(self.g_number)+' of '+str(self.s_owner)
+        return "Student " + str(self.s_ya_name)+" / "+str(self.s_stepik_name) + "of "+str(self.g_number)+' of '+str(self.s_owner)
 
 
 '''

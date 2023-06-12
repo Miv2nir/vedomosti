@@ -83,8 +83,8 @@ class GroupListForm(forms.Form):
 
 
 class StudentForm(forms.Form):
-    s_display_name = forms.CharField(label='Login', widget=forms.TextInput(attrs={'placeholder': 'Student Display Name', 'class': 'square_login'}))
-    s_email = forms.CharField(required=False, label='Login', widget=forms.TextInput(attrs={'placeholder': 'Student Email', 'class': 'square_login'}))
+    # s_display_name = forms.CharField(label='Login', widget=forms.TextInput(attrs={'placeholder': 'Student Display Name', 'class': 'square_login'}))
+    # s_email = forms.CharField(required=False, label='Login', widget=forms.TextInput(attrs={'placeholder': 'Student Email', 'class': 'square_login'}))
     s_ya_name = forms.CharField(required=False, label='Login', widget=forms.TextInput(attrs={'placeholder': 'Ya.Contest Student Name', 'class': 'square_login'}))
     s_stepik_name = forms.CharField(required=False, label='Login', widget=forms.TextInput(attrs={'placeholder': 'Stepik Student Name', 'class': 'square_login'}))
 
