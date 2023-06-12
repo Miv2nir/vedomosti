@@ -40,7 +40,10 @@ class StepikUpdFetcher(CourseUpdateFetcher):
 
         uri = "https://stepik.org/api/steps?lesson={}".format(task_id)
         st_unit = requests.get(uri, headers=headers).json()
+        # print(st_unit)
         # берём из step (contest) submissions
+        if len(st_unit['steps']) == 0:
+            raise KeyError("Unable to parse stepik")
         for UnitToStep in st_unit["steps"]:
             # print('st_unit["steps"]', UnitToStep)
             all_steps.append(UnitToStep["id"])
@@ -68,7 +71,8 @@ class StepikUpdFetcher(CourseUpdateFetcher):
                 page += 1
 
             if len(all_attempts) == 0:
-                continue
+                # continue
+                raise KeyError("Unable to parse stepik")
 
             # print(len(all_attempts))
 
@@ -102,7 +106,7 @@ class StepikUpdFetcher(CourseUpdateFetcher):
             stepik_final["full_name"][count][str(step)].sort()
             all_attempts.clear()
             all_users.clear()
-            print(len(stepik_final["full_name"][count][str(step)]))
+            print("processing stepik(takes a while)", len(stepik_final["full_name"][count][str(step)]))
             print(stepik_final["full_name"][count][str(step)])
             count += 1
         return stepik_final

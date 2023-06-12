@@ -17,6 +17,7 @@ import openpyxl
 import xlsx2html
 from uuid import uuid4
 from bs4 import BeautifulSoup
+from json import JSONDecodeError
 # for logins
 
 from django.contrib.auth import authenticate, login, logout
@@ -30,6 +31,7 @@ import result_updater.checking_system.ya_contest.authorization as yauth
 import result_updater.checking_system.ya_contest.fetching as yfetch
 
 from result_updater.form_backend.excel.backend import CreateTable
+from result_updater.checking_system.stepik.authorization import InvalidCredentialsException
 
 
 def index(request):
@@ -420,7 +422,7 @@ def table_upload(request, d_id, g_number):
         wb = openpyxl.load_workbook(table_path)
         ws = wb.active
         lookup = DisciplineGroup.objects.filter(d_id=d_id, g_number=g_number)[0]
-        lookup.t_col = ws.max_column
+        lookup.t_col = ws.max_column+2
         lookup.save()
 
         # form = UploadFileForm(request.POST, request.FILES)
@@ -474,11 +476,17 @@ def imports(request, d_id, g_number):
 
             col = group.t_col
             ilog = ImportLog(i_id=uuid4(), d_id=d_id, g_number=g_number, i_type=source, i_contest=task_id, t_col=col)
-            ilog.save()
             print(col)
-            col += fill_table(user, source, task_id, d_id=d_id, g_number=g_number, table_path=table_path, col=col)
+            try:
+                col = fill_table(user, source, task_id, d_id=d_id, g_number=g_number, table_path=table_path, col=col)+2
+            except KeyError:
+                form = PlatformSelectForm()
+                return render(request, 'demo/imports.html', {'username': request.user, 'd_id': d_id, 'g_number': g_number, 'form': form, 'keyError': True})
+            except (JSONDecodeError, InvalidCredentialsException, IndexError):
+                return render(request, 'demo/imports.html', {'username': request.user, 'd_id': d_id, 'g_number': g_number, 'form': form, 'jsonError': True})
             print(col)
             group.t_col = col
+            ilog.save()
             group.save()
             return HttpResponseRedirect('/work/'+str(d_id)+'/'+str(g_number)+'/')
     form = PlatformSelectForm()
@@ -587,8 +595,12 @@ def credentials(request):
         isLookup = True
         ya_l = lookup[0].ya_login
         step_id = lookup[0].stepik_id
-        step_api = lookup[0].stepik_id[:5]+'...'
-    return render(request, 'demo/credentials.html', {'user': request.user, 'form': form, 'isLookup': isLookup, 'isStepik': step_api != '...', 'ya_l': ya_l, 'step_id': step_id, 'step_api': step_api})
+        # step_api = lookup[0].stepik_id[:5]+'...'
+    return render(request, 'demo/credentials.html', {'user': request.user, 'form': form, 'isLookup': isLookup, 'isStepik': step_api != '...', 'ya_l': ya_l, 'step_id': step_id})
+
+
+def credentials_about(request):
+    return render(request, 'demo/credentials_about.html')
 
 
 '''

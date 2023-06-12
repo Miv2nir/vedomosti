@@ -35,6 +35,12 @@
             <button
             class="text-center scale-125 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full"
             onclick="window.location.href='/work/{{d_id}}/{{g_number}}';">Go Back</button>
+            {%if keyError%}
+            <p class="text-2xl text-red-500"> Sorry, something went wrong with the import. Please, verify that you have access to a requested file.</p>
+            {%endif%}
+            {%if jsonError%}
+            <p class="text-2xl text-red-500"> Sorry, something went wrong with the import. Please, verify that you have entered the right credentials.</p>
+            {%endif%}
             <form class="text-center justify-center mb-4" action="/work/{{d_id}}/{{g_number}}/imports/"
                 method="post" id="contestid">
                 {% csrf_token %}

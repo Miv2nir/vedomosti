@@ -7,6 +7,11 @@ from ..protocol import Authorizer
 from .constants import *
 
 
+class InvalidCredentialsException(Exception):
+    "Invalid Stepik Credentials"
+    pass
+
+
 class StepikAuthorizer(Authorizer):
     def init(self, authorize=True):
         Authorizer.init(self)
@@ -25,7 +30,7 @@ class StepikAuthorizer(Authorizer):
         token = response.json().get('access_token', None)
         if not token:
             print('Unable to authorize with provided credentials')
-            exit(1)
+            raise InvalidCredentialsException("Invalid Stepik Credentials")
         self._token = token
 
     def get_token(self):
