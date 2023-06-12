@@ -1,3 +1,4 @@
+vedsite/db.sqlite3
 vedsite/demo/static/generated/*
 get-pip.py
 vedsite/notes.txt
@@ -11,5 +12,4 @@ vedsite/generated/*
 48711.json
 *.pyc
 test.xlsx
-vedsite/db.sqlite3
 bfg.jar
