@@ -174,10 +174,10 @@ def work_manage(request):
         if forml.is_valid():
             for name in l:
                 d = Discipline.objects.filter(d_owner=request.user, d_name=name)[0]
-                print(d.d_name)
+                # print(d.d_name)
                 if forml.cleaned_data['d_og_name_'+name] != d.d_name:
                     d.d_name = forml.cleaned_data['d_og_name_'+name]
-                    print(forml.cleaned_data['d_og_name_'+name])
+                    # print(forml.cleaned_data['d_og_name_'+name])
                     d.save()
                 # print(forml.cleaned_data['d_og_name_'+i])
             return HttpResponseRedirect('/work/')
@@ -272,10 +272,10 @@ def discipline_manage(request, d_id):
         if forml.is_valid():
             for num in l:
                 g = DisciplineGroup.objects.filter(g_owner=request.user, d_id=d_id, g_number=num)[0]
-                print(g.g_number)
+                # print(g.g_number)
                 if forml.cleaned_data['g_og_number_'+str(num)] != g.g_number:
                     g.g_number = forml.cleaned_data['g_og_number_'+str(num)]
-                    print(forml.cleaned_data['g_og_number_'+str(num)])
+                    # print(forml.cleaned_data['g_og_number_'+str(num)])
                     g.save()
                 # print(forml.cleaned_data['d_og_name_'+i])
             return HttpResponseRedirect('/work/'+str(d_id)+'/')
@@ -313,7 +313,7 @@ def table(request, d_id, g_number):
     if not Discipline.objects.filter(d_owner=request.user, d_id=d_id):
         return HttpResponseRedirect('/work/')
 
-    print(pathlib.Path().resolve())
+    # print(pathlib.Path().resolve())
     # find a table dir, make one if absent
     p = pathlib.Path('./generated/'+str(d_id)+'/'+str(g_number))  # dir with tables
     if not p.is_dir():
@@ -482,7 +482,7 @@ def imports(request, d_id, g_number):
             except KeyError:
                 form = PlatformSelectForm()
                 return render(request, 'demo/imports.html', {'username': request.user, 'd_id': d_id, 'g_number': g_number, 'form': form, 'keyError': True})
-            except (JSONDecodeError, InvalidCredentialsException, IndexError):
+            except (JSONDecodeError, InvalidCredentialsException, IndexError, FileNotFoundError):
                 return render(request, 'demo/imports.html', {'username': request.user, 'd_id': d_id, 'g_number': g_number, 'form': form, 'jsonError': True})
             print(col)
             group.t_col = col
@@ -499,7 +499,7 @@ def student(request, d_id, g_number):
     if not Discipline.objects.filter(d_owner=request.user, d_id=d_id):
         return HttpResponseRedirect('/work/')
     l = student_name_interface(d_id, g_number, mode='all')
-    print(l)
+    # print(l)
     if request.method == 'POST':
         form = StudentForm(request.POST)
         if form.is_valid():
@@ -507,7 +507,8 @@ def student(request, d_id, g_number):
                 lookup = Student.objects.filter(d_id=d_id, g_number=g_number, s_ya_name=form.cleaned_data['s_ya_name'])
             elif form.cleaned_data['s_stepik_name']:
                 lookup = Student.objects.filter(d_id=d_id, g_number=g_number, s_stepik_name=form.cleaned_data['s_stepik_name'])
-
+            else:
+                return HttpResponseRedirect('/work/'+str(d_id)+'/'+str(g_number)+'/students/')
             if lookup:
                 st = lookup[0]
             else:

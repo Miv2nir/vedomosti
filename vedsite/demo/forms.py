@@ -57,7 +57,7 @@ class CredentialsForm(forms.Form):
 
 
 class DisciplineForm(forms.Form):
-    d_name = forms.CharField(widget=forms.TextInput(attrs={"class": "square_input"}))
+    d_name = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Discipline Name', "class": "square_input"}))
 
 
 class DisciplineListForm(forms.Form):
@@ -70,7 +70,7 @@ class DisciplineListForm(forms.Form):
 
 
 class GroupForm(forms.Form):
-    g_number = forms.IntegerField(widget=forms.TextInput(attrs={"class": "square_input"}))
+    g_number = forms.IntegerField(widget=forms.TextInput(attrs={'placeholder': 'Numerical Group ID', "class": "square_input"}))
 
 
 class GroupListForm(forms.Form):

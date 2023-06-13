@@ -23,7 +23,10 @@ def del_group(g_number, d_id, user):
     for i in s:
         s.delete()
     for o in g:
-        shutil.rmtree('generated/'+str(d_id)+'/'+str(g_number))
+        try:
+            shutil.rmtree('generated/'+str(d_id)+'/'+str(g_number))
+        except FileNotFoundError:
+            pass
         o.delete()
 
 
@@ -40,7 +43,10 @@ def del_discipline(d_id, user):
         print("wow deleting", o.g_number)
         o.delete()
     print("wow deleting", d_id)
-    shutil.rmtree('generated/'+str(d_id))
+    try:
+        shutil.rmtree('generated/'+str(d_id))
+    except FileNotFoundError:
+        pass
     d = Discipline.objects.filter(d_owner=user, d_id=d_id)
     d.delete()
 
