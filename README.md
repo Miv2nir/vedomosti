@@ -2,6 +2,8 @@
 
 The project is meant to be ran on Linux Ubuntu 22.10
 
+2nd year DSBA Bachelor project 
+
 ## Deployment method:
 1. Download the source code from the repository.
 2. cd \<project directory\>
